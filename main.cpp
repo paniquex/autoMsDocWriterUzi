@@ -16,7 +16,6 @@ int main(int argc, char *argv[])
     QLineEdit* patientName = new QLineEdit;
     QDateEdit* patientAge = new QDateEdit;
     QDateEdit* researchDate = new QDateEdit( QDate::currentDate() );
-    patientName->setFixedSize( 300, 20 );
 
     Patient* Kolya = new Patient;
     Kolya->setName( "Kolya Efimov" );
@@ -245,8 +244,77 @@ int main(int argc, char *argv[])
                                 });
 
 //СЕЛЕЗЕНКА
+    QLabel* spleenLabel = new QLabel( "СЕЛЕЗЕНКА: " );
 
+    //Положение:
+    QLabel* spleenPlaceLabel = new QLabel( "Положение: " );
 
+    //Форма
+    QLabel* spleenFormLabel = new QLabel( "Форма: " );
+    QRadioButton* spleenFormNormalRadio = new QRadioButton( "Обычная" );
+    QButtonGroup* spleenFormGroup = new QButtonGroup;
+    spleenFormGroup->addButton( spleenFormNormalRadio );
+    spleenFormGroup->setExclusive( true );
+
+    //Размер
+    QSpinBox* spleenSizeSpin = new QSpinBox;
+    spleenSizeSpin->setSuffix( " мм" );
+    spleenSizeSpin->clear();
+    QLabel* spleenSizeLabel = new QLabel( "Размер: " );
+
+    //Контуры
+    QLabel* spleenContourLabel = new QLabel( "Контуры: " );
+    QRadioButton* spleenContourStraight = new QRadioButton( "Ровные" );
+    QRadioButton* spleenContourNotStraight = new QRadioButton( "Неровные" );
+    QRadioButton* spleenContourHilly = new QRadioButton( "Бугристые" );
+        //делаем независимыми c предыдущими радио-кнопками
+    QButtonGroup* spleenContourGroups = new QButtonGroup;
+    spleenContourGroups->addButton( spleenContourStraight );
+    spleenContourGroups->addButton( spleenContourNotStraight );
+    spleenContourGroups->addButton( spleenContourHilly );
+    spleenContourGroups->setExclusive( true );
+
+    //Эхоструктура
+    QCheckBox* spleenEchoCheck = new QCheckBox( "Эхоструктура: неоднородная" );
+    spleenEchoCheck->setFixedSize( 200, 20 );
+    QObject::connect( spleenEchoCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( spleenEchoCheck->isChecked() ) ) spleenEchoCheck->setText("Эхоструктура: неоднородная");
+                                if ( ( spleenEchoCheck->isChecked() ) ) spleenEchoCheck->setText("Эхоструктура: однородная");
+                                });
+
+    //Эхогенность
+    QLabel* spleenEchogenLabel = new QLabel( "Эхогенность: " );
+    QRadioButton* spleenEchogenUpRadio = new QRadioButton( "Повышена" );
+    QRadioButton* spleenEchogenDownRadio = new QRadioButton( "Понижена" );
+    QRadioButton* spleenEchogenMidRadio = new QRadioButton( "Средняя");
+
+    //Селезеночная вена
+    QCheckBox* spleenVenaCheck = new QCheckBox( "Селезеночная вена: не расширена" );
+    spleenVenaCheck->setFixedSize( 350, 20 );
+    QObject::connect( spleenVenaCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( spleenVenaCheck->isChecked() ) ) spleenVenaCheck->setText( "Селезеночная вена: не расширена" );
+                                if ( ( spleenVenaCheck->isChecked() ) ) spleenVenaCheck->setText( "Селезеночная вена:    расширена" );
+                                });
+    //Лимфатические узлы
+    QCheckBox* spleenLimfaCheck = new QCheckBox( "Лимфатические узлы: не визуализируются" );
+    spleenLimfaCheck->setFixedSize( 350, 20 );
+    QObject::connect( spleenLimfaCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( spleenLimfaCheck->isChecked() ) ) spleenLimfaCheck->setText( "Лимфатические узлы: не визуализируются" );
+                                if ( ( spleenLimfaCheck->isChecked() ) ) spleenLimfaCheck->setText( "Лимфатические узлы:    визуализируются" );
+                                });
+
+    //Наличие свободной жидкости в брюшной полости
+    QCheckBox* bellyWaterCheck = new QCheckBox( "НАЛИЧИЕ СВОБОДНОЙ ЖИДКОСТИ В БРЮШНОЙ ПОЛОСТИ: нет" );
+    bellyWaterCheck->setFixedSize( 420, 20 );
+    QObject::connect( bellyWaterCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( bellyWaterCheck->isChecked() ) ) bellyWaterCheck->setText( "НАЛИЧИЕ СВОБОДНОЙ ЖИДКОСТИ В БРЮШНОЙ ПОЛОСТИ: нет" );
+                                if ( ( bellyWaterCheck->isChecked() ) ) bellyWaterCheck->setText( "НАЛИЧИЕ СВОБОДНОЙ ЖИДКОСТИ В БРЮШНОЙ ПОЛОСТИ: есть" );
+                                });
+
+//Заключение
+    QLabel* bellyConclusionLabel = new QLabel( "ЗАКЛЮЧЕНИЕ: " );
+    QTextEdit* bellyConclusionText = new QTextEdit;
+    bellyConclusionText->setMinimumSize( 900, 30 );
 
 //LAYOUT
     QGridLayout* mainLayout = new QGridLayout();
@@ -254,6 +322,8 @@ int main(int argc, char *argv[])
     QHBoxLayout* nameLayout = new QHBoxLayout;
     nameLayout->addWidget( labelName );
     nameLayout->addWidget( patientName );
+    labelName->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Expanding );
+    patientName->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Expanding );
 
     QHBoxLayout* ageLayout = new QHBoxLayout;
     ageLayout->addWidget( labelAge );
@@ -366,7 +436,7 @@ int main(int argc, char *argv[])
     //ПОДЖЕЛУДОЧНАЯ ЖЕЛЕЗА
     QFrame* pancreasFrame = new QFrame;
     pancreasFrame->setFrameShape( QFrame::Box );
-    mainLayout->addWidget( pancreasFrame, 23, 1, 7, 3 );
+    mainLayout->addWidget( pancreasFrame, 23, 1, 4, 3 );
     mainLayout->addWidget( pancreasLabel, 23, 1 );
     //Размеры:
     QHBoxLayout* pancreasSizeLayout = new QHBoxLayout;
@@ -396,7 +466,53 @@ int main(int argc, char *argv[])
     //Главный панкреатический проток
      mainLayout->addWidget( pancreasMainStreamCheck, 27, 1 );
 
+//СЕЛЕЗЕНКА
+     QFrame* spleenFrame = new QFrame;
+     spleenFrame->setFrameShape( QFrame::Box );
+     mainLayout->addWidget( spleenFrame, 28, 1, 6, 3 );
+     mainLayout->addWidget( spleenLabel, 28, 1);
+     //Положение
+     mainLayout->addWidget( spleenPlaceLabel, 29, 1 );
+    //Форма
+     QHBoxLayout* spleenFormLayout = new QHBoxLayout;
+     spleenFormLayout->addWidget( spleenFormLabel );
+     spleenFormLayout->addWidget( spleenFormNormalRadio );
+     mainLayout->addLayout( spleenFormLayout, 30, 1 );
+     //Размер
+     QHBoxLayout* spleenSizeLayout = new QHBoxLayout;
+     spleenSizeLayout->addWidget( spleenSizeLabel );
+     spleenSizeLayout->addWidget( spleenSizeSpin );
+     mainLayout->addLayout( spleenSizeLayout, 31, 1 );
+     //Контур
+     QHBoxLayout* spleenContourLayout = new QHBoxLayout;
+     mainLayout->addLayout( spleenContourLayout, 32, 1, 1, 1 );
+     spleenContourLayout->addWidget( spleenContourLabel );
+     spleenContourLayout->addWidget( spleenContourStraight );
+     spleenContourLayout->addWidget( spleenContourNotStraight );
+     spleenContourLayout->addWidget( spleenContourHilly );
+     //Эхоструктура
+     mainLayout->addWidget( spleenEchoCheck, 32, 2 );
+     //Эхогенность
+     QHBoxLayout* spleenEchogenLayout = new QHBoxLayout;
+     spleenEchogenLayout->addWidget( spleenEchogenLabel );
+     spleenEchogenLayout->addWidget( spleenEchogenUpRadio );
+     spleenEchogenLayout->addWidget( spleenEchogenMidRadio );
+     spleenEchogenLayout->addWidget( spleenEchogenDownRadio );
+     mainLayout->addLayout( spleenEchogenLayout, 33, 1, 1, 1 );
+     //Селезеночная вена
+     mainLayout->addWidget( spleenVenaCheck, 34, 1 );
+     //Лимфатические узлы
+     mainLayout->addWidget( spleenLimfaCheck, 34, 2 );
+     //Наличие свободной жидкости в брюшной полости
+     mainLayout->addWidget( bellyWaterCheck, 35, 1 );
+
+//Заключение
+     mainLayout->addWidget( bellyConclusionLabel, 36, 1 );
+     mainLayout->addWidget( bellyConclusionText, 37, 1 );
+
+
     wgt.setLayout( mainLayout );
+    wgt.setMinimumSize( 900, 1000 );
     wgt.show();
 
 
