@@ -210,6 +210,44 @@ int main(int argc, char *argv[])
     pancreasSizeTailSpin->setSuffix( " мм" );
     pancreasSizeTailSpin->clear();
 
+    //Контуры
+    QLabel* pancreasContourLabel = new QLabel( "Контуры: " );
+    QRadioButton* pancreasContourStraight = new QRadioButton( "Ровные" );
+    QRadioButton* pancreasContourNotStraight = new QRadioButton( "Неровные" );
+    QRadioButton* pancreasContourHilly = new QRadioButton( "Бугристые" );
+        //делаем независимыми c предыдущими радио-кнопками
+    QButtonGroup* pancreasContourGroups = new QButtonGroup;
+    pancreasContourGroups->addButton( pancreasContourStraight );
+    pancreasContourGroups->addButton( pancreasContourNotStraight );
+    pancreasContourGroups->addButton( pancreasContourHilly );
+    pancreasContourGroups->setExclusive( true );
+
+    //Эхоструктура
+    QCheckBox* pancreasEchoCheck = new QCheckBox( "Эхоструктура: неоднородная" );
+    pancreasEchoCheck->setFixedSize( 200, 20 );
+    QObject::connect( pancreasEchoCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( pancreasEchoCheck->isChecked() ) ) pancreasEchoCheck->setText("Эхоструктура: неоднородная");
+                                if ( ( pancreasEchoCheck->isChecked() ) ) pancreasEchoCheck->setText("Эхоструктура: однородная");
+                                });
+
+    //Эхогенность
+    QLabel* pancreasEchogenLabel = new QLabel( "Эхогенность: " );
+    QRadioButton* pancreasEchogenUpRadio = new QRadioButton( "Повышена" );
+    QRadioButton* pancreasEchogenDownRadio = new QRadioButton( "Понижена" );
+    QRadioButton* pancreasEchogenMidRadio = new QRadioButton( "Средняя");
+
+    //Главный панкреатический проток
+    QCheckBox* pancreasMainStreamCheck = new QCheckBox( "Главный панкреатический проток: не расширен" );
+    pancreasMainStreamCheck->setFixedSize( 350, 20 );
+    QObject::connect( pancreasMainStreamCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( pancreasMainStreamCheck->isChecked() ) ) pancreasMainStreamCheck->setText( "Главный панкреатический проток: не расширен" );
+                                if ( ( pancreasMainStreamCheck->isChecked() ) ) pancreasMainStreamCheck->setText( "Главный панкреатический проток:    расширен" );
+                                });
+
+//СЕЛЕЗЕНКА
+
+
+
 //LAYOUT
     QGridLayout* mainLayout = new QGridLayout();
 
@@ -339,6 +377,24 @@ int main(int argc, char *argv[])
     pancreasSizeLayout->addWidget( pancreasSizeTailLabel );
     pancreasSizeLayout->addWidget( pancreasSizeTailSpin );
     mainLayout->addLayout( pancreasSizeLayout, 24, 1, 1, 2 );
+    //Контуры
+    QHBoxLayout* pancreasContourLayout = new QHBoxLayout;
+    mainLayout->addLayout( pancreasContourLayout, 25, 1, 1, 1 );
+    pancreasContourLayout->addWidget( pancreasContourLabel );
+    pancreasContourLayout->addWidget( pancreasContourStraight );
+    pancreasContourLayout->addWidget( pancreasContourNotStraight );
+    pancreasContourLayout->addWidget( pancreasContourHilly );
+    //Эхоструктура
+    mainLayout->addWidget( pancreasEchoCheck, 25, 2 );
+    //Эхогенность
+    QHBoxLayout* pancreasEchogenLayout = new QHBoxLayout;
+    pancreasEchogenLayout->addWidget( pancreasEchogenLabel );
+    pancreasEchogenLayout->addWidget( pancreasEchogenUpRadio );
+    pancreasEchogenLayout->addWidget( pancreasEchogenMidRadio );
+    pancreasEchogenLayout->addWidget( pancreasEchogenDownRadio );
+    mainLayout->addLayout( pancreasEchogenLayout, 26, 1, 1, 1 );
+    //Главный панкреатический проток
+     mainLayout->addWidget( pancreasMainStreamCheck, 27, 1 );
 
     wgt.setLayout( mainLayout );
     wgt.show();
