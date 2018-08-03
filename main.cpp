@@ -194,8 +194,21 @@ int main(int argc, char *argv[])
 
 
 //ПОДЖЕЛУДОЧНАЯ ЖЕЛЕЗА
+    QLabel* pancreasLabel = new QLabel( "ПОДЖЕЛУДОЧНАЯ ЖЕЛЕЗА: визуализируется. Положение: типичное" );
 
-
+    //Размеры
+    QLabel* pancreasSizeHeadLabel = new QLabel( "Размер: головки:" );
+    QLabel* pancreasSizeBodyLabel = new QLabel( ", тела:" );
+    QLabel* pancreasSizeTailLabel = new QLabel( ", хвоста:" );
+    QSpinBox* pancreasSizeHeadSpin = new QSpinBox;
+    pancreasSizeHeadSpin->setSuffix( " мм" );
+    pancreasSizeHeadSpin->clear();
+    QSpinBox* pancreasSizeBodySpin = new QSpinBox;
+    pancreasSizeBodySpin->setSuffix( " мм" );
+    pancreasSizeBodySpin->clear();
+    QSpinBox* pancreasSizeTailSpin = new QSpinBox;
+    pancreasSizeTailSpin->setSuffix( " мм" );
+    pancreasSizeTailSpin->clear();
 
 //LAYOUT
     QGridLayout* mainLayout = new QGridLayout();
@@ -289,7 +302,7 @@ int main(int argc, char *argv[])
     //ЖЕЛЧНЫЙ ПУЗЫРЬ
     QFrame* gallbladerFrame = new QFrame;
     gallbladerFrame->setFrameShape( QFrame::Box );
-    mainLayout->addWidget( gallbladerFrame, 18, 1, 7, 3 );
+    mainLayout->addWidget( gallbladerFrame, 18, 1, 5, 3 );
     mainLayout->addWidget( gallbladerLabel, 18, 1);
     //Размер
     QHBoxLayout* gallbladerSizeLayout = new QHBoxLayout;
@@ -310,8 +323,22 @@ int main(int argc, char *argv[])
     //Содержимое
     mainLayout->addWidget( gallbladedContentCheck, 21, 1 );
     //Конкременты
-     mainLayout->addWidget( gallbladerConcrementsCheck, 22, 1 );
+    mainLayout->addWidget( gallbladerConcrementsCheck, 22, 1 );
 
+    //ПОДЖЕЛУДОЧНАЯ ЖЕЛЕЗА
+    QFrame* pancreasFrame = new QFrame;
+    pancreasFrame->setFrameShape( QFrame::Box );
+    mainLayout->addWidget( pancreasFrame, 23, 1, 7, 3 );
+    mainLayout->addWidget( pancreasLabel, 23, 1 );
+    //Размеры:
+    QHBoxLayout* pancreasSizeLayout = new QHBoxLayout;
+    pancreasSizeLayout->addWidget( pancreasSizeHeadLabel );
+    pancreasSizeLayout->addWidget( pancreasSizeHeadSpin );
+    pancreasSizeLayout->addWidget( pancreasSizeBodyLabel );
+    pancreasSizeLayout->addWidget( pancreasSizeBodySpin );
+    pancreasSizeLayout->addWidget( pancreasSizeTailLabel );
+    pancreasSizeLayout->addWidget( pancreasSizeTailSpin );
+    mainLayout->addLayout( pancreasSizeLayout, 24, 1, 1, 2 );
 
     wgt.setLayout( mainLayout );
     wgt.show();
