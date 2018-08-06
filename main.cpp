@@ -1,9 +1,11 @@
-#include <QApplication>
+
 #include <QtWidgets>
 #include <QLineEdit>
 #include <QFrame>
+#include <QAxObject>
 #include "patient.h"
-#include <QAxBase>
+#include "wordsave.h"
+
 //#include "livercheck.h"
 
 
@@ -327,7 +329,8 @@ int main(int argc, char *argv[])
 //Заключение
     QLabel* bellyConclusionLabel = new QLabel( "ЗАКЛЮЧЕНИЕ: " );
     QTextEdit* bellyConclusionText = new QTextEdit;
-    bellyConclusionText->setMinimumSize( 1100, 30 );
+    bellyConclusionText->setMaximumSize( 1100, 30 );
+
 
 //LAYOUT*******************************************************************
 //*************************************************************************
@@ -560,19 +563,30 @@ int main(int argc, char *argv[])
      mainLayout->setMargin( 10 );
      mainLayout->setSpacing( 1 );
 
-//Создание шрифта для всего Виджета
-    QFont widgetFont;
-    widgetFont.setPixelSize( 12 );
-
-    wgt.setFont( widgetFont );
-    wgt.setLayout( mainLayout );
-    wgt.setMinimumSize( 1000, 1300 );
-    //mainTabWidget->show();
-    wgt.show();
-
 
 //Связь с Документом word
 
+    //Сохранить изменения
+        QPushButton* liverSaveAllButton = new QPushButton( "Сохранить документ" );
+        wordSave* liverSaveAllClass = new wordSave;
 
+        QObject::connect( liverSaveAllButton, &QPushButton::clicked, liverSaveAllClass, &wordSave::slotLiverSaveAll  );
+    //Сохранить документ LAYOUT
+         mainLayout->addWidget( liverSaveAllButton, ++gridX, 2 );
+
+//Создание шрифта для всего Виджета
+         QFont widgetFont;
+         widgetFont.setPixelSize( 12 );
+
+         wgt.setFont( widgetFont );
+         wgt.setLayout( mainLayout );
+         wgt.setMinimumSize( 750, 900 );
+         //mainTabWidget->show();
+         wgt.show();
     return a.exec();
+
 }
+
+
+
+
