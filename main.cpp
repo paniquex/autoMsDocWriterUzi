@@ -1,10 +1,10 @@
-
+#include "formofliver.h"
 #include <QtWidgets>
 #include <QLineEdit>
 #include <QFrame>
 #include <QAxObject>
 #include "patient.h"
-#include "wordsave.h"
+
 
 //#include "livercheck.h"
 
@@ -13,11 +13,10 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
     QWidget wgt;
     qint32 gridX = 1, gridY = 1;
-
     QLineEdit* patientName = new QLineEdit;
+
     patientName->setFixedHeight( 15 );
     QDateEdit* patientAge = new QDateEdit;
     QDateEdit* researchDate = new QDateEdit( QDate::currentDate() );
@@ -563,26 +562,45 @@ int main(int argc, char *argv[])
      mainLayout->setMargin( 10 );
      mainLayout->setSpacing( 1 );
 
+     //Связь с Документом word
 
-//Связь с Документом word
+         //Сохранить изменения
+             QPushButton* liverSaveAllButton = new QPushButton( "Сохранить документ" );
+             //wordSave* liverSaveAllClass = new wordSave;
 
-    //Сохранить изменения
-        QPushButton* liverSaveAllButton = new QPushButton( "Сохранить документ" );
-        wordSave* liverSaveAllClass = new wordSave;
+             QObject::connect( liverSaveAllButton, &QPushButton::clicked,
+                               [&] {
+                                         QAxObject* pWord = new QAxObject( "Word.Application");
+                                         QAxObject* pDocs = pWord->querySubObject( "Documents" );
 
-        QObject::connect( liverSaveAllButton, &QPushButton::clicked, liverSaveAllClass, &wordSave::slotLiverSaveAll  );
-    //Сохранить документ LAYOUT
-         mainLayout->addWidget( liverSaveAllButton, ++gridX, 2 );
+                                         pDocs->dynamicCall( "Add([Template], [NewTemplate], [DocumentType], [Visible])", "D:\\uzi.docx" );
+                                         //pDocs->dynamicCall( "Add([Template], [NewTemplate], [DocumentType], [Visible])", "D:\\uzi1.docx" );
+                                         pWord->setProperty( "Visible", true );
+                                         pWord->setProperty( "DiplayAlerts()", false );
 
-//Создание шрифта для всего Виджета
-         QFont widgetFont;
-         widgetFont.setPixelSize( 12 );
+                                         QAxObject* pActiveDoc = pWord->querySubObject( "ActiveDocument()" );
+                                         //pDocs->dynamicCall( "Activate( uzi1.docx )" );
+                                         QAxObject* rangeHeadText = pActiveDoc->querySubObject( "Range()" );
 
-         wgt.setFont( widgetFont );
-         wgt.setLayout( mainLayout );
-         wgt.setMinimumSize( 750, 900 );
-         //mainTabWidget->show();
-         wgt.show();
+                                         rangeHeadText->dynamicCall( "Setrange( int, int )", 38, 38 );
+                                         rangeHeadText->setProperty( "Text", patientName->text() );
+
+
+
+
+                                   }  );
+         //Сохранить документ LAYOUT
+              mainLayout->addWidget( liverSaveAllButton, ++gridX, 2 );
+
+     //Создание шрифта для всего Виджета
+              QFont widgetFont;
+              widgetFont.setPixelSize( 12 );
+
+     wgt.setFont( widgetFont );
+     wgt.setLayout( mainLayout );
+     wgt.setMinimumSize( 750, 900 );
+     //mainTabWidget->show();
+    wgt.show();
     return a.exec();
 
 }
