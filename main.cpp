@@ -3,11 +3,13 @@
 #include <QLineEdit>
 #include <QFrame>
 #include <QAxObject>
+#include <QAxBase>
+#include <qDebug>
 #include "patient.h"
 
 
 //#include "livercheck.h"
-
+void replaceString(QAxObject* pActiveDoc, const QString& oldString, const QString& newString);
 
 
 int main(int argc, char *argv[])
@@ -570,23 +572,71 @@ int main(int argc, char *argv[])
 
              QObject::connect( liverSaveAllButton, &QPushButton::clicked,
                                [&] {
-                                         QAxObject* pWord = new QAxObject( "Word.Application");
+                                         QAxObject* pWord = new QAxObject( "Word.Application" );
                                          QAxObject* pDocs = pWord->querySubObject( "Documents" );
 
                                          pDocs->dynamicCall( "Add([Template], [NewTemplate], [DocumentType], [Visible])", "D:\\uzi.docx" );
-                                         //pDocs->dynamicCall( "Add([Template], [NewTemplate], [DocumentType], [Visible])", "D:\\uzi1.docx" );
+
                                          pWord->setProperty( "Visible", true );
                                          pWord->setProperty( "DiplayAlerts()", false );
 
-                                         QAxObject* pActiveDoc = pWord->querySubObject( "ActiveDocument()" );
-                                         //pDocs->dynamicCall( "Activate( uzi1.docx )" );
-                                         QAxObject* rangeHeadText = pActiveDoc->querySubObject( "Range()" );
+                                         //QAxObject* pActiveDoc = pWord->querySubObject( "ActiveDocument()" );
+                                         pWord->setProperty( "DiplayAlerts()", false );
 
-                                         rangeHeadText->dynamicCall( "Setrange( int, int )", 38, 38 );
-                                         rangeHeadText->setProperty( "Text", patientName->text() );
+                                         //qint32 liverWordPlace = 0;
+                                         //Имя пациента
+                                         replaceString( pWord, "patientName", patientName->text() );
 
+                                         //Год рождения и дата исследования
+                                         replaceString( pWord, "patientAge", patientAge->text() );
+                                         replaceString( pWord, "Date", researchDate->text() );
+                                         //Расположение Печени
 
+                                         if ( placeStdRadio->isChecked() ) {
+                                             replaceString( pWord, "liverPlace", "обычно" );
+                                         }
+                                         else {
+                                             replaceString( pWord, "liverPlace", "слева" );
+                                         }
 
+                                         //Левая и правая доли
+                                         if ( leftShareCheck->isChecked() ) {
+                                             replaceString( pWord, "leftShare", "   увеличена" );
+                                         }
+                                         else {
+                                             replaceString( pWord, "leftShare", "не увеличена" );
+                                         }
+                                         if ( rightShareCheck->isChecked() ) {
+                                             replaceString( pWord, "rightShare", "   увеличена" );
+                                         }
+                                         else {
+                                             replaceString( pWord, "rightShare", "не увеличена" );
+                                         }
+                                         //Толщина Долей
+                                         replaceString( pWord, "leftThick" , leftThickSpin->text() );
+                                         replaceString( pWord, "rightThick" , rightThickSpin->text() );
+
+                                         //Контуры
+                                         if ( contourStraight->isChecked() ) {
+                                             replaceString( pWord, "liverContour", "ровные" );
+                                         }
+                                         else if ( contourNotStraight->isChecked() ) {
+                                             replaceString( pWord, "liverContour", "неровные" );
+                                         }
+                                         else {
+                                             replaceString( pWord, "liverContour", "бугристые" );
+                                         }
+
+                                         //Эхоструктура и Эхогенность
+                                         if ( echoCheck->isChecked() ) replaceString( pWord, "liverEchoStructure", "однородная" );
+                                         else replaceString( pWord, "liverEchoStructure", "неоднородная" );
+                                         if ( echogenUpRadio->isChecked() ) replaceString( pWord, "liverEcho", echogenUpRadio->text() );
+                                         else if ( echogenMidRadio->isChecked() ) replaceString( pWord, "liverEcho", echogenMidRadio->text() );
+                                         if ( echogenDownRadio->isChecked() ) replaceString( pWord, "liverEcho", echogenDownRadio->text() );
+
+                                         //Магистральные ствол воротной вены
+                                         replaceString( pWord, "liverMagCheck", magCheck->text() );
+                                         replaceString( pWord, "liverMagSpin", magSpin->text() );
 
                                    }  );
          //Сохранить документ LAYOUT
@@ -605,6 +655,40 @@ int main(int argc, char *argv[])
 
 }
 
+void replaceString( QAxObject* pActiveDoc, const QString& oldString, const QString& newString)
+{
+  QAxObject* WordSelection = pActiveDoc->querySubObject("Selection");
+
+  QAxObject* Find = WordSelection->querySubObject("Find");
+  if (!Find) return;
+  Find->dynamicCall("ClearFormatting()");
+
+  QList<QVariant> params;
+  params.operator << (QVariant(oldString));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant(true));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant(newString));
+  params.operator << (QVariant("2"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  Find->dynamicCall("Execute(const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,const QVariant&)",
+                    params);
+
+}
 
 
 
