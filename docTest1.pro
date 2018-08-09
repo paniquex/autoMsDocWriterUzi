@@ -24,10 +24,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-    patient.cpp
+    patient.cpp \
+    formofliver.cpp
 
 HEADERS += \
-    patient.h
+    patient.h \
+    formofliver.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
