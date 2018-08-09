@@ -1,22 +1,26 @@
-#include <QApplication>
+#include "formofliver.h"
 #include <QtWidgets>
 #include <QLineEdit>
 #include <QFrame>
+#include <QAxObject>
+#include <QAxBase>
 #include "patient.h"
-//#include "livercheck.h"
 
+
+//#include "livercheck.h"
+void replaceString(QAxObject* pActiveDoc, const QString& oldString, const QString& newString);
 
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
     QWidget wgt;
-
+    qint32 gridX = 1, gridY = 1;
     QLineEdit* patientName = new QLineEdit;
+
+    patientName->setFixedHeight( 15 );
     QDateEdit* patientAge = new QDateEdit;
     QDateEdit* researchDate = new QDateEdit( QDate::currentDate() );
-    patientName->setFixedSize( 300, 20 );
 
     Patient* Kolya = new Patient;
     Kolya->setName( "Kolya Efimov" );
@@ -35,10 +39,6 @@ int main(int argc, char *argv[])
     QRadioButton* placeStdRadio = new QRadioButton( "&Обычно" );
     QRadioButton* placeLeftRadio = new QRadioButton( "&Слева" );
     placeStdRadio->setChecked( true );
-    QVBoxLayout* placeLayout = new QVBoxLayout;
-    placeLayout->addWidget( placeLabel );
-    placeLayout->addWidget( placeStdRadio );
-    placeLayout->addWidget( placeLeftRadio );
 
     //Доли
     QCheckBox* leftShareCheck = new QCheckBox( "Левая доля: не увеличена");
@@ -162,6 +162,11 @@ int main(int argc, char *argv[])
                             if ( ( commonBileCheck2->isChecked() ) ) commonBileCheck2->setText(" стенки:     утолщены");
                             });
 
+    //Заключние
+    QLabel* liverConclusionLabel = new QLabel( "ОПИСАНИЕ: " );
+    QTextEdit* liverConclusionText = new QTextEdit;
+    liverConclusionText->setFixedSize( 1200, 20 );
+
 
 //ЖЕЛЧНЫЙ ПУЗЫРЬ
     QLabel* gallbladerLabel = new QLabel( " ЖЕЛЧНЫЙ ПУЗЫРЬ: " );
@@ -171,17 +176,37 @@ int main(int argc, char *argv[])
     QLabel* gallbladerSizeLabel = new QLabel( "Размер: " );
 
     //Деформация
+    QLabel* gallbladerDeformationLabel = new QLabel( "Деформация: " );
+    QFont gallbladerDeformationFont;
+    QCheckBox* gallbladerDeformationNeckCheck = new QCheckBox( "" );
+    gallbladerDeformationNeckCheck->setFont( gallbladerDeformationFont );
+    QObject::connect( gallbladerDeformationNeckCheck, &QCheckBox::stateChanged,
+                          [&] { if ( ( gallbladerDeformationNeckCheck->isChecked() ) ) gallbladerDeformationNeckCheck->setText( "в шейке, " );
+                                if ( !( gallbladerDeformationNeckCheck->isChecked() ) ) gallbladerDeformationNeckCheck->setText( "" );
+                                });
+    QCheckBox* gallbladerDeformationBodyCheck = new QCheckBox( "" );
+    QObject::connect( gallbladerDeformationBodyCheck, &QCheckBox::stateChanged,
+                          [&] { if ( ( gallbladerDeformationBodyCheck->isChecked() ) ) gallbladerDeformationBodyCheck->setText( "в теле, " );
+                                if ( !( gallbladerDeformationBodyCheck->isChecked() ) ) gallbladerDeformationBodyCheck->setText( "" );
+                                });
+    QCheckBox* gallbladerDeformationBottomCheck = new QCheckBox( "" );
+
+    QObject::connect( gallbladerDeformationBottomCheck, &QCheckBox::stateChanged,
+                          [&] { if ( ( gallbladerDeformationBottomCheck->isChecked() ) ) gallbladerDeformationBottomCheck->setText( "в дне" );
+                                if ( !( gallbladerDeformationBottomCheck->isChecked() ) ) gallbladerDeformationBottomCheck->setText( "" );
+                                });
+
 
     //Стенки
     QSpinBox* gallbladerWallSpin = new QSpinBox;
     QLabel* gallbladerWallLabel = new QLabel( "Стенки: " );
 
     //Содержимое
-    QCheckBox* gallbladedContentCheck = new QCheckBox( "Содержимое: неоднородное" );
-    gallbladedContentCheck->setFixedSize( 230, 20 );
-    QObject::connect( gallbladedContentCheck, &QCheckBox::stateChanged,
-                          [&] { if ( !( gallbladedContentCheck->isChecked() ) ) gallbladedContentCheck->setText("Содержимое: неоднородное" );
-                                if ( ( gallbladedContentCheck->isChecked() ) ) gallbladedContentCheck->setText("Содержимое:   однородное" );
+    QCheckBox* gallbladerContentCheck = new QCheckBox( "Содержимое: неоднородное" );
+    gallbladerContentCheck->setFixedSize( 230, 20 );
+    QObject::connect( gallbladerContentCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( gallbladerContentCheck->isChecked() ) ) gallbladerContentCheck->setText("Содержимое: неоднородное" );
+                                if ( ( gallbladerContentCheck->isChecked() ) ) gallbladerContentCheck->setText("Содержимое:   однородное" );
                                 });
 
     //Конкременты
@@ -191,10 +216,15 @@ int main(int argc, char *argv[])
                           [&] { if ( !( gallbladerConcrementsCheck->isChecked() ) ) gallbladerConcrementsCheck->setText( "Конкременты: не визуализируются" );
                                 if ( ( gallbladerConcrementsCheck->isChecked() ) ) gallbladerConcrementsCheck->setText( "Конкременты:    визуализируются" );
                                 });
+    //Заключение
+    QLabel* gallbladerConclusionLabel = new QLabel( "ОПИСАНИЕ: " );
+    QTextEdit* gallbladerConclusionText = new QTextEdit;
+    gallbladerConclusionText->setFixedSize( 1200, 20 );
 
 
 //ПОДЖЕЛУДОЧНАЯ ЖЕЛЕЗА
     QLabel* pancreasLabel = new QLabel( "ПОДЖЕЛУДОЧНАЯ ЖЕЛЕЗА: визуализируется. Положение: типичное" );
+
 
     //Размеры
     QLabel* pancreasSizeHeadLabel = new QLabel( "Размер: головки:" );
@@ -235,6 +265,12 @@ int main(int argc, char *argv[])
     QRadioButton* pancreasEchogenUpRadio = new QRadioButton( "Повышена" );
     QRadioButton* pancreasEchogenDownRadio = new QRadioButton( "Понижена" );
     QRadioButton* pancreasEchogenMidRadio = new QRadioButton( "Средняя");
+    QButtonGroup* pancreasEchogenGroups = new QButtonGroup;
+    pancreasEchogenGroups->addButton( pancreasEchogenUpRadio );
+    pancreasEchogenGroups->addButton( pancreasEchogenDownRadio );
+    pancreasEchogenGroups->addButton( pancreasEchogenMidRadio );
+    pancreasEchogenGroups->setExclusive( true );
+
 
     //Главный панкреатический проток
     QCheckBox* pancreasMainStreamCheck = new QCheckBox( "Главный панкреатический проток: не расширен" );
@@ -244,16 +280,105 @@ int main(int argc, char *argv[])
                                 if ( ( pancreasMainStreamCheck->isChecked() ) ) pancreasMainStreamCheck->setText( "Главный панкреатический проток:    расширен" );
                                 });
 
+    //Заключение
+        QLabel* pancreasConclusionLabel = new QLabel( "ОПИСАНИЕ: " );
+        QTextEdit* pancreasConclusionText = new QTextEdit;
+        pancreasConclusionText->setFixedSize( 1200, 20 );
+
 //СЕЛЕЗЕНКА
+    QLabel* spleenLabel = new QLabel( "СЕЛЕЗЕНКА: " );
 
+    //Положение:
+    QLabel* spleenPlaceLabel = new QLabel( "Положение: " );
 
+    //Форма
+    QLabel* spleenFormLabel = new QLabel( "Форма: " );
+    QRadioButton* spleenFormNormalRadio = new QRadioButton( "Обычная" );
+    QButtonGroup* spleenFormGroup = new QButtonGroup;
+    spleenFormGroup->addButton( spleenFormNormalRadio );
+    spleenFormGroup->setExclusive( true );
 
-//LAYOUT
+    //Размер
+    QSpinBox* spleenSizeSpin = new QSpinBox;
+    spleenSizeSpin->setSuffix( " мм" );
+    spleenSizeSpin->clear();
+    QLabel* spleenSizeLabel = new QLabel( "Размер: " );
+
+    //Контуры
+    QLabel* spleenContourLabel = new QLabel( "Контуры: " );
+    QRadioButton* spleenContourStraight = new QRadioButton( "Ровные" );
+    QRadioButton* spleenContourNotStraight = new QRadioButton( "Неровные" );
+    QRadioButton* spleenContourHilly = new QRadioButton( "Бугристые" );
+        //делаем независимыми c предыдущими радио-кнопками
+    QButtonGroup* spleenContourGroups = new QButtonGroup;
+    spleenContourGroups->addButton( spleenContourStraight );
+    spleenContourGroups->addButton( spleenContourNotStraight );
+    spleenContourGroups->addButton( spleenContourHilly );
+    spleenContourGroups->setExclusive( true );
+
+    //Эхоструктура
+    QCheckBox* spleenEchoCheck = new QCheckBox( "Эхоструктура: неоднородная" );
+    spleenEchoCheck->setFixedSize( 200, 20 );
+    QObject::connect( spleenEchoCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( spleenEchoCheck->isChecked() ) ) spleenEchoCheck->setText("Эхоструктура: неоднородная");
+                                if ( ( spleenEchoCheck->isChecked() ) ) spleenEchoCheck->setText("Эхоструктура: однородная");
+                                });
+
+    //Эхогенность
+    QLabel* spleenEchogenLabel = new QLabel( "Эхогенность: " );
+    QRadioButton* spleenEchogenUpRadio = new QRadioButton( "Повышена" );
+    QRadioButton* spleenEchogenDownRadio = new QRadioButton( "Понижена" );
+    QRadioButton* spleenEchogenMidRadio = new QRadioButton( "Средняя");
+    QButtonGroup* spleenEchogenGroups = new QButtonGroup;
+    spleenEchogenGroups->addButton( spleenEchogenUpRadio );
+    spleenEchogenGroups->addButton( spleenEchogenDownRadio );
+    spleenEchogenGroups->addButton( spleenEchogenMidRadio );
+    spleenEchogenGroups->setExclusive( true );
+
+    //Селезеночная вена
+    QCheckBox* spleenVenaCheck = new QCheckBox( "Селезеночная вена: не расширена" );
+    spleenVenaCheck->setFixedSize( 350, 20 );
+    QObject::connect( spleenVenaCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( spleenVenaCheck->isChecked() ) ) spleenVenaCheck->setText( "Селезеночная вена: не расширена" );
+                                if ( ( spleenVenaCheck->isChecked() ) ) spleenVenaCheck->setText( "Селезеночная вена:    расширена" );
+                                });
+    //Лимфатические узлы
+    QCheckBox* spleenLimfaCheck = new QCheckBox( "Лимфатические узлы: не визуализируются" );
+    spleenLimfaCheck->setFixedSize( 350, 20 );
+    QObject::connect( spleenLimfaCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( spleenLimfaCheck->isChecked() ) ) spleenLimfaCheck->setText( "Лимфатические узлы: не визуализируются" );
+                                if ( ( spleenLimfaCheck->isChecked() ) ) spleenLimfaCheck->setText( "Лимфатические узлы:    визуализируются" );
+                                });
+
+    //Наличие свободной жидкости в брюшной полости
+    QCheckBox* bellyWaterCheck = new QCheckBox( "НАЛИЧИЕ СВОБОДНОЙ ЖИДКОСТИ В БРЮШНОЙ ПОЛОСТИ: нет" );
+    bellyWaterCheck->setFixedSize( 420, 20 );
+    QObject::connect( bellyWaterCheck, &QCheckBox::stateChanged,
+                          [&] { if ( !( bellyWaterCheck->isChecked() ) ) bellyWaterCheck->setText( "НАЛИЧИЕ СВОБОДНОЙ ЖИДКОСТИ В БРЮШНОЙ ПОЛОСТИ: нет" );
+                                if ( ( bellyWaterCheck->isChecked() ) ) bellyWaterCheck->setText( "НАЛИЧИЕ СВОБОДНОЙ ЖИДКОСТИ В БРЮШНОЙ ПОЛОСТИ: есть" );
+                                });
+
+    //Заключение
+    QLabel* spleenConclusionLabel = new QLabel( "ОПИСАНИЕ: " );
+    QTextEdit* spleenConclusionText = new QTextEdit;
+    spleenConclusionText->setFixedSize( 1200, 20 );
+
+//ЗАКЛЮЧЕНИЕ
+    QLabel* mainConclusionLabel = new QLabel( "ЗАКЛЮЧЕНИЕ: " );
+    QTextEdit* mainConclusionText = new QTextEdit;
+    mainConclusionText->setMinimumSize( 900, 30 );
+
+//LAYOUT*******************************************************************
+//*************************************************************************
+    //QTabWidget* mainTabWidget = new QTabWidget;
+    //mainTabWidget->addTab( &wgt, "Печень" );
     QGridLayout* mainLayout = new QGridLayout();
 
     QHBoxLayout* nameLayout = new QHBoxLayout;
     nameLayout->addWidget( labelName );
     nameLayout->addWidget( patientName );
+    //labelName->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Expanding );
+    //patientName->setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Expanding );
 
     QHBoxLayout* ageLayout = new QHBoxLayout;
     ageLayout->addWidget( labelAge );
@@ -266,82 +391,104 @@ int main(int argc, char *argv[])
     //Основной слой
     QFrame mainFrame;
     mainFrame.setFrameShape( QFrame::Box );
-    mainLayout->addWidget( &mainFrame, 1, 1, 3, 3 );
+    mainLayout->addWidget( &mainFrame, gridX, gridY, 3, 3 );
 
-    mainLayout->addLayout( nameLayout, 1, 1 );
-    mainLayout->addLayout( ageLayout, 2, 1 );
-    mainLayout->addLayout( dateLayout, 3, 1 );
+    mainLayout->addLayout( nameLayout, gridX, 1);
+    gridX++;
+    mainLayout->addLayout( ageLayout, gridX, 1 );
+    gridX++;
+    mainLayout->addLayout( dateLayout, gridX, 1 );
 
     //Начало протокола:
     QFrame liverFrame;
     liverFrame.setFrameShape( QFrame::Box );
-    QLabel* protocallLabel = new QLabel( "\t\t\t ПРОТОКОЛ \n ультразвукогого исследования органов брюшной полости");
+    liverFrame.set
+    QLabel* protocallLabel = new QLabel( "ПРОТОКОЛ \n ультразвукогого исследования органов брюшной полости");
 
-
-    mainLayout->addWidget( &liverFrame, 4, 1, 14, 3 );
-    mainLayout->addWidget( protocallLabel, 4, 1);
+    gridX++;
+    mainLayout->addWidget( &liverFrame, gridX + 1, 1, 13, 3 );
+    mainLayout->addWidget( protocallLabel, gridX, 2);
     //Заполняеая часть
-    mainLayout->addWidget( liverLabel, 5, 1 );
+    gridX++;
+    mainLayout->addWidget( liverLabel, gridX, 1 );
     //Расположение печени
-    mainLayout->addLayout( placeLayout, 5, 2, 2, 1);
+    QHBoxLayout* placeLayout = new QHBoxLayout;
+    placeLayout->addWidget( placeLabel );
+    placeLayout->addWidget( placeStdRadio );
+    placeLayout->addWidget( placeLeftRadio );
+    mainLayout->addLayout( placeLayout, ++gridX, 1, 1, 1);
+
     //Доли
-    mainLayout->addWidget( leftShareCheck, 8, 1 );
-    mainLayout->addWidget( rightShareCheck, 9, 1 );
+    gridX++;
+    gridX++;
+    mainLayout->addWidget( leftShareCheck, gridX, 1 );
+    gridX++;
+    mainLayout->addWidget( rightShareCheck, gridX, 1 );
     //Толщина
-    mainLayout->addWidget( thickLabel1, 8, 2 );
-    mainLayout->addWidget( thickLabel2, 9, 2 );
-    mainLayout->addWidget( leftThickSpin, 8, 3 );
-    mainLayout->addWidget( rightThickSpin, 9, 3 );
+    mainLayout->addWidget( thickLabel1, gridX - 1, 2 );
+    mainLayout->addWidget( thickLabel2, gridX, 2 );
+    mainLayout->addWidget( leftThickSpin, gridX - 1, 2 );
+    leftThickSpin->setAutoFillBackground( true );
+    mainLayout->addWidget( rightThickSpin, gridX, 2 );
     //Контур
     QHBoxLayout* contourLayout = new QHBoxLayout;
-    mainLayout->addLayout( contourLayout, 10, 1, 1, 1 );
+    gridX++;
+    mainLayout->addLayout( contourLayout, gridX, 1, 1, 1 );
     contourLayout->addWidget( contourLabel );
     contourLayout->addWidget( contourStraight );
     contourLayout->addWidget( contourNotStraight );
     contourLayout->addWidget( contourHilly );
     //Эхоструктура
-    mainLayout->addWidget( echoCheck, 10, 2 );
+    mainLayout->addWidget( echoCheck, gridX, 2 );
     //Эхогенность
+    gridX++;
     QHBoxLayout* echogenLayout = new QHBoxLayout;
     echogenLayout->addWidget( echogenLabel );
     echogenLayout->addWidget( echogenUpRadio );
     echogenLayout->addWidget( echogenMidRadio );
     echogenLayout->addWidget( echogenDownRadio );
-    mainLayout->addLayout( echogenLayout, 11, 1, 1, 1 );
+    mainLayout->addLayout( echogenLayout, gridX, 1, 1, 1 );
     //Магистр. Ствол
+    gridX++;
     QHBoxLayout* magHLayout = new QHBoxLayout;
     magHLayout->addWidget( magCheck );
     magHLayout->addWidget( magSpin );
-    mainLayout->addLayout( magHLayout, 12, 1, 1, 1 );
+    mainLayout->addLayout( magHLayout, gridX, 1, 1, 1 );
     //Скорость кровотока
+    gridX++;
     QHBoxLayout* speedBloodLayout = new QHBoxLayout;
     speedBloodLayout->addWidget( speedBloodLabel );
     speedBloodLayout->addWidget( speedBloodUpRadio );
     speedBloodLayout->addWidget( speedBloodMidRadio );
     speedBloodLayout->addWidget( speedBloodDownRadio );
-    mainLayout->addLayout( speedBloodLayout, 13, 1, 1, 1 );
+    mainLayout->addLayout( speedBloodLayout, gridX, 1, 1, 1 );
     //Печеночные вены
-    mainLayout->addWidget( hepaticCheck, 14, 1 );
+    mainLayout->addWidget( hepaticCheck, ++gridX, 1 );
     //Нижняя полая вена
     QHBoxLayout* downVenaHLayout = new QHBoxLayout;
     downVenaHLayout->addWidget( downVenaCheck );
     downVenaHLayout->addWidget( downVenaSpin );
-    mainLayout->addLayout( downVenaHLayout, 15, 1, 1, 1 );
+    mainLayout->addLayout( downVenaHLayout, ++gridX, 1, 1, 1 );
     //Внутрипеченочные желчные протоки
-    mainLayout->addWidget( inhepaticCheck, 16, 1 );
+    mainLayout->addWidget( inhepaticCheck, ++gridX, 1 );
     //Общий желчный проток
     QHBoxLayout* commonBileHLayout = new QHBoxLayout;
     commonBileHLayout->addWidget( commonBileCheck );
     commonBileHLayout->addWidget( commonBileSpin );
     commonBileHLayout->addWidget( commonBileCheck2 );
-    mainLayout->addLayout( commonBileHLayout, 17, 1, 1, 2 );
+    mainLayout->addLayout( commonBileHLayout, ++gridX, 1, 1, 2 );
+    //Заключение
+    QHBoxLayout* liverConclusionLayout = new QHBoxLayout;
+    liverConclusionLayout->addWidget( liverConclusionLabel );
+    liverConclusionLayout->addWidget( liverConclusionText );
+    mainLayout->addLayout( liverConclusionLayout, ++gridX, 1 );
 
 
     //ЖЕЛЧНЫЙ ПУЗЫРЬ
     QFrame* gallbladerFrame = new QFrame;
     gallbladerFrame->setFrameShape( QFrame::Box );
-    mainLayout->addWidget( gallbladerFrame, 18, 1, 5, 3 );
-    mainLayout->addWidget( gallbladerLabel, 18, 1);
+    mainLayout->addWidget( gallbladerFrame, ++gridX, 1, 6, 3 );
+    mainLayout->addWidget( gallbladerLabel, gridX, 1);
     //Размер
     QHBoxLayout* gallbladerSizeLayout = new QHBoxLayout;
     gallbladerSizeSpin->setSuffix(" мм");
@@ -349,7 +496,14 @@ int main(int argc, char *argv[])
     gallbladerSizeSpin->clear();
     gallbladerSizeLayout->addWidget( gallbladerSizeLabel );
     gallbladerSizeLayout->addWidget( gallbladerSizeSpin );
-    mainLayout->addLayout( gallbladerSizeLayout, 19, 1 );
+    mainLayout->addLayout( gallbladerSizeLayout, ++gridX, 1 );
+    //Деформация
+    QHBoxLayout* gallbladerDeformationLayout = new QHBoxLayout;
+    gallbladerDeformationLayout->addWidget( gallbladerDeformationLabel );
+    gallbladerDeformationLayout->addWidget( gallbladerDeformationNeckCheck );
+    gallbladerDeformationLayout->addWidget( gallbladerDeformationBodyCheck );
+    gallbladerDeformationLayout->addWidget( gallbladerDeformationBottomCheck );
+    mainLayout->addLayout( gallbladerDeformationLayout, ++gridX, 1 );
     //Стенки
     QHBoxLayout* gallbladerWallLayout = new QHBoxLayout;
     gallbladerWallSpin->setSuffix(" мм");
@@ -357,17 +511,22 @@ int main(int argc, char *argv[])
     gallbladerWallSpin->clear();
     gallbladerWallLayout->addWidget( gallbladerWallLabel );
     gallbladerWallLayout->addWidget( gallbladerWallSpin );
-    mainLayout->addLayout( gallbladerWallLayout, 20, 1 );
+    mainLayout->addLayout( gallbladerWallLayout, ++gridX, 1 );
     //Содержимое
-    mainLayout->addWidget( gallbladedContentCheck, 21, 1 );
+    mainLayout->addWidget( gallbladerContentCheck, ++gridX, 1 );
     //Конкременты
-    mainLayout->addWidget( gallbladerConcrementsCheck, 22, 1 );
+    mainLayout->addWidget( gallbladerConcrementsCheck, ++gridX, 1 );
+    //Заключение
+    QHBoxLayout* gallbladerConclusionLayout = new QHBoxLayout;
+    gallbladerConclusionLayout->addWidget( gallbladerConclusionLabel );
+    gallbladerConclusionLayout->addWidget( gallbladerConclusionText );
+    mainLayout->addLayout( gallbladerConclusionLayout, ++gridX, 1 );
 
-    //ПОДЖЕЛУДОЧНАЯ ЖЕЛЕЗА
+ //ПОДЖЕЛУДОЧНАЯ ЖЕЛЕЗА
     QFrame* pancreasFrame = new QFrame;
     pancreasFrame->setFrameShape( QFrame::Box );
-    mainLayout->addWidget( pancreasFrame, 23, 1, 7, 3 );
-    mainLayout->addWidget( pancreasLabel, 23, 1 );
+    mainLayout->addWidget( pancreasFrame, ++gridX, 1, 5, 3 );
+    mainLayout->addWidget( pancreasLabel, gridX, 1 );
     //Размеры:
     QHBoxLayout* pancreasSizeLayout = new QHBoxLayout;
     pancreasSizeLayout->addWidget( pancreasSizeHeadLabel );
@@ -376,29 +535,300 @@ int main(int argc, char *argv[])
     pancreasSizeLayout->addWidget( pancreasSizeBodySpin );
     pancreasSizeLayout->addWidget( pancreasSizeTailLabel );
     pancreasSizeLayout->addWidget( pancreasSizeTailSpin );
-    mainLayout->addLayout( pancreasSizeLayout, 24, 1, 1, 2 );
+    mainLayout->addLayout( pancreasSizeLayout, ++gridX, 1, 1, 2 );
     //Контуры
     QHBoxLayout* pancreasContourLayout = new QHBoxLayout;
-    mainLayout->addLayout( pancreasContourLayout, 25, 1, 1, 1 );
+    mainLayout->addLayout( pancreasContourLayout, ++gridX, 1, 1, 1 );
     pancreasContourLayout->addWidget( pancreasContourLabel );
     pancreasContourLayout->addWidget( pancreasContourStraight );
     pancreasContourLayout->addWidget( pancreasContourNotStraight );
     pancreasContourLayout->addWidget( pancreasContourHilly );
     //Эхоструктура
-    mainLayout->addWidget( pancreasEchoCheck, 25, 2 );
+    mainLayout->addWidget( pancreasEchoCheck, gridX, 2 );
     //Эхогенность
     QHBoxLayout* pancreasEchogenLayout = new QHBoxLayout;
     pancreasEchogenLayout->addWidget( pancreasEchogenLabel );
     pancreasEchogenLayout->addWidget( pancreasEchogenUpRadio );
     pancreasEchogenLayout->addWidget( pancreasEchogenMidRadio );
     pancreasEchogenLayout->addWidget( pancreasEchogenDownRadio );
-    mainLayout->addLayout( pancreasEchogenLayout, 26, 1, 1, 1 );
+    mainLayout->addLayout( pancreasEchogenLayout, ++gridX, 1, 1, 1 );
     //Главный панкреатический проток
-     mainLayout->addWidget( pancreasMainStreamCheck, 27, 1 );
+     mainLayout->addWidget( pancreasMainStreamCheck, ++gridX, 1 );
+    //Заключение
+     QHBoxLayout* pancreasConclusionLayout = new QHBoxLayout;
+     pancreasConclusionLayout->addWidget( pancreasConclusionLabel );
+     pancreasConclusionLayout->addWidget( pancreasConclusionText );
+     mainLayout->addLayout( pancreasConclusionLayout, ++gridX, 1 );
 
-    wgt.setLayout( mainLayout );
+//СЕЛЕЗЕНКА
+     QFrame* spleenFrame = new QFrame;
+     spleenFrame->setFrameShape( QFrame::Box );
+     mainLayout->addWidget( spleenFrame, ++gridX, 1, 7, 3 );
+     mainLayout->addWidget( spleenLabel, gridX, 1);
+     //Положение
+     //mainLayout->addWidget( spleenPlaceLabel, ++gridX, 1 );
+    //Форма
+     QHBoxLayout* spleenFormLayout = new QHBoxLayout;
+     spleenFormLayout->addWidget( spleenFormLabel );
+     spleenFormLayout->addWidget( spleenFormNormalRadio );
+     mainLayout->addLayout( spleenFormLayout, ++gridX, 1 );
+     //Размер
+     QHBoxLayout* spleenSizeLayout = new QHBoxLayout;
+     spleenSizeLayout->addWidget( spleenSizeLabel );
+     spleenSizeLayout->addWidget( spleenSizeSpin );
+     mainLayout->addLayout( spleenSizeLayout, ++gridX, 1 );
+     //Контур
+     QHBoxLayout* spleenContourLayout = new QHBoxLayout;
+     mainLayout->addLayout( spleenContourLayout, ++gridX, 1, 1, 1 );
+     spleenContourLayout->addWidget( spleenContourLabel );
+     spleenContourLayout->addWidget( spleenContourStraight );
+     spleenContourLayout->addWidget( spleenContourNotStraight );
+     spleenContourLayout->addWidget( spleenContourHilly );
+     //Эхоструктура
+     mainLayout->addWidget( spleenEchoCheck, gridX, 2 );
+     //Эхогенность
+     QHBoxLayout* spleenEchogenLayout = new QHBoxLayout;
+     spleenEchogenLayout->addWidget( spleenEchogenLabel );
+     spleenEchogenLayout->addWidget( spleenEchogenUpRadio );
+     spleenEchogenLayout->addWidget( spleenEchogenMidRadio );
+     spleenEchogenLayout->addWidget( spleenEchogenDownRadio );
+     mainLayout->addLayout( spleenEchogenLayout, ++gridX, 1, 1, 1 );
+     //Селезеночная вена
+     mainLayout->addWidget( spleenVenaCheck, ++gridX, 1 );
+     //Лимфатические узлы
+     mainLayout->addWidget( spleenLimfaCheck, gridX - 1, 2 );
+     //Наличие свободной жидкости в брюшной полости
+     mainLayout->addWidget( bellyWaterCheck, ++gridX, 1 );
+    //Заключение
+     QHBoxLayout* spleenConclusionLayout = new QHBoxLayout;
+     spleenConclusionLayout->addWidget( spleenConclusionLabel );
+     spleenConclusionLayout->addWidget( spleenConclusionText );
+     mainLayout->addLayout( spleenConclusionLayout, ++gridX, 1 );
+
+//ЗАКЛЮЧЕНИЕ:
+     mainLayout->addWidget( mainConclusionLabel, ++gridX, 1 );
+     mainLayout->addWidget( mainConclusionText, ++gridX, 1 );
+     mainLayout->setMargin( 10 );
+     mainLayout->setSpacing( 1 );
+
+     //Связь с Документом word
+
+         //Сохранить изменения
+             QPushButton* liverSaveAllButton = new QPushButton( "Сохранить документ" );
+             //wordSave* liverSaveAllClass = new wordSave;
+
+             QObject::connect( liverSaveAllButton, &QPushButton::clicked,
+                               [&] {
+                                         QAxObject* pWord = new QAxObject( "Word.Application" );
+                                         QAxObject* pDocs = pWord->querySubObject( "Documents" );
+
+                                         pDocs->dynamicCall( "Add([Template], [NewTemplate], [DocumentType], [Visible])", "D:\\uzi.docx" );
+
+                                         pWord->setProperty( "DiplayAlerts()", false );
+
+                                         //QAxObject* pActiveDoc = pWord->querySubObject( "ActiveDocument()" );
+                                         pWord->setProperty( "DiplayAlerts()", false );
+
+                                         //qint32 liverWordPlace = 0;
+                                         //Имя пациента
+                                         replaceString( pWord, "patientName", patientName->text() );
+
+                                         //Год рождения и дата исследования
+                                         replaceString( pWord, "patientAge", patientAge->text() );
+                                         replaceString( pWord, "Date", researchDate->text() );
+
+                                         //ПЕЧЕНЬ
+                                            //Расположение Печени
+
+                                             if ( placeStdRadio->isChecked() ) {
+                                                 replaceString( pWord, "liverPlace", "обычно" );
+                                             }
+                                             else {
+                                                 replaceString( pWord, "liverPlace", "слева" );
+                                             }
+
+                                             //Левая и правая доли
+                                             if ( leftShareCheck->isChecked() ) {
+                                                 replaceString( pWord, "leftShare", "   увеличена" );
+                                             }
+                                             else {
+                                                 replaceString( pWord, "leftShare", "не увеличена" );
+                                             }
+                                             if ( rightShareCheck->isChecked() ) {
+                                                 replaceString( pWord, "rightShare", "   увеличена" );
+                                             }
+                                             else {
+                                                 replaceString( pWord, "rightShare", "не увеличена" );
+                                             }
+                                             //Толщина Долей
+                                             replaceString( pWord, "leftThick" , leftThickSpin->text() );
+                                             replaceString( pWord, "rightThick" , rightThickSpin->text() );
+
+                                             //Контуры
+                                             if ( contourStraight->isChecked() ) {
+                                                 replaceString( pWord, "liverContour", "ровные" );
+                                             }
+                                             else if ( contourNotStraight->isChecked() ) {
+                                                 replaceString( pWord, "liverContour", "неровные" );
+                                             }
+                                             else {
+                                                 replaceString( pWord, "liverContour", "бугристые" );
+                                             }
+
+                                             //Эхоструктура и Эхогенность
+                                             if ( echoCheck->isChecked() ) replaceString( pWord, "liverEchoStructure", "однородная" );
+                                             else replaceString( pWord, "liverEchoStructure", "неоднородная" );
+                                             if ( echogenUpRadio->isChecked() ) replaceString( pWord, "liverEcho", echogenUpRadio->text() );
+                                             else if ( echogenMidRadio->isChecked() ) replaceString( pWord, "liverEcho", echogenMidRadio->text() );
+                                             else replaceString( pWord, "liverEcho", echogenDownRadio->text() );
+
+                                             //Магистральные ствол воротной вены
+                                             replaceString( pWord, "liverMagCheck", magCheck->text() );
+                                             replaceString( pWord, "liverMagSpin", magSpin->text() );
+
+                                             //Скорость кровотока
+                                             if ( speedBloodUpRadio->isChecked() )
+                                                replaceString( pWord, "liverSpeedBloodRadio", "Высокая");
+                                             else if ( speedBloodMidRadio->isChecked() )
+                                                 replaceString( pWord, "liverSpeedBloodRadio", "Нормальная" );
+                                             else
+                                                 replaceString( pWord, "liverSpeedBloodRadio", "Низкая" );
+
+                                             //Печеночные вены, Нижняя вена, желчные потоки
+                                             replaceString( pWord, "liverHepaticCheck", hepaticCheck->text() );
+                                             replaceString( pWord, "liverDownVenaCheck", downVenaCheck->text() );
+                                             replaceString( pWord, "liverDownVenaSpin", downVenaSpin->text() );
+                                             replaceString( pWord, "liverInHepaticCheck", inhepaticCheck->text() );
+
+                                             //Общий желчный проток
+                                             replaceString( pWord, "liverCommonBileCheck", commonBileCheck->text() );
+                                             replaceString( pWord, "liverCommonBileSpin", commonBileSpin->text() );
+                                             replaceString( pWord, "liverCommonBile2Check", commonBileCheck2->text() );
+
+                                             //Описание
+                                             replaceString( pWord, "liverDescriptionText", liverConclusionText->toPlainText() );
+                                        //Желчный пузырь:
+                                             //Размер и деформация
+                                             replaceString( pWord, "gallbladerSizeSpin", gallbladerSizeSpin->text() );
+                                             replaceString( pWord, "gallbladerDeformationCheck", gallbladerDeformationNeckCheck->text() + gallbladerDeformationBodyCheck->text() + gallbladerDeformationBottomCheck->text() );
+
+                                             //Стенки и Содержимое, конкременты
+                                             replaceString( pWord, "gallbladerWallSpin", gallbladerWallSpin->text() );
+                                             replaceString( pWord, "gallbladerContentCheck", gallbladerContentCheck->text() );
+                                             replaceString( pWord, "gallbladerConcrementsCheck", gallbladerConcrementsCheck->text() );
+
+                                             //Описание
+                                             replaceString( pWord, "gallbladerDescriptionText", gallbladerConclusionText->toPlainText() );
+
+                                        //Поджелудочная железа
+                                             replaceString( pWord, "pancreasSizeHeadSpin", pancreasSizeHeadSpin->text() );
+                                             replaceString( pWord, "pancreasSizeBodySpin", pancreasSizeBodySpin->text() );
+                                             replaceString( pWord, "pancreasSizeTailSpin", pancreasSizeTailSpin->text() );
+                                             if ( pancreasContourStraight->isChecked() )
+                                                replaceString( pWord, "pancreasContourRadio", pancreasContourStraight->text() );
+                                             else if ( pancreasContourNotStraight->isChecked() )
+                                                replaceString( pWord, "pancreasContourRadio", pancreasContourNotStraight->text() );
+                                             else
+                                                 replaceString( pWord, "pancreasContourRadio", pancreasContourHilly->text() );
+                                             //Эхоструктура
+                                             replaceString( pWord, "pancreasEchoCheck", pancreasEchoCheck->text() );
+
+                                             //Эхогенность
+                                             if ( pancreasEchogenUpRadio->isChecked() ) replaceString( pWord, "pancreasEchogenRadio", pancreasEchogenUpRadio->text() );
+                                             else if ( pancreasEchogenMidRadio->isChecked() ) replaceString( pWord, "pancreasEchogenRadio", pancreasEchogenMidRadio->text() );
+                                             else replaceString( pWord, "pancreasEchogenRadio", pancreasEchogenDownRadio->text() );
+
+                                             //Главный панкреатический проток
+                                             replaceString( pWord, "pancreasMainStreamCheck", pancreasMainStreamCheck->text() );
+                                             //Описание
+                                             replaceString( pWord, "pancreasDescriptionText", pancreasConclusionText->toPlainText() );
+
+                                         //Селезенка
+                                             //Положение
+
+                                             //Форма
+                                             replaceString( pWord, "spleenFormRadio", spleenFormNormalRadio->text() );
+                                             //Размеры, контуры, эхогенность, эхоструктура
+                                             replaceString( pWord, "spleenSizeSpin", spleenSizeSpin->text() );
+                                             if ( spleenContourStraight->isChecked() ) {
+                                                 replaceString( pWord, "spleenContourRadio", "ровные" );
+                                             }
+                                             else if ( spleenContourNotStraight->isChecked() ) {
+                                                 replaceString( pWord, "spleenContourRadio", "неровные" );
+                                             }
+                                             else {
+                                                 replaceString( pWord, "spleenContourRadio", "бугристые" );
+                                             }
+                                             if ( spleenEchogenUpRadio->isChecked() ) replaceString( pWord, "spleenEchogenRadio", spleenEchogenUpRadio->text() );
+                                             else if ( spleenEchogenMidRadio->isChecked() ) replaceString( pWord, "spleenEchogenRadio", spleenEchogenMidRadio->text() );
+                                             else replaceString( pWord, "spleenEchogenRadio", spleenEchogenDownRadio->text() );
+                                             replaceString( pWord, "spleenEchoCheck", spleenEchoCheck->text() );
+
+                                             //Вена, Лимфоузлы,
+                                             replaceString( pWord, "spleenVenaCheck", spleenVenaCheck->text() );
+                                             replaceString( pWord, "spleenLimfaCheck", spleenLimfaCheck->text() );
+                                             replaceString( pWord, "bellyWaterCheck", bellyWaterCheck->text() );
+
+                                             //Заключение:
+                                             replaceString( pWord, "spleenDescriptionText", spleenConclusionText->toPlainText() );
+
+                                         //ОСНОВНОЕ ЗАКЛЮЧЕНИЕ
+                                            replaceString( pWord, "mainConclusionText", mainConclusionText->toPlainText() );
+
+
+
+                                         pWord->setProperty( "Visible", true );
+                                   }  );
+         //Сохранить документ LAYOUT
+              mainLayout->addWidget( liverSaveAllButton, ++gridX, 2 );
+
+     //Создание шрифта для всего Виджета
+              QFont widgetFont;
+              widgetFont.setPixelSize( 12 );
+
+     wgt.setFont( widgetFont );
+     wgt.setLayout( mainLayout );
+     wgt.setMinimumSize( 750, 900 );
+     //mainTabWidget->show();
     wgt.show();
-
-
     return a.exec();
+
 }
+
+void replaceString( QAxObject* pActiveDoc, const QString& oldString, const QString& newString)
+{
+  QAxObject* WordSelection = pActiveDoc->querySubObject("Selection");
+
+  QAxObject* Find = WordSelection->querySubObject("Find");
+  if (!Find) return;
+  Find->dynamicCall("ClearFormatting()");
+
+  QList<QVariant> params;
+  params.operator << (QVariant(oldString));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant(true));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant(newString));
+  params.operator << (QVariant("2"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  Find->dynamicCall("Execute(const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,const QVariant&)",
+                    params);
+
+}
+
+
+
