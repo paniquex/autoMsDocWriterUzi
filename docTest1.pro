@@ -6,8 +6,15 @@
 
 QT       += core gui widgets axcontainer
 
+VERSION = 1.0.0.1
+QMAKE_TARGET_COMPANY = Paniquex
+QMAKE_TARGET_PRODUCT = Pattern Word Changer
+QMAKE_TARGET_DESCRIPTION = It automatized filling word document
+QMAKE_TARGET_COPYRIGHT = Nikita Kuzmin
+
 TARGET = docTest1
 TEMPLATE = app
+
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
