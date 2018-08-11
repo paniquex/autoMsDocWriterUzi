@@ -2,6 +2,7 @@
 #include <QtWidgets>
 #include <QLineEdit>
 #include <QFrame>
+#include <QDebug>
 #include <QAxObject>
 #include <QAxBase>
 #include "patient.h"
@@ -105,6 +106,7 @@ int main(int argc, char *argv[])
                             if ( ( magCheck->isChecked() ) ) magCheck->setText("Магистральный ствол воротной вены: расширен, ");
                             });
     QSpinBox* magSpin = new QSpinBox;
+    magSpin->setRange( 0, 300 );
     magSpin->setSuffix( " мм" );
     magSpin->clear();
 
@@ -136,6 +138,7 @@ int main(int argc, char *argv[])
                             if ( ( downVenaCheck->isChecked() ) ) downVenaCheck->setText("Нижняя полая вена:   расширена, ");
                             });
     QSpinBox* downVenaSpin = new QSpinBox;
+    downVenaSpin->setRange( 0, 300 );
     downVenaSpin->setSuffix( " мм" );
     downVenaSpin->clear();
 
@@ -154,6 +157,7 @@ int main(int argc, char *argv[])
                             if ( ( commonBileCheck->isChecked() ) ) commonBileCheck->setText("Общий желчный проток:     изменен,");
                             });
     QSpinBox* commonBileSpin = new QSpinBox;
+    commonBileSpin->setRange( 0, 300 );
     commonBileSpin->setSuffix( " мм" );
     commonBileSpin->clear();
     QCheckBox* commonBileCheck2 = new QCheckBox( " стенки: не утолщены");
@@ -172,7 +176,7 @@ int main(int argc, char *argv[])
     QLabel* gallbladerLabel = new QLabel( " ЖЕЛЧНЫЙ ПУЗЫРЬ: " );
 
     //Размер
-    QSpinBox* gallbladerSizeSpin = new QSpinBox;
+    QLineEdit* gallbladerSizeLine = new QLineEdit(" мм");
     QLabel* gallbladerSizeLabel = new QLabel( "Размер: " );
 
     //Деформация
@@ -199,6 +203,7 @@ int main(int argc, char *argv[])
 
     //Стенки
     QSpinBox* gallbladerWallSpin = new QSpinBox;
+    gallbladerWallSpin->setRange( 0, 300 );
     QLabel* gallbladerWallLabel = new QLabel( "Стенки: " );
 
     //Содержимое
@@ -231,12 +236,15 @@ int main(int argc, char *argv[])
     QLabel* pancreasSizeBodyLabel = new QLabel( ", тела:" );
     QLabel* pancreasSizeTailLabel = new QLabel( ", хвоста:" );
     QSpinBox* pancreasSizeHeadSpin = new QSpinBox;
+    pancreasSizeHeadSpin->setRange( 0, 300 );
     pancreasSizeHeadSpin->setSuffix( " мм" );
     pancreasSizeHeadSpin->clear();
     QSpinBox* pancreasSizeBodySpin = new QSpinBox;
+    pancreasSizeBodySpin->setRange( 0, 300 );
     pancreasSizeBodySpin->setSuffix( " мм" );
     pancreasSizeBodySpin->clear();
     QSpinBox* pancreasSizeTailSpin = new QSpinBox;
+    pancreasSizeTailSpin->setRange( 0, 300 );
     pancreasSizeTailSpin->setSuffix( " мм" );
     pancreasSizeTailSpin->clear();
 
@@ -297,11 +305,10 @@ int main(int argc, char *argv[])
     QButtonGroup* spleenFormGroup = new QButtonGroup;
     spleenFormGroup->addButton( spleenFormNormalRadio );
     spleenFormGroup->setExclusive( true );
+    spleenFormNormalRadio->setChecked( true );
 
     //Размер
-    QSpinBox* spleenSizeSpin = new QSpinBox;
-    spleenSizeSpin->setSuffix( " мм" );
-    spleenSizeSpin->clear();
+    QLineEdit* spleenSizeLine = new QLineEdit( " мм" );
     QLabel* spleenSizeLabel = new QLabel( "Размер: " );
 
     //Контуры
@@ -366,7 +373,40 @@ int main(int argc, char *argv[])
 //ЗАКЛЮЧЕНИЕ
     QLabel* mainConclusionLabel = new QLabel( "ЗАКЛЮЧЕНИЕ: " );
     QTextEdit* mainConclusionText = new QTextEdit;
-    mainConclusionText->setMinimumSize( 900, 30 );
+    mainConclusionText->setMaximumSize( 1400, 20 );
+    mainConclusionText->setMinimumSize( 1200, 16 );
+    //Шаблонные вставки
+    QCheckBox* mainConclusionGepatomegCheck = new QCheckBox( "Гепатомегалия, " );
+    QObject::connect( mainConclusionGepatomegCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionGepatomegCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "гепатомегалия, " );
+                            if ( !( mainConclusionGepatomegCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+    QCheckBox* mainConclusionDiffusalchangesLiverCheck = new QCheckBox( "Дифф. изменения печени" );
+    QObject::connect( mainConclusionDiffusalchangesLiverCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionDiffusalchangesLiverCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "диффузные изменения печени по типу жирового гепатоза, " );
+                            if ( !( mainConclusionDiffusalchangesLiverCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+    QCheckBox* mainConclusionDiffusalchangesPancreasCheck = new QCheckBox( "Дифф. изменения поджел. железы" );
+    QObject::connect( mainConclusionDiffusalchangesPancreasCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionDiffusalchangesPancreasCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "диффузные изменения поджелудочной железы, " );
+                            if ( !( mainConclusionDiffusalchangesPancreasCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+    QCheckBox* mainConclusionEchoFeaturesHoleCheck = new QCheckBox( "Эхо-призн. хр. калькул. холецистита" );
+    QObject::connect( mainConclusionEchoFeaturesHoleCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionEchoFeaturesHoleCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "эхо-признаки хр. калькулезного холецистита, " );
+                            if ( !( mainConclusionEchoFeaturesHoleCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+
+    QPushButton* mainConclusionReturnButton = new QPushButton( "Cбросить текст" );
+    mainConclusionReturnButton->setMinimumHeight( 20 );
+    QObject::connect( mainConclusionReturnButton, &QPushButton::clicked,
+                      [&]{ mainConclusionGepatomegCheck->setChecked( false );
+                           mainConclusionDiffusalchangesLiverCheck->setChecked( false );
+                           mainConclusionDiffusalchangesPancreasCheck->setChecked( false );
+                           mainConclusionEchoFeaturesHoleCheck->setChecked( false );
+                           mainConclusionText->clear();
+                            });
+
 
 //LAYOUT*******************************************************************
 //*************************************************************************
@@ -402,12 +442,14 @@ int main(int argc, char *argv[])
     //Начало протокола:
     QFrame liverFrame;
     liverFrame.setFrameShape( QFrame::Box );
-    liverFrame.set
-    QLabel* protocallLabel = new QLabel( "ПРОТОКОЛ \n ультразвукогого исследования органов брюшной полости");
+    QLabel* protocallLabel = new QLabel( "ПРОТОКОЛ УЛЬТРАЗВУКОВОГО ИССЛЕДОВАНИЯ ОРГАНОВ БРЮШНОЙ ПОЛОСТИ");
+    QFont liverProtocallFont;
+    liverProtocallFont.setBold( true );
+    protocallLabel->setFont( liverProtocallFont );
 
     gridX++;
     mainLayout->addWidget( &liverFrame, gridX + 1, 1, 13, 3 );
-    mainLayout->addWidget( protocallLabel, gridX, 2);
+    mainLayout->addWidget( protocallLabel, gridX, 1);
     //Заполняеая часть
     gridX++;
     mainLayout->addWidget( liverLabel, gridX, 1 );
@@ -491,11 +533,8 @@ int main(int argc, char *argv[])
     mainLayout->addWidget( gallbladerLabel, gridX, 1);
     //Размер
     QHBoxLayout* gallbladerSizeLayout = new QHBoxLayout;
-    gallbladerSizeSpin->setSuffix(" мм");
-    gallbladerSizeSpin->setRange( 0, 300 );
-    gallbladerSizeSpin->clear();
     gallbladerSizeLayout->addWidget( gallbladerSizeLabel );
-    gallbladerSizeLayout->addWidget( gallbladerSizeSpin );
+    gallbladerSizeLayout->addWidget( gallbladerSizeLine );
     mainLayout->addLayout( gallbladerSizeLayout, ++gridX, 1 );
     //Деформация
     QHBoxLayout* gallbladerDeformationLayout = new QHBoxLayout;
@@ -575,7 +614,7 @@ int main(int argc, char *argv[])
      //Размер
      QHBoxLayout* spleenSizeLayout = new QHBoxLayout;
      spleenSizeLayout->addWidget( spleenSizeLabel );
-     spleenSizeLayout->addWidget( spleenSizeSpin );
+     spleenSizeLayout->addWidget( spleenSizeLine );
      mainLayout->addLayout( spleenSizeLayout, ++gridX, 1 );
      //Контур
      QHBoxLayout* spleenContourLayout = new QHBoxLayout;
@@ -608,6 +647,19 @@ int main(int argc, char *argv[])
 //ЗАКЛЮЧЕНИЕ:
      mainLayout->addWidget( mainConclusionLabel, ++gridX, 1 );
      mainLayout->addWidget( mainConclusionText, ++gridX, 1 );
+     //Шаблонные вставки
+     QGridLayout* mainConclusionPatternsLayout = new QGridLayout;
+     mainConclusionPatternsLayout->addWidget( mainConclusionGepatomegCheck, 1, 1 );
+     mainConclusionGepatomegCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionDiffusalchangesLiverCheck, 1, 2 );
+     mainConclusionDiffusalchangesLiverCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionDiffusalchangesPancreasCheck, 2, 1 );
+     mainConclusionDiffusalchangesPancreasCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionEchoFeaturesHoleCheck, 2, 2 );
+     mainConclusionEchoFeaturesHoleCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionReturnButton, 3, 2 );
+
+     mainLayout->addLayout( mainConclusionPatternsLayout, ++gridX, 1 );
      mainLayout->setMargin( 10 );
      mainLayout->setSpacing( 1 );
 
@@ -622,7 +674,9 @@ int main(int argc, char *argv[])
                                          QAxObject* pWord = new QAxObject( "Word.Application" );
                                          QAxObject* pDocs = pWord->querySubObject( "Documents" );
 
-                                         pDocs->dynamicCall( "Add([Template], [NewTemplate], [DocumentType], [Visible])", "D:\\uzi.docx" );
+                                         QString dirDocLiver = QCoreApplication::applicationDirPath() + "/template/uziLiver.docx";
+
+                                         pDocs->dynamicCall( "Add([Template], [NewTemplate], [DocumentType], [Visible])", dirDocLiver );
 
                                          pWord->setProperty( "DiplayAlerts()", false );
 
@@ -709,7 +763,7 @@ int main(int argc, char *argv[])
                                              replaceString( pWord, "liverDescriptionText", liverConclusionText->toPlainText() );
                                         //Желчный пузырь:
                                              //Размер и деформация
-                                             replaceString( pWord, "gallbladerSizeSpin", gallbladerSizeSpin->text() );
+                                             replaceString( pWord, "gallbladerSizeLine", gallbladerSizeLine->text() );
                                              replaceString( pWord, "gallbladerDeformationCheck", gallbladerDeformationNeckCheck->text() + gallbladerDeformationBodyCheck->text() + gallbladerDeformationBottomCheck->text() );
 
                                              //Стенки и Содержимое, конкременты
@@ -749,7 +803,7 @@ int main(int argc, char *argv[])
                                              //Форма
                                              replaceString( pWord, "spleenFormRadio", spleenFormNormalRadio->text() );
                                              //Размеры, контуры, эхогенность, эхоструктура
-                                             replaceString( pWord, "spleenSizeSpin", spleenSizeSpin->text() );
+                                             replaceString( pWord, "spleenSizeLine", spleenSizeLine->text() );
                                              if ( spleenContourStraight->isChecked() ) {
                                                  replaceString( pWord, "spleenContourRadio", "ровные" );
                                              }
@@ -788,7 +842,7 @@ int main(int argc, char *argv[])
 
      wgt.setFont( widgetFont );
      wgt.setLayout( mainLayout );
-     wgt.setMinimumSize( 750, 900 );
+     wgt.resize( 600, 800 );
      //mainTabWidget->show();
     wgt.show();
     return a.exec();
