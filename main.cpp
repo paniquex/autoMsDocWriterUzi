@@ -394,27 +394,66 @@ int main(int argc, char *argv[])
     mainConclusionText->setMaximumSize( 1400, 50 );
     mainConclusionText->setMinimumSize( 700, 35 );
     //Шаблонные вставки
-    QCheckBox* mainConclusionGepatomegCheck = new QCheckBox( "Гепатомегалия, " );
+    QCheckBox* mainConclusionGepatomegCheck = new QCheckBox( "Гепатомегалия" );
     QObject::connect( mainConclusionGepatomegCheck, &QCheckBox::stateChanged,
-                      [&] { if ( ( mainConclusionGepatomegCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "гепатомегалия, " );
+                      [&] { if ( ( mainConclusionGepatomegCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Гепатомегалия. " );
                             if ( !( mainConclusionGepatomegCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
                             });
     QCheckBox* mainConclusionDiffusalchangesLiverCheck = new QCheckBox( "Дифф. изменения печени" );
     QObject::connect( mainConclusionDiffusalchangesLiverCheck, &QCheckBox::stateChanged,
-                      [&] { if ( ( mainConclusionDiffusalchangesLiverCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "диффузные изменения печени по типу жирового гепатоза, " );
+                      [&] { if ( ( mainConclusionDiffusalchangesLiverCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Диффузные изменения печени по типу жирового гепатоза. " );
                             if ( !( mainConclusionDiffusalchangesLiverCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
                             });
     QCheckBox* mainConclusionDiffusalchangesPancreasCheck = new QCheckBox( "Дифф. изменения поджел. железы" );
     QObject::connect( mainConclusionDiffusalchangesPancreasCheck, &QCheckBox::stateChanged,
-                      [&] { if ( ( mainConclusionDiffusalchangesPancreasCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "диффузные изменения поджелудочной железы, " );
+                      [&] { if ( ( mainConclusionDiffusalchangesPancreasCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Диффузные изменения поджелудочной железы. " );
                             if ( !( mainConclusionDiffusalchangesPancreasCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
                             });
     QCheckBox* mainConclusionEchoFeaturesHoleCheck = new QCheckBox( "Эхо-призн. хр. калькул. холецистита" );
     QObject::connect( mainConclusionEchoFeaturesHoleCheck, &QCheckBox::stateChanged,
-                      [&] { if ( ( mainConclusionEchoFeaturesHoleCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "эхо-признаки хр. калькулезного холецистита, " );
+                      [&] { if ( ( mainConclusionEchoFeaturesHoleCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Эхо-признаки хр. холецистита. " );
                             if ( !( mainConclusionEchoFeaturesHoleCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
                             });
-
+    QCheckBox* mainConclusionCholeCalculCheck = new QCheckBox( "Эхо-призн. хр. калькул. холецистита" );
+    QObject::connect( mainConclusionCholeCalculCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionCholeCalculCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Эхо-признаки хр. калькулезного холецистита. " );
+                            if ( !( mainConclusionCholeCalculCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+    QCheckBox* mainConclusionGallbladerPolypCheck = new QCheckBox( "Полип желчного пузыря" );
+    QObject::connect( mainConclusionGallbladerPolypCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionGallbladerPolypCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Полип желчного пузыря. " );
+                            if ( !( mainConclusionGallbladerPolypCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+    QCheckBox* mainConclusionVolumetricLiverCheck = new QCheckBox( "Объем. образ. печени" );
+    QObject::connect( mainConclusionVolumetricLiverCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionVolumetricLiverCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Объемное образование печени. " );
+                            if ( !( mainConclusionVolumetricLiverCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+    QCheckBox* mainConclusionEchoFeaturesCystsCheck = new QCheckBox( "Эхо-призн. кисты печени" );
+    QObject::connect( mainConclusionEchoFeaturesCystsCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionEchoFeaturesCystsCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Эхо-признаки кисты печени. " );
+                            if ( !( mainConclusionEchoFeaturesCystsCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+    QCheckBox* mainConclusionEchoFeaturesHemangiomaCheck = new QCheckBox( "Эхо-призн. геманг. печени" );
+    QObject::connect( mainConclusionEchoFeaturesHemangiomaCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionEchoFeaturesHemangiomaCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Эхо-признаки гемангиомы печени. " );
+                            if ( !( mainConclusionEchoFeaturesHemangiomaCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+    QCheckBox* mainConclusionEchoFeaturesPortalCheck = new QCheckBox( "Эхо-призн. порт. гипертензии" );
+    QObject::connect( mainConclusionEchoFeaturesPortalCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionEchoFeaturesPortalCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Эхо-признаки портальной гипертензии. " );
+                            if ( !( mainConclusionEchoFeaturesPortalCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+    QCheckBox* mainConclusionEchoFeaturesBiliarCheck = new QCheckBox( "Эхо-призн. билиар. гипертензии" );
+    QObject::connect( mainConclusionEchoFeaturesBiliarCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionEchoFeaturesBiliarCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Эхо-признаки билиарной гипертензии. " );
+                            if ( !( mainConclusionEchoFeaturesBiliarCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
+    QCheckBox* mainConclusionVolumeFormationCheck = new QCheckBox( "Объемное образ. поджелуд. жел." );
+    QObject::connect( mainConclusionVolumeFormationCheck, &QCheckBox::stateChanged,
+                      [&] { if ( ( mainConclusionVolumeFormationCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() + "Объемное образование поджелудоной железы. " );
+                            if ( !( mainConclusionVolumeFormationCheck->isChecked() ) ) mainConclusionText->setText( mainConclusionText->toPlainText() );
+                            });
     QPushButton* mainConclusionReturnButton = new QPushButton( "Cбросить текст" );
     mainConclusionReturnButton->setMinimumHeight( 20 );
     QObject::connect( mainConclusionReturnButton, &QPushButton::clicked,
@@ -422,8 +461,17 @@ int main(int argc, char *argv[])
                            mainConclusionDiffusalchangesLiverCheck->setChecked( false );
                            mainConclusionDiffusalchangesPancreasCheck->setChecked( false );
                            mainConclusionEchoFeaturesHoleCheck->setChecked( false );
+                           mainConclusionCholeCalculCheck->setChecked( false );
+                           mainConclusionGallbladerPolypCheck->setChecked( false );
+                           mainConclusionVolumetricLiverCheck->setChecked( false );
+                           mainConclusionEchoFeaturesCystsCheck->setChecked( false );
+                           mainConclusionEchoFeaturesHemangiomaCheck->setChecked( false );
+                           mainConclusionEchoFeaturesPortalCheck->setChecked( false );
+                           mainConclusionEchoFeaturesBiliarCheck->setChecked( false );
+                           mainConclusionVolumeFormationCheck->setChecked( false );
                            mainConclusionText->clear();
                             });
+
 
 
 //LAYOUT*******************************************************************
@@ -685,15 +733,30 @@ int main(int argc, char *argv[])
      mainLayout->addWidget( mainConclusionText, ++gridX, 1 );
      //Шаблонные вставки
      QGridLayout* mainConclusionPatternsLayout = new QGridLayout;
-     mainConclusionPatternsLayout->addWidget( mainConclusionGepatomegCheck, 1, 1 );
+     qint16 conclusionX = 0;
+     mainConclusionPatternsLayout->addWidget( mainConclusionGepatomegCheck, ++conclusionX, 1 );
      mainConclusionGepatomegCheck->setMinimumHeight( 15 );
-     mainConclusionPatternsLayout->addWidget( mainConclusionDiffusalchangesLiverCheck, 1, 2 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionDiffusalchangesLiverCheck, conclusionX, 2 );
      mainConclusionDiffusalchangesLiverCheck->setMinimumHeight( 15 );
-     mainConclusionPatternsLayout->addWidget( mainConclusionDiffusalchangesPancreasCheck, 2, 1 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionDiffusalchangesPancreasCheck, conclusionX, 3 );
      mainConclusionDiffusalchangesPancreasCheck->setMinimumHeight( 15 );
-     mainConclusionPatternsLayout->addWidget( mainConclusionEchoFeaturesHoleCheck, 2, 2 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionEchoFeaturesHoleCheck, ++conclusionX, 1 );
      mainConclusionEchoFeaturesHoleCheck->setMinimumHeight( 15 );
-     mainConclusionPatternsLayout->addWidget( mainConclusionReturnButton, 3, 2 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionCholeCalculCheck, conclusionX, 2 );
+     mainConclusionCholeCalculCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionGallbladerPolypCheck, conclusionX, 3 );
+     mainConclusionGallbladerPolypCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionVolumetricLiverCheck, ++conclusionX, 1 );
+     mainConclusionVolumetricLiverCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionEchoFeaturesCystsCheck, conclusionX, 2 );
+     mainConclusionEchoFeaturesCystsCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionEchoFeaturesPortalCheck, conclusionX, 3 );
+     mainConclusionEchoFeaturesPortalCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionEchoFeaturesBiliarCheck, ++conclusionX, 1 );
+     mainConclusionEchoFeaturesBiliarCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionVolumeFormationCheck, conclusionX, 2 );
+     mainConclusionVolumeFormationCheck->setMinimumHeight( 15 );
+     mainConclusionPatternsLayout->addWidget( mainConclusionReturnButton, conclusionX, 3 );
 
      mainLayout->addLayout( mainConclusionPatternsLayout, ++gridX, 1 );
      mainLayout->setMargin( 10 );
