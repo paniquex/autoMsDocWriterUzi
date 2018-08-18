@@ -5,8 +5,8 @@
 #include <QDebug>
 #include <QAxObject>
 #include <QAxBase>
+#include <kidneys.cpp>
 #include "patient.h"
-
 
 //#include "livercheck.h"
 void replaceString(QAxObject* pActiveDoc, const QString& oldString, const QString& newString);
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
     Patient* Kolya = new Patient;
     Kolya->setName( "Kolya Efimov" );
-// Создаение Заголовков
+// Создание Заголовков
 
     QLabel* labelName = new QLabel( "ФИО: "  );
     QLabel* labelAge  = new QLabel( "Год Рождения: " );
@@ -763,21 +763,43 @@ int main(int argc, char *argv[])
      mainLayout->setSpacing( 1 );
 
      //Связь с Документом word
+     //ПЕЧЕНЬ
+     QScrollArea LiverScrollArea;
+     QWidget returnWidget;
+     QTabWidget mainTabWidget;
+     mainTabWidget.addTab( &LiverScrollArea, "Печень" );
 
-     QScrollArea mainScrollArea;
-     mainScrollArea.setWidget( &wgt );
+     //ПОЧКИ
+     QWidget kidneysWidget;
+     QScrollArea kidneysScrollArea;
+     Ui::kidneys kidneysClass( &kidneysWidget );
+
+     kidneysScrollArea.setWidget( &kidneysWidget );
+     kidneysWidget.resize( 800, 800 );
+     mainTabWidget.addTab( &kidneysScrollArea, "Почки" );
+
+     LiverScrollArea.setWidget( &wgt );
      mainLayout->setHorizontalSpacing( 0 );
      mainLayout->setMargin( 10 );
-     QWidget returnWidget;
-     QPushButton* returnButton = new QPushButton("Вернуться в программу");
+     mainTabWidget.setFont( widgetFont );
+     wgt.setLayout( mainLayout );
+     wgt.resize( 700, 1000 );
+     mainTabWidget.resize( 720, 600 );
+     mainTabWidget.setMinimumSize( 750, 500 );
+     mainTabWidget.setMaximumSize( 800, 1000 );
+     mainTabWidget.show();
+     //LiverScrollArea.resize( 720, 700 );
+     //LiverScrollArea.show();
+     QPushButton* returnButton = new QPushButton( "Вернуться в программу" );
      QHBoxLayout* returnLayout = new QHBoxLayout;
      returnLayout->addWidget( returnButton );
      returnWidget.setLayout( returnLayout );
+     mainTabWidget.addTab( &returnWidget, "Возврат" );
      QObject::connect( returnButton, &QPushButton::clicked,
                         [&]
                         {
-                            returnWidget.hide();
-                            mainScrollArea.show();
+                            //returnWidget.hide();
+                            //LiverScrollArea.show();
 
                         });
      //Сохранить изменения
@@ -943,8 +965,6 @@ int main(int argc, char *argv[])
                                          //ОСНОВНОЕ ЗАКЛЮЧЕНИЕ
                                               pWord->setProperty( "Visible", true );
                                             replaceString( pWord, "mainConclusionText", mainConclusionText->toPlainText() );
-                                            mainScrollArea.hide();
-                                            returnWidget.show();
 
 
 
@@ -955,14 +975,8 @@ int main(int argc, char *argv[])
               mainLayout->addWidget( liverSaveAllButton, ++gridX, 1, Qt::AlignRight );
 
      //Создание шрифта для всего Виджета
+              return a.exec();
 
-     wgt.setFont( widgetFont );
-     wgt.setLayout( mainLayout );
-     wgt.resize( 700, 1000 );
-     //mainTabWidget->show();
-     mainScrollArea.resize( 720, 700 );
-     mainScrollArea.show();
-    return a.exec();
 
 }
 
