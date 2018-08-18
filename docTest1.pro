@@ -32,7 +32,8 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
     patient.cpp \
-    formofliver.cpp
+    formofliver.cpp \
+    kidneys.cpp
 
 HEADERS += \
     patient.h \
@@ -42,3 +43,6 @@ HEADERS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+FORMS += \
+    kidneys.ui
