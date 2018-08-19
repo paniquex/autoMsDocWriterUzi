@@ -21,13 +21,20 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QTextEdit>
+#include <QtWidgets/QPushButton>
+#include <QAxObject>
+#include <QAxBase>
+#include <QCoreApplication>
+
+void replaceString(QAxObject* pActiveDoc, const QString& oldString, const QString& newString);
 
 QT_BEGIN_NAMESPACE
 
-class Ui_MainWindow
+class kidneysForm
 {
 public:
     QCheckBox *kidneysCDKCheck;
+    QFrame *kidneysFrame2;
     QCheckBox *kidneysProectionCheck;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
@@ -80,6 +87,10 @@ public:
     QCheckBox *kidneysLeftCalyxCheck;
     QLabel *kidneysConclusionLabel;
     QTextEdit *kidneysConclusionText;
+    QPushButton *kidneysSaveAllButton;
+    QAxObject *pWord;
+    QAxObject *pDocs;
+    QString dirDocKidneys;
 
     void setupUi(QWidget *MainWindow)
     {
@@ -100,7 +111,7 @@ public:
         //gridLayout->SetFixedSize( 700, 700 );
         centralwidget->setLayout( gridLayout );
 
-        QFrame* kidneysFrame1 = new QFrame;
+        kidneysFrame1 = new QFrame;
         kidneysFrame1->setFrameShape( QFrame::Box );
         gridLayout->addWidget( kidneysFrame1, 0, 0, 3, 1 );
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
@@ -138,7 +149,7 @@ public:
         gridLayout->addLayout(kidneysAgeLayout, 1, 0 );
 
         kidneysDateLayout = new QHBoxLayout();
-        kidneysDateLayout->setSpacing(0);
+        kidneysDateLayout->setSpacing( 0 );
         kidneysDateLayout->setObjectName(QStringLiteral("kidneysDateLayout"));
         kidneysDateLabel = new QLabel(centralwidget);
         kidneysDateLabel->setObjectName(QStringLiteral("kidneysDateLabel"));
@@ -185,15 +196,15 @@ public:
 
         kidneysBladderLayout->addWidget(kidneysBladderLabel);
 
+        kidneysFrame2 = new QFrame;
+        kidneysFrame2->setFrameShape( QFrame::Box );
+        gridLayout->addWidget( kidneysFrame2, 4, 0, 4, 1 );
         kidneysBladderSpin = new QSpinBox(centralwidget);
         kidneysBladderSpin->setObjectName(QStringLiteral("kidneysBladderSpin"));
+
         kidneysBladderSpin->setMaximum( 1000 );
 
         kidneysBladderLayout->addWidget(kidneysBladderSpin);
-
-        QFrame* kidneysFrame2 = new QFrame;
-        kidneysFrame2->setFrameShape( QFrame::Box );
-        gridLayout->addWidget( kidneysFrame2, 4, 0, 4, 1 );
 
         gridLayout->addLayout(kidneysBladderLayout, 4, 0, Qt::AlignLeft );
 
@@ -479,6 +490,64 @@ public:
         gridLayout->addWidget( kidneysConclusionLabel, 18, 0, Qt::AlignLeft );
         gridLayout->addWidget( kidneysConclusionText, 19, 0, Qt::AlignLeft );
 
+        kidneysSaveAllButton = new QPushButton( "Сохранить документ" );
+        gridLayout->addWidget( kidneysSaveAllButton, 20, 0, Qt::AlignCenter );
+
+        gridLayout->setSpacing( 2 );
+
+        QObject::connect( kidneysSaveAllButton, &QPushButton::clicked,
+                          [&] {
+                                                     pWord = new QAxObject( "Word.Application" );
+                                                     pDocs = pWord->querySubObject( "Documents" );
+
+                                                     dirDocKidneys = QCoreApplication::applicationDirPath() + "/template/uziKidneys.docx";
+
+                                                     pDocs->dynamicCall( "Add([Template], [NewTemplate], [DocumentType], [Visible])", dirDocKidneys );
+
+                                                     pWord->setProperty( "DiplayAlerts()", false );
+
+                                                     replaceString( pWord, "kidneysNameLine", kidneysNameLine->text() );
+                                                     replaceString( pWord, "kidneysAgeLine", kidneysAgeLine->text() );
+                                                     replaceString( pWord, "kidneysDateEdit", kidneysDateEdit->text() );
+
+                                                     //Мочевой пузырь
+                                                     replaceString( pWord, "kidneysBladderSpin", kidneysBladderSpin->text() );
+                                                     replaceString( pWord, "kidneysBladderContainsCheck", kidneysBladderContainsCheck->text() );
+                                                     replaceString( pWord, "kidneysBladderWallsContourCheck", kidneysBladderWallsContourCheck->text() );
+                                                     replaceString( pWord, "kidneysBladderWallsWideCheck", kidneysBladderWallsWideCheck->text() );
+                                                     replaceString( pWord, "kidneysBladderDropsCheck", kidneysBladderDropsCheck->text() );
+
+
+                                                     //Правая почка
+                                                     replaceString( pWord, "kidneysRightContour1Ch", kidneysRightContourCheck1->text() );
+                                                     replaceString( pWord, "kidneysRightContour2Ch", kidneysRightContourCheck2->text() );
+                                                     replaceString( pWord, "kidneysRightSizeCheck", kidneysRightSizeCheck->text() );
+                                                     replaceString( pWord, "kidneysRightSizeSpin", kidneysRightSizeSpin->text() );
+                                                     replaceString( pWord, "RightParenchymaSpin", kidneysRightParenchymaSpin->text() );
+                                                     replaceString( pWord, "kidneysRightEchoCheck", kidneysRightEchoCheck->text() );
+                                                     replaceString( pWord, "kidneysRightDiffCheck", kidneysRightDiffCheck->text() );
+                                                     replaceString( pWord, "kidneysRightCalyxCheck", kidneysRightCalyxCheck->text() );
+
+                                                     //Левая почка
+                                                     replaceString( pWord, "kidneysLeftContour1Ch", kidneysLeftContourCheck1->text() );
+                                                     replaceString( pWord, "kidneysLeftContour2Ch", kidneysLeftContourCheck2->text() );
+                                                     replaceString( pWord, "kidneysLeftSizeCheck", kidneysLeftSizeCheck->text() );
+                                                     replaceString( pWord, "kidneysLeftSizeSpin", kidneysLeftSizeSpin->text() );
+                                                     replaceString( pWord, "LeftParenchymaSpin", kidneysLeftParenchymaSpin->text() );
+                                                     replaceString( pWord, "kidneysLeftEchoCheck", kidneysLeftEchoCheck->text() );
+                                                     replaceString( pWord, "kidneysLeftDiffCheck", kidneysLeftDiffCheck->text() );
+                                                     replaceString( pWord, "kidneysLeftCalyxCheck", kidneysLeftCalyxCheck->text() );
+
+                                                     //Заключение и 2 чек-бокса
+                                                     replaceString( pWord, "kidneysCDKCheck", kidneysCDKCheck->text() );
+                                                     replaceString( pWord, "kidneysProectionCheck", kidneysProectionCheck->text() );
+                                                     replaceString( pWord, "kidenysConclusionText", kidneysConclusionText->toPlainText() );
+
+                                                     pWord->setProperty( "Visible", true );
+
+                              } );
+
+
 #ifndef QT_NO_SHORTCUT
         kidneysNameLabel->setBuddy(kidneysNameLine);
         kidneysAgeLabel->setBuddy(kidneysAgeLine);
@@ -535,7 +604,7 @@ public:
 };
 
 namespace Ui {
-    class kidneys: public Ui_MainWindow {
+    class kidneys: public kidneysForm {
     public:
         kidneys( QWidget* kidneysWidget ) {
             setupUi( kidneysWidget );
@@ -546,3 +615,38 @@ namespace Ui {
 QT_END_NAMESPACE
 
 #endif // KIDNEYS_H
+
+void replaceString( QAxObject* pActiveDoc, const QString& oldString, const QString& newString)
+{
+  QAxObject* WordSelection = pActiveDoc->querySubObject("Selection");
+
+  QAxObject* Find = WordSelection->querySubObject("Find");
+  if (!Find) return;
+  Find->dynamicCall("ClearFormatting()");
+
+  QList<QVariant> params;
+  params.operator << (QVariant(oldString));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant(true));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant(newString));
+  params.operator << (QVariant("2"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  params.operator << (QVariant("0"));
+  Find->dynamicCall("Execute(const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,"
+                    "const QVariant&,const QVariant&,const QVariant&)",
+                    params);
+
+}
