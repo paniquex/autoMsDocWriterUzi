@@ -33,11 +33,13 @@ SOURCES += \
         main.cpp \
     patient.cpp \
     formofliver.cpp \
-    kidneys.cpp
+    kidneys.cpp \
+    newpatientform.cpp
 
 HEADERS += \
     patient.h \
-    formofliver.h
+    formofliver.h \
+    newpatientform.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
