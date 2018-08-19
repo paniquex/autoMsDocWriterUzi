@@ -11,7 +11,6 @@
 //#include "livercheck.h"
 void replaceString(QAxObject* pActiveDoc, const QString& oldString, const QString& newString);
 
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -23,12 +22,14 @@ int main(int argc, char *argv[])
     qint32 gridX = 1, gridY = 1;
     QLineEdit* patientName = new QLineEdit;
 
+    //Создание нового пациента
+    Patient *patient = new Patient;
+
     patientName->setFixedHeight( 15 );
     QDateEdit* patientAge = new QDateEdit;
+
     QDateEdit* researchDate = new QDateEdit( QDate::currentDate() );
 
-    Patient* Kolya = new Patient;
-    Kolya->setName( "Kolya Efimov" );
 // Создание Заголовков
 
     QLabel* labelName = new QLabel( "ФИО: "  );
@@ -787,6 +788,10 @@ int main(int argc, char *argv[])
      mainTabWidget.resize( 720, 600 );
      mainTabWidget.setMinimumSize( 750, 500 );
      mainTabWidget.setMaximumSize( 800, 1000 );
+
+     QPushButton* newPatientButton = new QPushButton( "Новый пациент" );
+     mainTabWidget.setCornerWidget( newPatientButton, Qt::Corner::TopLeftCorner );
+
      mainTabWidget.show();
      //LiverScrollArea.resize( 720, 700 );
      //LiverScrollArea.show();
@@ -795,6 +800,25 @@ int main(int argc, char *argv[])
      returnLayout->addWidget( returnButton );
      returnWidget.setLayout( returnLayout );
      mainTabWidget.addTab( &returnWidget, "Возврат" );
+
+     //Изменение имени и возраста пациента
+     //Изменение имени пациента
+     QObject::connect( patientName, &QLineEdit::editingFinished,
+                       [&] {
+                             patient->setName( patientName->text() );
+                             kidneysClass.kidneysNameLine->setText( patient->getName() );
+                           }
+                       );
+
+     //Изменение возраста
+     QObject::connect( patientAge, &QDateEdit::userDateChanged,
+                       [&] {
+                             patient->setAge( patientAge->text() );
+                             kidneysClass.kidneysAgeLine->setDate( patientAge->date() );
+                           }
+                       );
+
+
      QObject::connect( returnButton, &QPushButton::clicked,
                         [&]
                         {
@@ -980,40 +1004,6 @@ int main(int argc, char *argv[])
 
 }
 
-void replaceString( QAxObject* pActiveDoc, const QString& oldString, const QString& newString)
-{
-  QAxObject* WordSelection = pActiveDoc->querySubObject("Selection");
-
-  QAxObject* Find = WordSelection->querySubObject("Find");
-  if (!Find) return;
-  Find->dynamicCall("ClearFormatting()");
-
-  QList<QVariant> params;
-  params.operator << (QVariant(oldString));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant(true));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant(newString));
-  params.operator << (QVariant("2"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  Find->dynamicCall("Execute(const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,const QVariant&)",
-                    params);
-
-}
 
 
 
