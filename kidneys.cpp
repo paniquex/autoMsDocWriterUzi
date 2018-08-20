@@ -92,15 +92,14 @@ public:
     QAxObject *pDocs;
     QString dirDocKidneys;
 
-    void setupUi(QWidget *MainWindow)
+    void setupUi(QWidget *centralwidget)
     {
-        if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->setEnabled(true);
-        MainWindow->resize(700, 700);
-        MainWindow->setMinimumSize( 500, 300 );
-        MainWindow->setMaximumSize( 700, 700 );
-        centralwidget = new QWidget(MainWindow);
+//        if (MainWindow->objectName().isEmpty())
+//            MainWindow->setObjectName(QStringLiteral("MainWindow"));
+//        MainWindow->setEnabled(true);
+//        MainWindow->resize(700, 700);
+//        MainWindow->setMinimumSize( 500, 300 );
+//        MainWindow->setMaximumSize( 700, 700 );
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         centralwidget->setEnabled(true);
         centralwidget->setContextMenuPolicy(Qt::NoContextMenu);
@@ -559,14 +558,14 @@ public:
         kidneysLeftParenchymaLabel->setBuddy(kidneysLeftParenchymaSpin);
 #endif // QT_NO_SHORTCUT
 
-        retranslateUi(MainWindow);
+        retranslateUi( centralwidget );
 
-        QMetaObject::connectSlotsByName(MainWindow);
+        QMetaObject::connectSlotsByName(centralwidget);
     } // setupUi
 
-    void retranslateUi(QWidget *MainWindow)
+    void retranslateUi(QWidget *centralwidget)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
+        centralwidget->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         kidneysNameLabel->setText(QApplication::translate("MainWindow", "\320\244\320\230\320\236: ", nullptr));
         kidneysNameLine->setText(QString());
         kidneysAgeLabel->setText(QApplication::translate("MainWindow", "\320\223\320\276\320\264 \321\200\320\276\320\266\320\264\320\265\320\275\320\270\321\217: ", nullptr));
