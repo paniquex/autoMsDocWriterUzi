@@ -6,7 +6,9 @@
 #include <QAxObject>
 #include <QAxBase>
 #include <kidneys.cpp>
+#include <thyroid.cpp>
 #include "patient.h"
+#include "newpatientform.h"
 
 //#include "livercheck.h"
 void replaceString(QAxObject* pActiveDoc, const QString& oldString, const QString& newString);
@@ -764,33 +766,56 @@ int main(int argc, char *argv[])
      mainLayout->setSpacing( 1 );
 
      //Связь с Документом word
+     QTabWidget mainTabWidget;
+     QWidget newPatientFormWidget;
+     newPatientForm newPatientFormClass( &newPatientFormWidget );
+     mainTabWidget.addTab( &newPatientFormWidget, "Пациент" );
+
+
      //ПЕЧЕНЬ
      QScrollArea LiverScrollArea;
      QWidget returnWidget;
-     QTabWidget mainTabWidget;
      mainTabWidget.addTab( &LiverScrollArea, "Печень" );
 
      //ПОЧКИ
      QWidget kidneysWidget;
      QScrollArea kidneysScrollArea;
      Ui::kidneys kidneysClass( &kidneysWidget );
-
      kidneysScrollArea.setWidget( &kidneysWidget );
-     kidneysWidget.resize( 800, 800 );
+     kidneysWidget.resize( 710, 530 );
      mainTabWidget.addTab( &kidneysScrollArea, "Почки" );
+
+     //Щитовидная железа
+     QWidget thyroidWidget;
+     QScrollArea thyroidScrollArea;
+     Ui::thyroid thyroidClass( &thyroidWidget );
+     thyroidScrollArea.setWidget( &thyroidWidget );
+     thyroidWidget.resize( 710, 500 );
+     mainTabWidget.addTab( &thyroidScrollArea, "Щит. железа" );
+
 
      LiverScrollArea.setWidget( &wgt );
      mainLayout->setHorizontalSpacing( 0 );
      mainLayout->setMargin( 10 );
      mainTabWidget.setFont( widgetFont );
      wgt.setLayout( mainLayout );
-     wgt.resize( 700, 1000 );
+     wgt.resize( 710, 1000 );
      mainTabWidget.resize( 720, 600 );
      mainTabWidget.setMinimumSize( 750, 500 );
-     mainTabWidget.setMaximumSize( 800, 1000 );
+     mainTabWidget.setMaximumSize( 800, 600 );
 
+     //НОВЫЙ ПАЦИЕНТ ПЕРВЫЙ
      QPushButton* newPatientButton = new QPushButton( "Новый пациент" );
      mainTabWidget.setCornerWidget( newPatientButton, Qt::Corner::TopLeftCorner );
+     //Следующий пациент ( вся информация об предыдущем будет удалена )
+     QObject::connect( newPatientButton, &QPushButton::clicked,
+                       [&]
+                           {
+                               newPatientFormClass.patientNameLine->clear();
+                               newPatientFormClass.patientAgeDate->setDate( QDate::currentDate() );
+                               mainTabWidget.setCurrentIndex( 0 );
+
+                           } );
 
      mainTabWidget.show();
      //LiverScrollArea.resize( 720, 700 );
@@ -803,18 +828,20 @@ int main(int argc, char *argv[])
 
      //Изменение имени и возраста пациента
      //Изменение имени пациента
-     QObject::connect( patientName, &QLineEdit::editingFinished,
+
+     QObject::connect( newPatientFormClass.patientNameLine , &QLineEdit::textChanged,
                        [&] {
-                             patient->setName( patientName->text() );
+                             patient->setName( newPatientFormClass.patientNameLine->text() );
+                             patientName->setText( patient->getName() );
                              kidneysClass.kidneysNameLine->setText( patient->getName() );
                            }
                        );
 
      //Изменение возраста
-     QObject::connect( patientAge, &QDateEdit::userDateChanged,
+     QObject::connect( newPatientFormClass.patientAgeDate, &QDateEdit::dateChanged,
                        [&] {
-                             patient->setAge( patientAge->text() );
-                             kidneysClass.kidneysAgeLine->setDate( patientAge->date() );
+                             patientAge->setDate( newPatientFormClass.patientAgeDate->date() );
+                             kidneysClass.kidneysAgeLine->setDate( newPatientFormClass.patientAgeDate->date() );
                            }
                        );
 
