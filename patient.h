@@ -1,16 +1,17 @@
 #pragma once
 #include <QtWidgets>
+#include <newpatientform.h>
 class Patient: public QObject {
 Q_OBJECT
 private:
     QString name;
-    QString age;
+    QDate age;
 public:
-    Patient( QString name = "***** ***** *****", QString age = 0, QObject* pobj = 0 );
+    Patient( QString name = "***** ***** *****", QObject* pobj = 0 );
     void setName( QString name );
-    void setAge( QString age );
+    void setAge( QDate age );
     const QString& getName();
-    QString getAge();
+    QDate getAge();
 public slots:
     void slotsetName( const QString& name );
 
