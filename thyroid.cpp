@@ -28,8 +28,10 @@
 #include <QAxObject>
 #include <QAxBase>
 #include <QString>
+#include <kidneys.cpp>
 
 QT_BEGIN_NAMESPACE
+
 
 class Ui_thyroid
 {
@@ -50,12 +52,12 @@ public:
     QLabel *rightShareSizeLabel;
     QHBoxLayout *rightShareSizeSpinLayout;
     QVBoxLayout *rightShareSizeLayout;
-    QLabel *rightShareLenghtLabel;
+    QLabel *rightShareLengthLabel;
     QLabel *rightShareWideLabel;
     QLabel *rightShareThicknessLabe;
     QLabel *rightShareVolumeLabel;
     QVBoxLayout *rightShareSpinLayout;
-    QSpinBox *rightShareLenghtSpin;
+    QSpinBox *rightShareLengthSpin;
     QSpinBox *rightShareWideSpin;
     QSpinBox *rightShareThicknessSpin;
     QDoubleSpinBox *rightShareVolumeSpin;
@@ -98,9 +100,15 @@ public:
     QAxObject *pDocs;
     QAxObject *pWord;
     QString dirDocKidneys;
+    QFrame* frame1;
+    QFrame* frame2;
+    QFrame* frame3;
+    QFrame* frame4;
 
     void setupUi(QWidget *thyroid)
     {
+
+
         if (thyroid->objectName().isEmpty())
             thyroid->setObjectName(QStringLiteral("thyroid"));
         thyroid->resize(522, 642);
@@ -109,6 +117,23 @@ public:
         gridLayout = new QGridLayout(thyroid);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         gridLayout->setVerticalSpacing( 2 );
+        frame1 = new QFrame;
+        frame1->setFrameShape( QFrame::Box );
+
+        gridLayout->addWidget( frame1, 0, 0, 3, 1 );
+
+        frame2 = new QFrame;
+        frame2->setFrameShape( QFrame::Box );
+        gridLayout->addWidget( frame2, 4, 0, 2, 1 );
+
+        frame3 = new QFrame;
+        frame3->setFrameShape( QFrame::Box );
+        gridLayout->addWidget( frame3, 6, 0, 2 , 1 );
+
+        frame4 = new QFrame;
+        frame4->setFrameShape( QFrame::Box );
+        gridLayout->addWidget( frame4, 8, 0, 5, 1 );
+
         patientNameLayout = new QHBoxLayout();
         patientNameLayout->setObjectName(QStringLiteral("patientNameLayout"));
         patientNameLabel = new QLabel(thyroid);
@@ -118,11 +143,10 @@ public:
 
         patientNameLine = new QLineEdit(thyroid);
         patientNameLine->setObjectName(QStringLiteral("patientNameLine"));
-        patientNameLine->setFixedSize( 500, 15 );
+        patientNameLine->setFixedSize( 644, 15 );
         patientNameLayout->addWidget(patientNameLine, 0, Qt::AlignLeft );
 
-
-        gridLayout->addLayout(patientNameLayout, 0, 0, Qt::AlignLeft);
+        gridLayout->addLayout(patientNameLayout, 0, 0, Qt::AlignLeft );
 
         patientAgeLayout = new QHBoxLayout();
         patientAgeLayout->setObjectName(QStringLiteral("patientAgeLayout"));
@@ -133,8 +157,10 @@ public:
 
         patientAgeDate = new QDateEdit(thyroid);
         patientAgeDate->setObjectName(QStringLiteral("patientAgeDate"));
+        patientAgeDate->setFixedWidth( 330 );
 
-        patientAgeLayout->addWidget(patientAgeDate);
+
+        patientAgeLayout->addWidget(patientAgeDate, 1, Qt::AlignRight );
 
 
         gridLayout->addLayout(patientAgeLayout, 1, 0, Qt::AlignLeft );
@@ -148,8 +174,10 @@ public:
 
         patientResearchDate = new QDateEdit(thyroid);
         patientResearchDate->setObjectName(QStringLiteral("patientResearchDate"));
+        patientResearchDate->setFixedWidth( 330 );
+        patientResearchDate->setDate( QDate::currentDate() );
 
-        patientResearchLayout->addWidget(patientResearchDate);
+        patientResearchLayout->addWidget (patientResearchDate, 1, Qt::AlignRight );
 
 
         gridLayout->addLayout(patientResearchLayout, 2, 0, Qt::AlignLeft);
@@ -174,7 +202,8 @@ public:
                                             if ( ( rightShareCheck->isChecked() ) ) rightShareCheck->setText( "Правая доля   увеличена" );
                                });
 
-        gridLayout->addWidget(rightShareCheck, 4, 0, Qt::AlignLeft);
+
+        gridLayout->addWidget( rightShareCheck, 4, 0, Qt::AlignLeft );
 
         rightShareLayout = new QHBoxLayout();
         rightShareLayout->setObjectName(QStringLiteral("rightShareLayout"));
@@ -188,10 +217,10 @@ public:
         rightShareSizeSpinLayout->setObjectName(QStringLiteral("rightShareSizeSpinLayout"));
         rightShareSizeLayout = new QVBoxLayout();
         rightShareSizeLayout->setObjectName(QStringLiteral("rightShareSizeLayout"));
-        rightShareLenghtLabel = new QLabel(thyroid);
-        rightShareLenghtLabel->setObjectName(QStringLiteral("rightShareLenghtLabel"));
+        rightShareLengthLabel = new QLabel(thyroid);
+        rightShareLengthLabel->setObjectName(QStringLiteral("rightShareLengthLabel"));
 
-        rightShareSizeLayout->addWidget(rightShareLenghtLabel);
+        rightShareSizeLayout->addWidget(rightShareLengthLabel);
 
         rightShareWideLabel = new QLabel(thyroid);
         rightShareWideLabel->setObjectName(QStringLiteral("rightShareWideLabel"));
@@ -213,11 +242,11 @@ public:
 
         rightShareSpinLayout = new QVBoxLayout();
         rightShareSpinLayout->setObjectName(QStringLiteral("rightShareSpinLayout"));
-        rightShareLenghtSpin = new QSpinBox(thyroid);
-        rightShareLenghtSpin->setObjectName(QStringLiteral("rightShareLenghtSpin"));
-        rightShareLenghtSpin->setMaximum(1000);
+        rightShareLengthSpin = new QSpinBox(thyroid);
+        rightShareLengthSpin->setObjectName(QStringLiteral("rightShareLengthSpin"));
+        rightShareLengthSpin->setMaximum(1000);
 
-        rightShareSpinLayout->addWidget(rightShareLenghtSpin);
+        rightShareSpinLayout->addWidget(rightShareLengthSpin);
 
         rightShareWideSpin = new QSpinBox(thyroid);
         rightShareWideSpin->setObjectName(QStringLiteral("rightShareWideSpin"));
@@ -344,8 +373,6 @@ public:
         neckThicknessSpin->setMaximum(1000);
 
         neckThicknessLayout->addWidget(neckThicknessSpin);
-
-
         gridLayout->addLayout(neckThicknessLayout, 8, 0, Qt::AlignTop | Qt::AlignLeft );
 
         volumeLayout = new QHBoxLayout();
@@ -461,26 +488,73 @@ public:
 
         mainConclusionText = new QTextEdit(thyroid);
         mainConclusionText->setObjectName(QStringLiteral("mainConclusionText"));
-        mainConclusionText->setMinimumSize(QSize(500, 35));
+        mainConclusionText->setMinimumSize(QSize(650, 35));
         mainConclusionText->setMaximumSize(QSize(700, 50));
 
         gridLayout->addWidget(mainConclusionText, 14, 0, Qt::AlignLeft );
 
         saveAllButton = new QPushButton( "Сохранить документ" );
         gridLayout->addWidget( saveAllButton, 15, 0, Qt::AlignCenter );
-        gridLayout->setSpacing( 3 );
+        gridLayout->setSpacing( 4 );
+
 
         QObject::connect( saveAllButton, &QPushButton::clicked,
                           [&] {
                                                      pWord = new QAxObject( "Word.Application" );
                                                      pDocs = pWord->querySubObject( "Documents" );
 
-                                                     dirDocKidneys = QCoreApplication::applicationDirPath() + "/template/uziKidneys.docx";
+                                                     dirDocKidneys = QCoreApplication::applicationDirPath() + "/template/uziThyroid.docx";
 
                                                      pDocs->dynamicCall( "Add([Template], [NewTemplate], [DocumentType], [Visible])", dirDocKidneys );
 
                                                      pWord->setProperty( "DiplayAlerts()", false );
+
+                                                     replaceString( pWord, "patientNameLine", patientNameLine->text() );
+                                                     replaceString( pWord, "patientAgeDate", patientAgeDate->text() );
+                                                     replaceString( pWord, "patientResearchDate", patientResearchDate->text() );
+
+                                                     replaceString( pWord, "rightShareCheck", rightShareCheck->text() );
+                                                     replaceString( pWord, "rightShareLengthSpin", rightShareLengthSpin->text() );
+                                                     replaceString( pWord, "rightShareWideSpin", rightShareWideSpin->text() );
+                                                     replaceString( pWord, "rightShareThicknessSpin", rightShareThicknessSpin->text() );
+                                                     replaceString( pWord, "rightShareVolumeSpin", rightShareVolumeSpin->text() );
+
+                                                     replaceString( pWord, "leftShareCheck", leftShareCheck->text() );
+                                                     replaceString( pWord, "leftShareLengthSpin", leftShareLengthSpin->text() );
+                                                     replaceString( pWord, "leftShareWideSpin", leftShareWideSpin->text() );
+                                                     replaceString( pWord, "leftShareThicknessSpin", leftShareThicknessSpin->text() );
+                                                     replaceString( pWord, "leftShareVolumeSpin", leftShareVolumeSpin->text() );
+
+                                                     replaceString( pWord, "neckThicknessSpin", neckThicknessSpin->text() );
+                                                     replaceString( pWord, "volumeSpin", volumeSpin->text() );
+
+                                                     if ( echogenMidRadio->isChecked() )
+                                                     {
+                                                         replaceString( pWord, "echogenRadio", echogenMidRadio->text() );
+                                                     }
+                                                     else if ( echogenUpRadio->isChecked() )
+                                                     {
+                                                         replaceString( pWord, "echogenRadio", echogenUpRadio->text() );
+                                                     }
+                                                     else
+                                                     {
+                                                         replaceString( pWord, "echogenRadio", echogenDownRadio->text() );
+                                                     }
+
+                                                     replaceString( pWord, "structureCheck", structureCheck->text() );
+                                                     replaceString( pWord, "contourCheck", contourCheck->text() );
+                                                     replaceString( pWord, "creaturesCheck", creaturesCheck->text() );
+                                                     replaceString( pWord, "neckLymphoCheck", neckLymphoCheck->text() );
+
+                                                     replaceString( pWord, "mainConclusionText", mainConclusionText->toPlainText() );
+
+                                                     pWord->setProperty( "Visible", true );
+
+
                         });
+
+
+
 
         retranslateUi(thyroid);
 
@@ -496,11 +570,11 @@ public:
         protocallLabel->setText(QApplication::translate("thyroid", "\320\237\320\240\320\236\320\242\320\236\320\232\320\236\320\233 \320\243\320\233\320\254\320\242\320\240\320\220\320\227\320\222\320\243\320\232\320\236\320\222\320\236\320\223\320\236 \320\230\320\241\320\241\320\233\320\225\320\224\320\236\320\222\320\220\320\235\320\230\320\257 \320\251\320\230\320\242\320\236\320\222\320\230\320\224\320\235\320\236\320\231 \320\226\320\225\320\233\320\225\320\227\320\253", nullptr));
         rightShareCheck->setText(QApplication::translate("thyroid", "\320\237\321\200\320\260\320\262\320\260\321\217 \320\264\320\276\320\273\321\217 \320\275\320\265 \321\203\320\262\320\265\320\273\320\270\321\207\320\265\320\275\320\260", nullptr));
         rightShareSizeLabel->setText(QApplication::translate("thyroid", "\320\240\320\260\320\267\320\274\320\265\321\200\321\213:", nullptr));
-        rightShareLenghtLabel->setText(QApplication::translate("thyroid", "\320\224\320\273\320\270\320\275\320\260:", nullptr));
+        rightShareLengthLabel->setText(QApplication::translate("thyroid", "\320\224\320\273\320\270\320\275\320\260:", nullptr));
         rightShareWideLabel->setText(QApplication::translate("thyroid", "\320\250\320\270\321\200\320\270\320\275\320\260:", nullptr));
         rightShareThicknessLabe->setText(QApplication::translate("thyroid", "\320\242\320\276\320\273\321\211\320\270\320\275\320\260", nullptr));
         rightShareVolumeLabel->setText(QApplication::translate("thyroid", "\320\236\320\261\321\212\320\265\320\274 \320\277\321\200\320\260\320\262\320\276\320\271 \320\264\320\276\320\273\320\270: ", nullptr));
-        rightShareLenghtSpin->setSuffix(QApplication::translate("thyroid", " (\320\274\320\274)", nullptr));
+        rightShareLengthSpin->setSuffix(QApplication::translate("thyroid", " (\320\274\320\274)", nullptr));
         rightShareWideSpin->setSuffix(QApplication::translate("thyroid", " (\320\274\320\274)", nullptr));
         rightShareThicknessSpin->setSuffix(QApplication::translate("thyroid", " (\320\274\320\274)", nullptr));
         rightShareVolumeSpin->setSuffix(QApplication::translate("thyroid", " \321\201\320\274.\320\272\321\203\320\261", nullptr));
