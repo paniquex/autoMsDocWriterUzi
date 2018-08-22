@@ -123,7 +123,7 @@ public:
 
         kidneysNameLine = new QLineEdit(centralwidget);
         kidneysNameLine->setObjectName(QStringLiteral("kidneysNameLine"));
-        kidneysNameLine->setMinimumSize( 635 , 15 );
+        kidneysNameLine->setMinimumSize( 651, 15 );
         kidneysNameLine->setFixedHeight( 15 );
         kidneysNameLine->setMouseTracking(true);
 
@@ -159,7 +159,7 @@ public:
         kidneysDateEdit->setObjectName(QStringLiteral("kidneysDateEdit"));
         kidneysDateEdit->setWrapping(false);
         kidneysDateEdit->setFrame(true);
-        kidneysDateEdit->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
+        kidneysDateEdit->setAlignment(Qt::AlignLeading|Qt::AlignRight|Qt::AlignTop);
         kidneysDateEdit->setReadOnly(false);
         kidneysDateEdit->setAccelerated(false);
         kidneysDateEdit->setKeyboardTracking(true);
@@ -167,7 +167,7 @@ public:
         kidneysDateEdit->setCalendarPopup(false);
         kidneysDateEdit->setDate( QDate::currentDate() );
 
-        kidneysDateLayout->addWidget(kidneysDateEdit);
+        kidneysDateLayout->addWidget(kidneysDateEdit );
 
 
         gridLayout->addLayout(kidneysDateLayout, 2, 0 );
@@ -613,7 +613,7 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // KIDNEYS_H
+ // KIDNEYS_H
 
 void replaceString( QAxObject* pActiveDoc, const QString& oldString, const QString& newString)
 {
@@ -649,3 +649,4 @@ void replaceString( QAxObject* pActiveDoc, const QString& oldString, const QStri
                     params);
 
 }
+#endif
