@@ -766,93 +766,7 @@ int main(int argc, char *argv[])
      mainLayout->setSpacing( 1 );
 
      //Связь с Документом word
-     QTabWidget mainTabWidget;
-     QWidget newPatientFormWidget;
-     newPatientForm newPatientFormClass( &newPatientFormWidget );
-     mainTabWidget.addTab( &newPatientFormWidget, "Пациент" );
 
-
-     //ПЕЧЕНЬ
-     QScrollArea LiverScrollArea;
-     QWidget returnWidget;
-     mainTabWidget.addTab( &LiverScrollArea, "Печень" );
-
-     //ПОЧКИ
-     QWidget kidneysWidget;
-     QScrollArea kidneysScrollArea;
-     Ui::kidneys kidneysClass( &kidneysWidget );
-     kidneysScrollArea.setWidget( &kidneysWidget );
-     kidneysWidget.resize( 710, 530 );
-     mainTabWidget.addTab( &kidneysScrollArea, "Почки" );
-
-     //Щитовидная железа
-     QWidget thyroidWidget;
-     QScrollArea thyroidScrollArea;
-     Ui::thyroid thyroidClass( &thyroidWidget );
-     thyroidScrollArea.setWidget( &thyroidWidget );
-     thyroidWidget.resize( 710, 500 );
-     mainTabWidget.addTab( &thyroidScrollArea, "Щит. железа" );
-
-
-     LiverScrollArea.setWidget( &wgt );
-     mainLayout->setHorizontalSpacing( 0 );
-     mainLayout->setMargin( 10 );
-     mainTabWidget.setFont( widgetFont );
-     wgt.setLayout( mainLayout );
-     wgt.resize( 710, 1000 );
-     mainTabWidget.resize( 720, 600 );
-     mainTabWidget.setMinimumSize( 750, 500 );
-     mainTabWidget.setMaximumSize( 800, 600 );
-
-     //НОВЫЙ ПАЦИЕНТ ПЕРВЫЙ
-     QPushButton* newPatientButton = new QPushButton( "Новый пациент" );
-     mainTabWidget.setCornerWidget( newPatientButton, Qt::Corner::TopLeftCorner );
-     //Следующий пациент ( вся информация об предыдущем будет удалена )
-     QObject::connect( newPatientButton, &QPushButton::clicked,
-                       [&]
-                           {
-                               newPatientFormClass.patientNameLine->clear();
-                               newPatientFormClass.patientAgeDate->setDate( QDate::currentDate() );
-                               mainTabWidget.setCurrentIndex( 0 );
-
-                           } );
-
-     mainTabWidget.show();
-     //LiverScrollArea.resize( 720, 700 );
-     //LiverScrollArea.show();
-     QPushButton* returnButton = new QPushButton( "Вернуться в программу" );
-     QHBoxLayout* returnLayout = new QHBoxLayout;
-     returnLayout->addWidget( returnButton );
-     returnWidget.setLayout( returnLayout );
-     mainTabWidget.addTab( &returnWidget, "Возврат" );
-
-     //Изменение имени и возраста пациента
-     //Изменение имени пациента
-
-     QObject::connect( newPatientFormClass.patientNameLine , &QLineEdit::textChanged,
-                       [&] {
-                             patient->setName( newPatientFormClass.patientNameLine->text() );
-                             patientName->setText( patient->getName() );
-                             kidneysClass.kidneysNameLine->setText( patient->getName() );
-                           }
-                       );
-
-     //Изменение возраста
-     QObject::connect( newPatientFormClass.patientAgeDate, &QDateEdit::dateChanged,
-                       [&] {
-                             patientAge->setDate( newPatientFormClass.patientAgeDate->date() );
-                             kidneysClass.kidneysAgeLine->setDate( newPatientFormClass.patientAgeDate->date() );
-                           }
-                       );
-
-
-     QObject::connect( returnButton, &QPushButton::clicked,
-                        [&]
-                        {
-                            //returnWidget.hide();
-                            //LiverScrollArea.show();
-
-                        });
      //Сохранить изменения
              QPushButton* liverSaveAllButton = new QPushButton( "Сохранить документ" );
              //wordSave* liverSaveAllClass = new wordSave;
@@ -1025,7 +939,97 @@ int main(int argc, char *argv[])
          //Сохранить документ LAYOUT
               mainLayout->addWidget( liverSaveAllButton, ++gridX, 1, Qt::AlignRight );
 
-     //Создание шрифта для всего Виджета
+ //ДОБАВЛЕНИЕ К mainTabWidget ВСЕХ ФОРМ И ИХ НАСТРОЙКА
+
+              QTabWidget mainTabWidget;
+              QWidget newPatientFormWidget;
+              newPatientForm newPatientFormClass( &newPatientFormWidget );
+              mainTabWidget.addTab( &newPatientFormWidget, "Пациент" );
+
+
+              //ПЕЧЕНЬ
+              QScrollArea LiverScrollArea;
+              QWidget returnWidget;
+              mainTabWidget.addTab( &LiverScrollArea, "Печень" );
+
+              //ПОЧКИ
+              QWidget kidneysWidget;
+              QScrollArea kidneysScrollArea;
+              Ui::kidneys kidneysClass( &kidneysWidget );
+              kidneysScrollArea.setWidget( &kidneysWidget );
+              kidneysWidget.resize( 710, 530 );
+              mainTabWidget.addTab( &kidneysScrollArea, "Почки" );
+
+              //Щитовидная железа
+              QWidget thyroidWidget;
+              QScrollArea thyroidScrollArea;
+              Ui::thyroid thyroidClass( &thyroidWidget );
+              thyroidScrollArea.setWidget( &thyroidWidget );
+              thyroidWidget.resize( 710, 500 );
+              mainTabWidget.addTab( &thyroidScrollArea, "Щит. железа" );
+
+
+              LiverScrollArea.setWidget( &wgt );
+              mainLayout->setHorizontalSpacing( 0 );
+              mainLayout->setMargin( 10 );
+              mainTabWidget.setFont( widgetFont );
+              wgt.setLayout( mainLayout );
+              wgt.resize( 710, 1000 );
+              mainTabWidget.resize( 720, 600 );
+              mainTabWidget.setMinimumSize( 750, 500 );
+              mainTabWidget.setMaximumSize( 800, 600 );
+
+              //НОВЫЙ ПАЦИЕНТ ПЕРВЫЙ
+              QPushButton* newPatientButton = new QPushButton( "Новый пациент" );
+              mainTabWidget.setCornerWidget( newPatientButton, Qt::Corner::TopLeftCorner );
+              //Следующий пациент ( вся информация об предыдущем будет удалена )
+              QObject::connect( newPatientButton, &QPushButton::clicked,
+                                [&]
+                                    {
+                                        newPatientFormClass.patientNameLine->clear();
+                                        newPatientFormClass.patientAgeDate->setDate( QDate::currentDate() );
+                                        mainTabWidget.setCurrentIndex( 0 );
+
+                                    } );
+
+              mainTabWidget.show();
+              //LiverScrollArea.resize( 720, 700 );
+              //LiverScrollArea.show();
+              QPushButton* returnButton = new QPushButton( "Вернуться в программу" );
+              QHBoxLayout* returnLayout = new QHBoxLayout;
+              returnLayout->addWidget( returnButton );
+              returnWidget.setLayout( returnLayout );
+              mainTabWidget.addTab( &returnWidget, "Возврат" );
+
+              //Изменение имени и возраста пациента
+              //Изменение имени пациента
+
+              QObject::connect( newPatientFormClass.patientNameLine , &QLineEdit::textChanged,
+                                [&] {
+                                      patient->setName( newPatientFormClass.patientNameLine->text() );
+                                      patientName->setText( patient->getName() );
+                                      kidneysClass.kidneysNameLine->setText( patient->getName() );
+                                      thyroidClass.patientNameLine->setText( patient->getName() );
+                                    }
+                                );
+
+              //Изменение возраста
+              QObject::connect( newPatientFormClass.patientAgeDate, &QDateEdit::dateChanged,
+                                [&] {
+                                      patientAge->setDate( newPatientFormClass.patientAgeDate->date() );
+                                      kidneysClass.kidneysAgeLine->setDate( newPatientFormClass.patientAgeDate->date() );
+                                      thyroidClass.patientAgeDate->setDate( newPatientFormClass.patientAgeDate->date() );
+                                    }
+                                );
+
+
+              QObject::connect( returnButton, &QPushButton::clicked,
+                                 [&]
+                                 {
+                                     //returnWidget.hide();
+                                     //LiverScrollArea.show();
+
+                                 });
               return a.exec();
 
 
