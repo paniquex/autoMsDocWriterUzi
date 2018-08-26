@@ -7,6 +7,7 @@
 #include <QAxBase>
 #include <kidneys.cpp>
 #include <thyroid.cpp>
+#include <mammary.cpp>
 #include "patient.h"
 #include "newpatientform.h"
 
@@ -968,6 +969,13 @@ int main(int argc, char *argv[])
               thyroidWidget.resize( 710, 500 );
               mainTabWidget.addTab( &thyroidScrollArea, "Щит. железа" );
 
+              //Молочные железы
+              QWidget mammaryWidget;
+              QScrollArea mammaryScrollArea;
+              Ui::mammary mammaryClass( &mammaryWidget );
+              mammaryScrollArea.setWidget( &mammaryWidget );
+              mammaryWidget.resize( 710, 550 );
+              mainTabWidget.addTab( &mammaryScrollArea, "Молочн. железы" );
 
               LiverScrollArea.setWidget( &wgt );
               mainLayout->setHorizontalSpacing( 0 );
