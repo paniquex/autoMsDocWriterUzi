@@ -35,7 +35,8 @@ SOURCES += \
     formofliver.cpp \
     kidneys.cpp \
     newpatientform.cpp \
-    thyroid.cpp
+    thyroid.cpp \
+    mammary.cpp
 
 HEADERS += \
     patient.h \
@@ -49,4 +50,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 FORMS += \
     kidneys.ui \
-    thyroid.ui
+    thyroid.ui \
+    mammary.ui
