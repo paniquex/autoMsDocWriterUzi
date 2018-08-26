@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mammary</class>
+ <widget class="QWidget" name="mammary">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>598</width>
+    <height>513</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="patientNameLayout">
+     <item>
+      <widget class="QLabel" name="patientNameLabel">
+       <property name="text">
+        <string>ФИО</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="patientNameLine"/>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="patientAgeLayout">
+     <item>
+      <widget class="QLabel" name="patientAgeLabel">
+       <property name="text">
+        <string>Год рождения:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="patientAgeDate"/>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="researchDateLayout">
+     <item>
+      <widget class="QLabel" name="researchDateLabel">
+       <property name="text">
+        <string>Дата исследования:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="researchDateDate"/>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="protocallLabel">
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>ПРОТОКОЛ УЛЬТРАЗВУКОВОГО ИССЛЕДОВАНИЯ МОЛОЧНЫХ ЖЕЛЕЗ</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="rightMainLabel">
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Правая молочная железа:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="rightSizeLabel">
+     <property name="text">
+      <string>Размер: средний</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QCheckBox" name="rightShapeLabel">
+     <property name="text">
+      <string>Форма: изменена</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <layout class="QHBoxLayout" name="rightClothLayout">
+     <item>
+      <widget class="QLabel" name="rightClothLabel">
+       <property name="text">
+        <string>Ткань, формирующая молочную железу:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="rightClothCombo">
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentText">
+        <string>железистая</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="minimumContentsLength">
+        <number>0</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>железистая</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>железистая и жировая</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>преимущественно жировая</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>жировая</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="8" column="0">
+    <widget class="QCheckBox" name="rightVisualCheck">
+     <property name="text">
+      <string>Визуализация протоков: плохая</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <layout class="QHBoxLayout" name="rightStreamLayout">
+     <item>
+      <widget class="QCheckBox" name="rightStreamCheck">
+       <property name="text">
+        <string>Протоки: не расширены</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="rightDiffCheck">
+       <property name="text">
+        <string>Диффузные изменения: нет</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="10" column="0">
+    <layout class="QHBoxLayout" name="rightChangesLayout">
+     <item>
+      <widget class="QCheckBox" name="rightChangesCheck">
+       <property name="text">
+        <string>Очаговые изменения: нет</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="rightLymphoCheck">
+       <property name="text">
+        <string>Состояние региональных зон лимфооттока: не изменены</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="11" column="0">
+    <widget class="QLabel" name="leftMainLabel">
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Левая молочная железа:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0">
+    <widget class="QLabel" name="leftSizeLabel">
+     <property name="text">
+      <string>Размер: средний</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="0">
+    <widget class="QCheckBox" name="leftShapeCheck">
+     <property name="text">
+      <string>Форма: изменена</string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0">
+    <layout class="QHBoxLayout" name="leftClothLayout">
+     <item>
+      <widget class="QLabel" name="leftClothLabel">
+       <property name="text">
+        <string>Ткань, формирующая молочную железу:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="leftClothCombo">
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentText">
+        <string>железистая</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="minimumContentsLength">
+        <number>0</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>железистая</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>железистая и жировая</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>преимущественно жировая</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>жировая</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="15" column="0">
+    <widget class="QCheckBox" name="leftVisualCheck">
+     <property name="text">
+      <string>Визуализация протоков: плохая</string>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="0">
+    <layout class="QHBoxLayout" name="leftStreamLayout">
+     <item>
+      <widget class="QCheckBox" name="leftStreamCheck">
+       <property name="text">
+        <string>Протоки: не расширены</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="leftDiffCheck">
+       <property name="text">
+        <string>Диффузные изменения: нет</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="17" column="0">
+    <layout class="QHBoxLayout" name="leftChangesLayout">
+     <item>
+      <widget class="QCheckBox" name="leftChangesCheck">
+       <property name="text">
+        <string>Очаговые изменения: нет</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="leftStateCheck">
+       <property name="text">
+        <string>Состояние региональных зон лимфооттока: не изменены</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="18" column="0">
+    <widget class="QLabel" name="mainConclusionLabel">
+     <property name="text">
+      <string>ЗАКЛЮЧЕНИЕ:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="19" column="0">
+    <widget class="QTextEdit" name="mainConclusionText"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
