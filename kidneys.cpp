@@ -61,36 +61,42 @@ public:
     QCheckBox *kidneysBladderDropsCheck;
     QHBoxLayout *kidneysRightPlaceLayout;
     QLabel *kidneysRightPlaceLabel;
+    QCheckBox *kidneysRightPlaceCheck;
     QCheckBox *kidneysRightContourCheck1;
     QCheckBox *kidneysRightContourCheck2;
     QHBoxLayout *kidneysRightSizeLayout;
     QCheckBox *kidneysRightSizeCheck;
-    QSpinBox *kidneysRightSizeSpin;
+    QLineEdit *kidneysRightSizeLine;
     QLabel *kidneysRightParenchymaLabel;
     QSpinBox *kidneysRightParenchymaSpin;
     QHBoxLayout *kidneysRightEchoLayout;
     QCheckBox *kidneysRightEchoCheck;
     QCheckBox *kidneysRightDiffCheck;
     QCheckBox *kidneysRightCalyxCheck;
+    QTextEdit *kidneysRightCalyxEdit;
     QHBoxLayout *kidneysLeftPlaceLayout;
     QLabel *kidneysLeftPlaceLabel;
+    QCheckBox *kidneysLeftPlaceCheck;
     QCheckBox *kidneysLeftContourCheck1;
     QCheckBox *kidneysLeftContourCheck2;
     QHBoxLayout *kidneysLeftSizeLayout;
     QCheckBox *kidneysLeftSizeCheck;
-    QSpinBox *kidneysLeftSizeSpin;
+    QLineEdit *kidneysLeftSizeLine;
     QLabel *kidneysLeftParenchymaLabel;
     QSpinBox *kidneysLeftParenchymaSpin;
     QHBoxLayout *kidneysLeftEchoLayout;
     QCheckBox *kidneysLeftEchoCheck;
     QCheckBox *kidneysLeftDiffCheck;
     QCheckBox *kidneysLeftCalyxCheck;
+    QTextEdit *kidneysLeftCalyxEdit;
+    QTextEdit *kidneysProectionEdit;
     QLabel *kidneysConclusionLabel;
     QTextEdit *kidneysConclusionText;
     QPushButton *kidneysSaveAllButton;
     QAxObject *pWord;
     QAxObject *pDocs;
     QString dirDocKidneys;
+    qint16 gridIndex = 0;
 
     void setupUi(QWidget *centralwidget)
     {
@@ -112,7 +118,7 @@ public:
 
         kidneysFrame1 = new QFrame;
         kidneysFrame1->setFrameShape( QFrame::Box );
-        gridLayout->addWidget( kidneysFrame1, 0, 0, 3, 1 );
+        gridLayout->addWidget( kidneysFrame1, gridIndex, 0, 3, 1 );
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         kidneysNameLayout = new QHBoxLayout();
         kidneysNameLayout->setObjectName(QStringLiteral("kidneysNameLayout"));
@@ -130,7 +136,7 @@ public:
         kidneysNameLayout->addWidget( kidneysNameLine, 0, Qt::AlignLeft );
 
 
-        gridLayout->addLayout(kidneysNameLayout, 0, 0,  Qt::AlignLeft );
+        gridLayout->addLayout(kidneysNameLayout, gridIndex++, 0,  Qt::AlignLeft );
 
         kidneysAgeLayout = new QHBoxLayout();
         kidneysAgeLayout->setObjectName(QStringLiteral("kidneysAgeLayout"));
@@ -145,7 +151,7 @@ public:
         kidneysAgeLayout->addWidget(kidneysAgeLine);
 
 
-        gridLayout->addLayout(kidneysAgeLayout, 1, 0 );
+        gridLayout->addLayout(kidneysAgeLayout, gridIndex++, 0 );
 
         kidneysDateLayout = new QHBoxLayout();
         kidneysDateLayout->setSpacing( 0 );
@@ -170,7 +176,7 @@ public:
         kidneysDateLayout->addWidget(kidneysDateEdit );
 
 
-        gridLayout->addLayout(kidneysDateLayout, 2, 0 );
+        gridLayout->addLayout(kidneysDateLayout, gridIndex++, 0 );
 
         kidneysMainLabel = new QLabel(centralwidget);
         kidneysMainLabel->setObjectName(QStringLiteral("kidneysMainLabel"));
@@ -186,7 +192,7 @@ public:
         kidneysMainLabel->setWordWrap(false);
         kidneysMainLabel->setMargin(10);
 
-        gridLayout->addWidget(kidneysMainLabel, 3, 0, Qt::AlignRight );
+        gridLayout->addWidget(kidneysMainLabel, gridIndex++, 0, Qt::AlignRight );
 
         kidneysBladderLayout = new QHBoxLayout();
         kidneysBladderLayout->setObjectName(QStringLiteral("kidneysBladderLayout"));
@@ -197,15 +203,16 @@ public:
 
         kidneysFrame2 = new QFrame;
         kidneysFrame2->setFrameShape( QFrame::Box );
-        gridLayout->addWidget( kidneysFrame2, 4, 0, 4, 1 );
+        gridLayout->addWidget( kidneysFrame2, gridIndex, 0, 4, 1 );
         kidneysBladderSpin = new QSpinBox(centralwidget);
         kidneysBladderSpin->setObjectName(QStringLiteral("kidneysBladderSpin"));
 
         kidneysBladderSpin->setMaximum( 1000 );
+        kidneysBladderSpin->clear();
 
         kidneysBladderLayout->addWidget(kidneysBladderSpin);
 
-        gridLayout->addLayout(kidneysBladderLayout, 4, 0, Qt::AlignLeft );
+        gridLayout->addLayout(kidneysBladderLayout, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysBladderContainsCheck = new QCheckBox( "Содержимое: неоднородное" );
 
@@ -217,7 +224,7 @@ public:
                                });
 
 
-        gridLayout->addWidget(kidneysBladderContainsCheck, 5, 0, Qt::AlignLeft );
+        gridLayout->addWidget(kidneysBladderContainsCheck, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysBladderWallsLayout = new QHBoxLayout();
         kidneysBladderWallsLayout->setObjectName(QStringLiteral("kidneysBladderWallsLayout"));
@@ -244,7 +251,7 @@ public:
         kidneysBladderWallsLayout->addWidget(kidneysBladderWallsWideCheck);
 
 
-        gridLayout->addLayout(kidneysBladderWallsLayout, 6, 0, Qt::AlignLeft );
+        gridLayout->addLayout(kidneysBladderWallsLayout, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysBladderDropsCheck = new QCheckBox(centralwidget);
         kidneysBladderDropsCheck->setObjectName(QStringLiteral("kidneysBladderDropsCheck"));
@@ -254,7 +261,7 @@ public:
                                             if ( ( kidneysBladderDropsCheck->isChecked() ) ) kidneysBladderDropsCheck->setText("Мочеточниковые выбросы:    изменены с обеих сторон");
                                });
 
-        gridLayout->addWidget(kidneysBladderDropsCheck, 7, 0, Qt::AlignLeft );
+        gridLayout->addWidget(kidneysBladderDropsCheck, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysRightPlaceLayout = new QHBoxLayout();
         kidneysRightPlaceLayout->setObjectName(QStringLiteral("kidneysRightPlaceLayout"));
@@ -265,9 +272,17 @@ public:
         kidneysRightPlaceLabel->setFont(font1);
         QFrame* kidneysFrame3 = new QFrame;
         kidneysFrame3->setFrameShape( QFrame::Box );
-        gridLayout->addWidget( kidneysFrame3, 8, 0, 4, 1 );
+        gridLayout->addWidget( kidneysFrame3, gridIndex, 0, 5, 1 );
+
+        kidneysRightPlaceCheck = new QCheckBox( "расположена низко" );
+        QObject::connect( kidneysRightPlaceCheck, &QCheckBox::stateChanged,
+                          [&] {
+                                            if ( !( kidneysRightPlaceCheck->isChecked() ) ) kidneysRightPlaceCheck->setText( "расположена низко" );
+                                            if ( ( kidneysRightPlaceCheck->isChecked() ) ) kidneysRightPlaceCheck->setText( "расположена обычно" );
+                               });
 
         kidneysRightPlaceLayout->addWidget(kidneysRightPlaceLabel);
+        kidneysRightPlaceLayout->addWidget( kidneysRightPlaceCheck );
 
         kidneysRightContourCheck1 = new QCheckBox(centralwidget);
         kidneysRightContourCheck1->setObjectName(QStringLiteral("kidneysRightContourCheck1"));
@@ -290,7 +305,7 @@ public:
         kidneysRightPlaceLayout->addWidget(kidneysRightContourCheck2);
 
 
-        gridLayout->addLayout(kidneysRightPlaceLayout, 8, 0, Qt::AlignLeft );
+        gridLayout->addLayout(kidneysRightPlaceLayout, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysRightSizeLayout = new QHBoxLayout();
         kidneysRightSizeLayout->setObjectName(QStringLiteral("kidneysRightSizeLayout"));
@@ -304,11 +319,10 @@ public:
 
         kidneysRightSizeLayout->addWidget(kidneysRightSizeCheck);
 
-        kidneysRightSizeSpin = new QSpinBox(centralwidget);
-        kidneysRightSizeSpin->setObjectName(QStringLiteral("kidneysRightSizeSpin"));
-        kidneysRightSizeSpin->setMaximum(1000);
+        kidneysRightSizeLine = new QLineEdit(centralwidget);
+        kidneysRightSizeLine->setObjectName(QStringLiteral("kidneysrightSizeLine"));
 
-        kidneysRightSizeLayout->addWidget(kidneysRightSizeSpin);
+        kidneysRightSizeLayout->addWidget( kidneysRightSizeLine, 0, Qt::AlignLeft );
 
         kidneysRightParenchymaLabel = new QLabel(centralwidget);
         kidneysRightParenchymaLabel->setObjectName(QStringLiteral("kidneysRightParenchymaLabel"));
@@ -318,11 +332,12 @@ public:
         kidneysRightParenchymaSpin = new QSpinBox(centralwidget);
         kidneysRightParenchymaSpin->setObjectName(QStringLiteral("kidneysRightParenchymaSpin"));
         kidneysRightParenchymaSpin->setMaximum(1000);
+        kidneysRightParenchymaSpin->clear();
 
         kidneysRightSizeLayout->addWidget(kidneysRightParenchymaSpin);
 
 
-        gridLayout->addLayout(kidneysRightSizeLayout, 9, 0, Qt::AlignLeft );
+        gridLayout->addLayout(kidneysRightSizeLayout, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysRightEchoLayout = new QHBoxLayout();
         kidneysRightEchoLayout->setObjectName(QStringLiteral("kidneysRightEchoLayout"));
@@ -349,7 +364,7 @@ public:
         kidneysRightEchoLayout->addWidget(kidneysRightDiffCheck);
 
 
-        gridLayout->addLayout(kidneysRightEchoLayout, 10, 0, Qt::AlignLeft );
+        gridLayout->addLayout(kidneysRightEchoLayout, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysRightCalyxCheck = new QCheckBox(centralwidget);
         kidneysRightCalyxCheck->setObjectName(QStringLiteral("kidneysRightCalyxCheck"));
@@ -359,7 +374,12 @@ public:
                                             if ( ( kidneysRightCalyxCheck->isChecked() ) ) kidneysRightCalyxCheck->setText("Чашечно-лоханочная система:     расширена.");
                                });
 
-        gridLayout->addWidget(kidneysRightCalyxCheck, 11, 0, Qt::AlignLeft );
+        gridLayout->addWidget(kidneysRightCalyxCheck, gridIndex++, 0, Qt::AlignLeft );
+        kidneysRightCalyxEdit = new QTextEdit;
+        kidneysRightCalyxEdit->setFixedSize( 670, 20 );
+        kidneysRightCalyxEdit->setMaximumSize( 700, 30 );
+        gridLayout->addWidget( kidneysRightCalyxEdit, gridIndex++, 0, Qt::AlignLeft );
+
 
         kidneysLeftPlaceLayout = new QHBoxLayout();
         kidneysLeftPlaceLayout->setObjectName(QStringLiteral("kidneysLeftPlaceLayout"));
@@ -370,9 +390,17 @@ public:
         kidneysLeftPlaceLabel->setFont(font2);
         kidneysFrame4 = new QFrame;
         kidneysFrame4->setFrameShape( QFrame::Box );
-        gridLayout->addWidget( kidneysFrame4, 12, 0, 4, 1 );
+        gridLayout->addWidget( kidneysFrame4, gridIndex, 0, 5, 1 );
+
+        kidneysLeftPlaceCheck = new QCheckBox( "расположена низко" );
+        QObject::connect( kidneysLeftPlaceCheck, &QCheckBox::stateChanged,
+                          [&] {
+                                            if ( !( kidneysLeftPlaceCheck->isChecked() ) ) kidneysLeftPlaceCheck->setText( "расположена низко" );
+                                            if ( ( kidneysLeftPlaceCheck->isChecked() ) ) kidneysLeftPlaceCheck->setText( "расположена обычно" );
+                               });
 
         kidneysLeftPlaceLayout->addWidget(kidneysLeftPlaceLabel);
+        kidneysLeftPlaceLayout->addWidget( kidneysLeftPlaceCheck );
 
         kidneysLeftContourCheck1 = new QCheckBox(centralwidget);
         kidneysLeftContourCheck1->setObjectName(QStringLiteral("kidneysLeftContourCheck1"));
@@ -392,10 +420,10 @@ public:
                                             if ( ( kidneysLeftContourCheck2->isChecked() ) ) kidneysLeftContourCheck2->setText("   ровные");
                                });
 
-        kidneysLeftPlaceLayout->addWidget(kidneysLeftContourCheck2);
+        kidneysLeftPlaceLayout->addWidget( kidneysLeftContourCheck2 );
 
 
-        gridLayout->addLayout(kidneysLeftPlaceLayout, 12, 0, Qt::AlignLeft );
+        gridLayout->addLayout(kidneysLeftPlaceLayout, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysLeftSizeLayout = new QHBoxLayout();
         kidneysLeftSizeLayout->setObjectName(QStringLiteral("kidneysLeftSizeLayout"));
@@ -409,11 +437,10 @@ public:
 
         kidneysLeftSizeLayout->addWidget(kidneysLeftSizeCheck);
 
-        kidneysLeftSizeSpin = new QSpinBox(centralwidget);
-        kidneysLeftSizeSpin->setObjectName(QStringLiteral("kidneysLeftSizeSpin"));
-        kidneysLeftSizeSpin->setMaximum(1000);
+        kidneysLeftSizeLine = new QLineEdit(centralwidget);
+        kidneysLeftSizeLine->setObjectName(QStringLiteral("kidneysLeftSizeLine"));
 
-        kidneysLeftSizeLayout->addWidget(kidneysLeftSizeSpin);
+        kidneysLeftSizeLayout->addWidget( kidneysLeftSizeLine, 0, Qt::AlignLeft );
 
         kidneysLeftParenchymaLabel = new QLabel(centralwidget);
         kidneysLeftParenchymaLabel->setObjectName(QStringLiteral("kidneysLeftParenchymaLabel"));
@@ -423,11 +450,12 @@ public:
         kidneysLeftParenchymaSpin = new QSpinBox(centralwidget);
         kidneysLeftParenchymaSpin->setObjectName(QStringLiteral("kidneysLeftParenchymaSpin"));
         kidneysLeftParenchymaSpin->setMaximum(1000);
+        kidneysLeftParenchymaSpin->clear();
 
         kidneysLeftSizeLayout->addWidget(kidneysLeftParenchymaSpin);
 
 
-        gridLayout->addLayout(kidneysLeftSizeLayout, 13, 0, Qt::AlignLeft );
+        gridLayout->addLayout(kidneysLeftSizeLayout, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysLeftEchoLayout = new QHBoxLayout();
         kidneysLeftEchoLayout->setObjectName(QStringLiteral("kidneysLeftEchoLayout"));
@@ -454,7 +482,7 @@ public:
         kidneysLeftEchoLayout->addWidget(kidneysLeftDiffCheck);
 
 
-        gridLayout->addLayout(kidneysLeftEchoLayout, 14, 0, Qt::AlignLeft );
+        gridLayout->addLayout(kidneysLeftEchoLayout, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysLeftCalyxCheck = new QCheckBox(centralwidget);
         //kidneysLeftCalyxCheck->setObjectName(QStringLiteral("kidneysLeftCalyxCheck"));
@@ -464,7 +492,13 @@ public:
                                             if ( ( kidneysLeftCalyxCheck->isChecked() ) ) kidneysLeftCalyxCheck->setText("Чашечно-лоханочная система:     расширена.");
                                });
 
-        gridLayout->addWidget(kidneysLeftCalyxCheck, 15, 0, Qt::AlignLeft );
+        gridLayout->addWidget(kidneysLeftCalyxCheck, gridIndex++, 0, Qt::AlignLeft );
+
+
+        kidneysLeftCalyxEdit = new QTextEdit;
+        kidneysLeftCalyxEdit->setFixedSize( 670, 20 );
+        kidneysLeftCalyxEdit->setMaximumSize( 700, 30 );
+        gridLayout->addWidget( kidneysLeftCalyxEdit, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysCDKCheck = new QCheckBox( "При ЦДК не регистрируется неизменный интраренальный кровоток с обеих сторон." );
         kidneysProectionCheck = new QCheckBox( "В проекции надпочечников патологических образований не выявлено." );
@@ -479,18 +513,23 @@ public:
                                             if ( ( kidneysProectionCheck->isChecked() ) ) kidneysProectionCheck->setText( "В проекции надпочечников патологических образований    выявлено." );
                                });
 
-        gridLayout->addWidget( kidneysCDKCheck, 16, 0, Qt::AlignLeft );
-        gridLayout->addWidget( kidneysProectionCheck, 17, 0, Qt::AlignLeft );
+        gridLayout->addWidget( kidneysCDKCheck, gridIndex++, 0, Qt::AlignLeft );
+        gridLayout->addWidget( kidneysProectionCheck, gridIndex++, 0, Qt::AlignLeft );
+        kidneysProectionEdit = new QTextEdit;
+
+        gridLayout->addWidget( kidneysProectionEdit, gridIndex++, 0, Qt::AlignLeft );
+        kidneysProectionEdit->setFixedSize( 670, 20 );
+        kidneysProectionEdit->setMaximumSize( 700, 30 );
 
         kidneysConclusionLabel = new QLabel( "ЗАКЛЮЧЕНИЕ: " );
         kidneysConclusionText = new QTextEdit;
         kidneysConclusionText->setFixedSize( 670, 50 );
         kidneysConclusionText->setMaximumSize( 700, 50 );
-        gridLayout->addWidget( kidneysConclusionLabel, 18, 0, Qt::AlignLeft );
-        gridLayout->addWidget( kidneysConclusionText, 19, 0, Qt::AlignLeft );
+        gridLayout->addWidget( kidneysConclusionLabel, gridIndex++, 0, Qt::AlignLeft );
+        gridLayout->addWidget( kidneysConclusionText, gridIndex++, 0, Qt::AlignLeft );
 
         kidneysSaveAllButton = new QPushButton( "Сохранить документ" );
-        gridLayout->addWidget( kidneysSaveAllButton, 20, 0, Qt::AlignCenter );
+        gridLayout->addWidget( kidneysSaveAllButton, gridIndex++, 0, Qt::AlignCenter );
 
         gridLayout->setSpacing( 2 );
 
@@ -521,25 +560,30 @@ public:
                                                      replaceString( pWord, "kidneysRightContour1Ch", kidneysRightContourCheck1->text() );
                                                      replaceString( pWord, "kidneysRightContour2Ch", kidneysRightContourCheck2->text() );
                                                      replaceString( pWord, "kidneysRightSizeCheck", kidneysRightSizeCheck->text() );
-                                                     replaceString( pWord, "kidneysRightSizeSpin", kidneysRightSizeSpin->text() );
+                                                     replaceString( pWord, "kidneysrightSizeSpin", kidneysRightSizeLine->text() );
                                                      replaceString( pWord, "RightParenchymaSpin", kidneysRightParenchymaSpin->text() );
                                                      replaceString( pWord, "kidneysRightEchoCheck", kidneysRightEchoCheck->text() );
                                                      replaceString( pWord, "kidneysRightDiffCheck", kidneysRightDiffCheck->text() );
                                                      replaceString( pWord, "kidneysRightCalyxCheck", kidneysRightCalyxCheck->text() );
+                                                     replaceString( pWord, "kidneysRightCalyxEdit", kidneysRightCalyxEdit->toPlainText() );
+
 
                                                      //Левая почка
                                                      replaceString( pWord, "kidneysLeftContour1Ch", kidneysLeftContourCheck1->text() );
                                                      replaceString( pWord, "kidneysLeftContour2Ch", kidneysLeftContourCheck2->text() );
                                                      replaceString( pWord, "kidneysLeftSizeCheck", kidneysLeftSizeCheck->text() );
-                                                     replaceString( pWord, "kidneysLeftSizeSpin", kidneysLeftSizeSpin->text() );
+                                                     replaceString( pWord, "kidneysLeftSizeSpin", kidneysLeftSizeLine->text() );
                                                      replaceString( pWord, "LeftParenchymaSpin", kidneysLeftParenchymaSpin->text() );
                                                      replaceString( pWord, "kidneysLeftEchoCheck", kidneysLeftEchoCheck->text() );
                                                      replaceString( pWord, "kidneysLeftDiffCheck", kidneysLeftDiffCheck->text() );
                                                      replaceString( pWord, "kidneysLeftCalyxCheck", kidneysLeftCalyxCheck->text() );
+                                                     replaceString( pWord, "kidneysLeftCalyxEdit", kidneysLeftCalyxEdit->toPlainText() );
+
 
                                                      //Заключение и 2 чек-бокса
                                                      replaceString( pWord, "kidneysCDKCheck", kidneysCDKCheck->text() );
                                                      replaceString( pWord, "kidneysProectionCheck", kidneysProectionCheck->text() );
+                                                     replaceString( pWord, "kidneysProectionEdit", kidneysProectionEdit->toPlainText() );
                                                      replaceString( pWord, "kidenysConclusionText", kidneysConclusionText->toPlainText() );
 
                                                      pWord->setProperty( "Visible", true );
@@ -560,7 +604,7 @@ public:
 
         retranslateUi( centralwidget );
 
-        QMetaObject::connectSlotsByName(centralwidget);
+        QMetaObject::connectSlotsByName( centralwidget );
     } // setupUi
 
     void retranslateUi(QWidget *centralwidget)
@@ -578,21 +622,21 @@ public:
         kidneysBladderWallsContourCheck->setText(QApplication::translate("MainWindow", "\320\241\321\202\320\265\320\275\320\272\320\270: \320\275\320\265\321\200\320\276\320\262\320\275\321\213\320\265, ", nullptr));
         kidneysBladderWallsWideCheck->setText(QApplication::translate("MainWindow", "\320\275\320\265 \321\203\321\202\320\276\320\273\321\211\320\265\320\275\321\213", nullptr));
         kidneysBladderDropsCheck->setText(QApplication::translate("MainWindow", "\320\234\320\276\321\207\320\265\321\202\320\276\321\207\320\275\320\270\320\272\320\276\320\262\321\213\320\265 \320\262\321\213\320\261\321\200\320\276\321\201\321\213: \320\275\320\265 \320\270\320\267\320\274\320\265\320\275\320\265\320\275\321\213 \321\201 \320\276\320\261\320\265\320\270\321\205 \321\201\321\202\320\276\321\200\320\276\320\275", nullptr));
-        kidneysRightPlaceLabel->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\260\320\262\320\260\321\217 \320\277\320\276\321\207\320\272\320\260: \321\200\320\260\321\201\320\277\320\276\320\273\320\276\320\266\320\265\320\275\320\260 \320\276\320\261\321\213\321\207\320\275\320\276.", nullptr));
+        kidneysRightPlaceLabel->setText( "Правая почка: " );
         kidneysRightContourCheck1->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\275\321\202\321\203\321\200\321\213 \320\275\320\265\321\207\320\265\321\202\320\272\320\270\320\265,", nullptr));
         kidneysRightContourCheck2->setText(QApplication::translate("MainWindow", "\320\275\320\265\321\200\320\276\320\262\320\275\321\213\320\265", nullptr));
         kidneysRightSizeCheck->setText(QApplication::translate("MainWindow", "\320\240\320\260\320\267\320\274\320\265\321\200\321\213: \320\275\320\265 \321\203\320\262\320\265\320\273\320\270\321\207\320\265\320\275\321\213", nullptr));
-        kidneysRightSizeSpin->setSuffix(QApplication::translate("MainWindow", " \320\274\320\274", nullptr));
+        kidneysRightSizeLine->setText( " мм" );
         kidneysRightParenchymaLabel->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\200\320\265\320\275\321\205\320\270\320\274\320\260 \320\262 \321\201\321\200\320\265\320\264\320\275\320\265\320\274 \321\201\320\265\320\263\320\274\320\265\320\275\321\202\320\265 \321\202\320\276\320\273\321\211\320\270\320\275\320\276\320\271: ", nullptr));
         kidneysRightParenchymaSpin->setSuffix(QApplication::translate("MainWindow", " \320\274\320\274", nullptr));
         kidneysRightEchoCheck->setText(QApplication::translate("MainWindow", "\320\255\321\205\320\276\321\201\321\202\321\200\321\203\320\272\321\202\321\203\321\200\320\260 \320\277\320\260\321\200\320\265\320\275\321\205\320\270\320\274\321\213 \320\275\320\265\320\276\320\264\320\275\320\276\321\200\320\276\320\264\320\275\320\260\321\217, ", nullptr));
         kidneysRightDiffCheck->setText(QApplication::translate("MainWindow", "\320\272\320\276\321\200\321\202\320\270\320\272\320\276-\320\274\320\265\320\264\321\203\320\273\320\273\321\217\321\200\320\275\320\260\321\217 \320\264\320\270\321\204\321\204\320\265\321\200\320\265\320\275\321\206\320\270\320\260\321\206\320\270\321\217 \320\275\320\265 \320\262\321\213\321\200\320\260\320\266\320\265\320\275\320\260.", nullptr));
         kidneysRightCalyxCheck->setText(QApplication::translate("MainWindow", "\320\247\320\260\321\210\320\265\321\207\320\275\320\276-\320\273\320\276\321\205\320\260\320\275\320\276\321\207\320\275\320\260\321\217 \321\201\320\270\321\201\321\202\320\265\320\274\320\260 \320\275\320\265 \321\200\320\260\321\201\321\210\320\270\321\200\320\265\320\275\320\260.", nullptr));
-        kidneysLeftPlaceLabel->setText(QApplication::translate("MainWindow", "\320\233\320\265\320\262\320\260\321\217 \320\277\320\276\321\207\320\272\320\260: \321\200\320\260\321\201\320\277\320\276\320\273\320\276\320\266\320\265\320\275\320\260 \320\276\320\261\321\213\321\207\320\275\320\276.", nullptr));
+        kidneysLeftPlaceLabel->setText( "Левая почка: " );
         kidneysLeftContourCheck1->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\275\321\202\321\203\321\200\321\213 \320\275\320\265\321\207\320\265\321\202\320\272\320\270\320\265,", nullptr));
         kidneysLeftContourCheck2->setText(QApplication::translate("MainWindow", "\320\275\320\265\321\200\320\276\320\262\320\275\321\213\320\265", nullptr));
         kidneysLeftSizeCheck->setText(QApplication::translate("MainWindow", "\320\240\320\260\320\267\320\274\320\265\321\200\321\213: \320\275\320\265 \321\203\320\262\320\265\320\273\320\270\321\207\320\265\320\275\321\213", nullptr));
-        kidneysLeftSizeSpin->setSuffix(QApplication::translate("MainWindow", " \320\274\320\274", nullptr));
+        kidneysLeftSizeLine->setText( " мм" );
         kidneysLeftParenchymaLabel->setText(QApplication::translate("MainWindow", "\320\237\320\260\321\200\320\265\320\275\321\205\320\270\320\274\320\260 \320\262 \321\201\321\200\320\265\320\264\320\275\320\265\320\274 \321\201\320\265\320\263\320\274\320\265\320\275\321\202\320\265 \321\202\320\276\320\273\321\211\320\270\320\275\320\276\320\271: ", nullptr));
         kidneysLeftParenchymaSpin->setSuffix(QApplication::translate("MainWindow", " \320\274\320\274", nullptr));
         kidneysLeftEchoCheck->setText(QApplication::translate("MainWindow", "\320\255\321\205\320\276\321\201\321\202\321\200\321\203\320\272\321\202\321\203\321\200\320\260 \320\277\320\260\321\200\320\265\320\275\321\205\320\270\320\274\321\213 \320\275\320\265\320\276\320\264\320\275\320\276\321\200\320\276\320\264\320\275\320\260\321\217, ", nullptr));
