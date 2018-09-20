@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>thyroid</class>
+ <widget class="QWidget" name="thyroid">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>522</width>
+    <height>642</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>700</width>
+    <height>800</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="patientNameLayout">
+     <item>
+      <widget class="QLabel" name="patientNameLabel">
+       <property name="text">
+        <string>ФИО:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="patientNameLine"/>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="patientAgeLayout">
+     <item>
+      <widget class="QLabel" name="patientAgeLabel">
+       <property name="text">
+        <string>Год рождения:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="patientAgeDate"/>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="patientResearchLayout">
+     <item>
+      <widget class="QLabel" name="patientResearchLabel">
+       <property name="text">
+        <string>Дата исследования</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateEdit" name="patientResearchDate"/>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="protocallLabel">
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>7</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>ПРОТОКОЛ УЛЬТРАЗВУКОВОГО ИССЛЕДОВАНИЯ ЩИТОВИДНОЙ ЖЕЛЕЗЫ</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QCheckBox" name="rightShareCheck">
+     <property name="text">
+      <string>Правая доля не увеличена</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <layout class="QHBoxLayout" name="rightShareLayout">
+     <item>
+      <widget class="QLabel" name="rightShareSizeLabel">
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Размеры:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="rightShareSizeSpinLayout">
+       <item>
+        <layout class="QVBoxLayout" name="rightShareSizeLayout">
+         <item>
+          <widget class="QLabel" name="rightShareLenghtLabel">
+           <property name="text">
+            <string>Длина:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="rightShareWideLabel">
+           <property name="text">
+            <string>Ширина:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="rightShareThicknessLabe">
+           <property name="text">
+            <string>Толщина</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="rightShareVolumeLabel">
+           <property name="text">
+            <string>Объем правой доли: </string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="rightShareSpinLayout">
+         <item>
+          <widget class="QSpinBox" name="rightShareLenghtSpin">
+           <property name="suffix">
+            <string> (мм)</string>
+           </property>
+           <property name="maximum">
+            <number>1000</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="rightShareWideSpin">
+           <property name="suffix">
+            <string> (мм)</string>
+           </property>
+           <property name="maximum">
+            <number>1000</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="rightShareThicknessSpin">
+           <property name="suffix">
+            <string> (мм)</string>
+           </property>
+           <property name="maximum">
+            <number>1000</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="rightShareVolumeSpin">
+           <property name="suffix">
+            <string> см.куб</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="6" column="0">
+    <widget class="QCheckBox" name="leftShareCheck">
+     <property name="text">
+      <string>Правая доля не увеличена</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <layout class="QHBoxLayout" name="leftShareLayout">
+     <item>
+      <widget class="QLabel" name="leftShareSizeLabel">
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Размеры:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="leftShareSizeSpinLayout">
+       <item>
+        <layout class="QVBoxLayout" name="leftShareSizeLayout">
+         <item>
+          <widget class="QLabel" name="leftShareLengthLabel">
+           <property name="text">
+            <string>Длина:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="leftShareWideLabel">
+           <property name="text">
+            <string>Ширина:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="leftShareThicknessLabel">
+           <property name="text">
+            <string>Толщина</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="leftShareVolumeLabel">
+           <property name="text">
+            <string>Объем левой доли: </string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="leftShareSpinLayout">
+         <item>
+          <widget class="QSpinBox" name="leftShareLengthSpin">
+           <property name="suffix">
+            <string> (мм)</string>
+           </property>
+           <property name="maximum">
+            <number>1000</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="leftShareWideSpin">
+           <property name="suffix">
+            <string> (мм)</string>
+           </property>
+           <property name="maximum">
+            <number>1000</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="leftShareThicknessSpin">
+           <property name="suffix">
+            <string> (мм)</string>
+           </property>
+           <property name="maximum">
+            <number>1000</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="leftShareVolumeSpin">
+           <property name="suffix">
+            <string> см.куб</string>
+           </property>
+           <property name="decimals">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <double>1000.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="8" column="0">
+    <layout class="QHBoxLayout" name="neckThicknessLayout">
+     <item>
+      <widget class="QLabel" name="neckThicknessLabel">
+       <property name="text">
+        <string>Толщина перешейка:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="neckThicknessSpin">
+       <property name="suffix">
+        <string> мм</string>
+       </property>
+       <property name="prefix">
+        <string/>
+       </property>
+       <property name="maximum">
+        <number>1000</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="9" column="0">
+    <layout class="QHBoxLayout" name="volumeLayout">
+     <item>
+      <widget class="QLabel" name="volumeLabel">
+       <property name="text">
+        <string>Общий объем: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="volumeSpin">
+       <property name="prefix">
+        <string/>
+       </property>
+       <property name="suffix">
+        <string> см. куб.</string>
+       </property>
+       <property name="maximum">
+        <double>1000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="volumeNormalLabel">
+       <property name="text">
+        <string>( норма 4,4-18 см. куб. )</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="10" column="0">
+    <layout class="QHBoxLayout" name="echogenLayout">
+     <item>
+      <widget class="QLabel" name="echogenLabel">
+       <property name="text">
+        <string>Эхогенность: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="echogenMidRadio">
+       <property name="text">
+        <string>средняя</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">echogenGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="echogenUpRadio">
+       <property name="text">
+        <string>повышена</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">echogenGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="echogenDownRadio">
+       <property name="text">
+        <string>понижена</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">echogenGroup</string>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="11" column="0">
+    <layout class="QHBoxLayout" name="structureLayout">
+     <item>
+      <widget class="QCheckBox" name="structureCheck">
+       <property name="text">
+        <string>Структура: неоднородная</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="contourCheck">
+       <property name="text">
+        <string>Контуры: неровные</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="12" column="0">
+    <layout class="QHBoxLayout" name="creaturesLayout">
+     <item>
+      <widget class="QCheckBox" name="creaturesCheck">
+       <property name="text">
+        <string>Очаговые образования: нет</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="neckLymphoCheck">
+       <property name="text">
+        <string>Шейные лимфоузы: не изменены</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="13" column="0">
+    <widget class="QLabel" name="mainConclusionLabel">
+     <property name="text">
+      <string>ЗАКЛЮЧЕНИЕ: </string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0">
+    <widget class="QTextEdit" name="mainConclusionText">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>35</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>700</width>
+       <height>50</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="echogenGroup"/>
+ </buttongroups>
+</ui>

@@ -1,10 +1,9 @@
 #include "patient.h"
 #include <QtWidgets>
 
-Patient::Patient( QString name, qint16 age, QObject* pobj )
+Patient::Patient( QString name, QObject* pobj )
 {
     this->name = name;
-    this->age = age;
 }
 
 void Patient::setName( QString name )
@@ -12,24 +11,24 @@ void Patient::setName( QString name )
     this->name = name;
 }
 
-void Patient::setAge ( qint16 age )
-{
-    this->age = age;
-}
+//void Patient::setAge ( QDate age )
+//{
+//    this->age.setDate( )
+//}
 
 const QString& Patient::getName()
 {
     return this->name;
 }
 
-qint16 Patient::getAge()
+QDate Patient::getAge()
 {
     return this->age;
 }
 
 void Patient::slotsetName( const QString& name )
 {
-    this->name = "Kolya Pupkin";
+
 }
 
 

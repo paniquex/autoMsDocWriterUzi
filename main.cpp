@@ -5,12 +5,14 @@
 #include <QDebug>
 #include <QAxObject>
 #include <QAxBase>
+#include <kidneys.cpp>
+#include <thyroid.cpp>
+#include <mammary.cpp>
 #include "patient.h"
-
+#include "newpatientform.h"
 
 //#include "livercheck.h"
 void replaceString(QAxObject* pActiveDoc, const QString& oldString, const QString& newString);
-
 
 int main(int argc, char *argv[])
 {
@@ -23,13 +25,15 @@ int main(int argc, char *argv[])
     qint32 gridX = 1, gridY = 1;
     QLineEdit* patientName = new QLineEdit;
 
+    //Создание нового пациента
+    Patient *patient = new Patient;
+
     patientName->setFixedHeight( 15 );
     QDateEdit* patientAge = new QDateEdit;
+
     QDateEdit* researchDate = new QDateEdit( QDate::currentDate() );
 
-    Patient* Kolya = new Patient;
-    Kolya->setName( "Kolya Efimov" );
-// Создаение Заголовков
+// Создание Заголовков
 
     QLabel* labelName = new QLabel( "ФИО: "  );
     QLabel* labelAge  = new QLabel( "Год Рождения: " );
@@ -129,6 +133,7 @@ int main(int argc, char *argv[])
     speedBloodGroup->addButton( speedBloodDownRadio );
     speedBloodGroup->addButton( speedBloodMidRadio );
     speedBloodGroup->setExclusive( true );
+    speedBloodMidRadio->setChecked( true );
 
     //Печеночные Вены
     QCheckBox* hepaticCheck = new QCheckBox( "Печоночные вены: не изменены" );
@@ -375,11 +380,11 @@ int main(int argc, char *argv[])
                                 });
 
     //Наличие свободной жидкости в брюшной полости
-    QCheckBox* bellyWaterCheck = new QCheckBox( "НАЛИЧИЕ СВОБОДНОЙ ЖИДКОСТИ В БРЮШНОЙ ПОЛОСТИ: нет" );
+    QCheckBox* bellyWaterCheck = new QCheckBox( "Наличие свободной жидкости в брюшной полости: нет" );
     bellyWaterCheck->setFixedSize( 420, 20 );
     QObject::connect( bellyWaterCheck, &QCheckBox::stateChanged,
-                          [&] { if ( !( bellyWaterCheck->isChecked() ) ) bellyWaterCheck->setText( "НАЛИЧИЕ СВОБОДНОЙ ЖИДКОСТИ В БРЮШНОЙ ПОЛОСТИ: нет" );
-                                if ( ( bellyWaterCheck->isChecked() ) ) bellyWaterCheck->setText( "НАЛИЧИЕ СВОБОДНОЙ ЖИДКОСТИ В БРЮШНОЙ ПОЛОСТИ: есть" );
+                          [&] { if ( !( bellyWaterCheck->isChecked() ) ) bellyWaterCheck->setText( "Наличие свободной жидкости в брюшной полости: нет" );
+                                if ( ( bellyWaterCheck->isChecked() ) ) bellyWaterCheck->setText( "Наличие свободной жидкости в брюшной полости: есть" );
                                 });
 
     //Заключение
@@ -611,7 +616,7 @@ int main(int argc, char *argv[])
     //Размер
     QHBoxLayout* gallbladerSizeLayout = new QHBoxLayout;
     gallbladerSizeLayout->addWidget( gallbladerSizeLabel );
-    gallbladerSizeLayout->addWidget( gallbladerSizeLine );
+    gallbladerSizeLayout->addWidget( gallbladerSizeLine, 0, Qt::AlignLeft );
     mainLayout->addLayout( gallbladerSizeLayout, ++gridX, 1, Qt::AlignLeft );
     //Деформация
     QHBoxLayout* gallbladerDeformationLayout = new QHBoxLayout;
@@ -695,8 +700,8 @@ int main(int argc, char *argv[])
      mainLayout->addLayout( spleenFormLayout, ++gridX, 1, Qt::AlignLeft );
      //Размер
      QHBoxLayout* spleenSizeLayout = new QHBoxLayout;
-     spleenSizeLayout->addWidget( spleenSizeLabel );
-     spleenSizeLayout->addWidget( spleenSizeLine );
+     spleenSizeLayout->addWidget( spleenSizeLabel, 0, Qt::AlignLeft );
+     spleenSizeLayout->addWidget( spleenSizeLine, 0, Qt::AlignLeft );
      mainLayout->addLayout( spleenSizeLayout, ++gridX, 1, Qt::AlignLeft );
      //Контур и Эхоструктура
      QHBoxLayout* spleenContourLayout = new QHBoxLayout;
@@ -764,22 +769,6 @@ int main(int argc, char *argv[])
 
      //Связь с Документом word
 
-     QScrollArea mainScrollArea;
-     mainScrollArea.setWidget( &wgt );
-     mainLayout->setHorizontalSpacing( 0 );
-     mainLayout->setMargin( 10 );
-     QWidget returnWidget;
-     QPushButton* returnButton = new QPushButton("Вернуться в программу");
-     QHBoxLayout* returnLayout = new QHBoxLayout;
-     returnLayout->addWidget( returnButton );
-     returnWidget.setLayout( returnLayout );
-     QObject::connect( returnButton, &QPushButton::clicked,
-                        [&]
-                        {
-                            returnWidget.hide();
-                            mainScrollArea.show();
-
-                        });
      //Сохранить изменения
              QPushButton* liverSaveAllButton = new QPushButton( "Сохранить документ" );
              //wordSave* liverSaveAllClass = new wordSave;
@@ -943,8 +932,6 @@ int main(int argc, char *argv[])
                                          //ОСНОВНОЕ ЗАКЛЮЧЕНИЕ
                                               pWord->setProperty( "Visible", true );
                                             replaceString( pWord, "mainConclusionText", mainConclusionText->toPlainText() );
-                                            mainScrollArea.hide();
-                                            returnWidget.show();
 
 
 
@@ -954,52 +941,298 @@ int main(int argc, char *argv[])
          //Сохранить документ LAYOUT
               mainLayout->addWidget( liverSaveAllButton, ++gridX, 1, Qt::AlignRight );
 
-     //Создание шрифта для всего Виджета
+ //ДОБАВЛЕНИЕ К mainTabWidget ВСЕХ ФОРМ И ИХ НАСТРОЙКА
 
-     wgt.setFont( widgetFont );
-     wgt.setLayout( mainLayout );
-     wgt.resize( 700, 1000 );
-     //mainTabWidget->show();
-     mainScrollArea.resize( 720, 700 );
-     mainScrollArea.show();
-    return a.exec();
+              QTabWidget mainTabWidget;
+              QWidget newPatientFormWidget;
+              newPatientForm newPatientFormClass( &newPatientFormWidget );
+              mainTabWidget.addTab( &newPatientFormWidget, "Пациент" );
+
+
+              //ПЕЧЕНЬ
+              QScrollArea LiverScrollArea;
+              QWidget returnWidget;
+              mainTabWidget.addTab( &LiverScrollArea, "Печень" );
+
+              //ПОЧКИ
+              QWidget kidneysWidget;
+              QScrollArea kidneysScrollArea;
+              Ui::kidneys kidneysClass( &kidneysWidget );
+              kidneysScrollArea.setWidget( &kidneysWidget );
+              kidneysWidget.resize( 710, 600 );
+              mainTabWidget.addTab( &kidneysScrollArea, "Почки" );
+
+              //Щитовидная железа
+              QWidget thyroidWidget;
+              QScrollArea thyroidScrollArea;
+              Ui::thyroid thyroidClass( &thyroidWidget );
+              thyroidScrollArea.setWidget( &thyroidWidget );
+              thyroidWidget.resize( 710, 650 );
+              QObject::connect( newPatientFormClass.patientMaleRadio, &QRadioButton::toggled, [&] {
+                    thyroidClass.volumeNormalLabel->setText( "( норма 7-25 см. куб. )" );
+              } );
+              QObject::connect( newPatientFormClass.patientFemaleRadio, &QRadioButton::toggled, [&] {
+                    thyroidClass.volumeNormalLabel->setText( "( норма 4,4-18 см. куб. )" );
+              } );
+
+              mainTabWidget.addTab( &thyroidScrollArea, "Щит. железа" );
+
+              //Молочные железы
+              QWidget mammaryWidget;
+              QScrollArea mammaryScrollArea;
+              Ui::mammary mammaryClass( &mammaryWidget );
+              mammaryScrollArea.setWidget( &mammaryWidget );
+              mammaryWidget.resize( 710, 710 );
+              mainTabWidget.addTab( &mammaryScrollArea, "Молочн. железы" );
+
+
+              LiverScrollArea.setWidget( &wgt );
+              mainLayout->setHorizontalSpacing( 0 );
+              mainLayout->setMargin( 10 );
+              mainTabWidget.setFont( widgetFont );
+              wgt.setLayout( mainLayout );
+              wgt.resize( 710, 1000 );
+              mainTabWidget.resize( 720, 600 );
+              mainTabWidget.setMinimumSize( 750, 500 );
+              mainTabWidget.setMaximumSize( 800, 600 );
+
+              //НОВЫЙ ПАЦИЕНТ ПЕРВЫЙ
+              QPushButton* newPatientButton = new QPushButton( "Новый пациент" );
+              mainTabWidget.setCornerWidget( newPatientButton, Qt::Corner::TopLeftCorner );
+              //Следующий пациент ( вся информация об предыдущем будет удалена )
+
+              QObject::connect( newPatientButton, &QPushButton::clicked,
+                                [&]
+                                    {
+                                        newPatientFormClass.patientNameLine->clear();
+                                        newPatientFormClass.patientAgeDate->setDate( QDate::currentDate() );
+                                        newPatientFormClass.patientMaleRadio->setChecked( true );
+                                        newPatientFormClass.patientGroup->setExclusive( false );
+                                        newPatientFormClass.patientMaleRadio->setChecked( false );
+                                        newPatientFormClass.patientGroup->setExclusive( true );
+
+                                        placeStdRadio->setChecked( true );
+                                        leftShareCheck->setChecked( false );
+                                        rightShareCheck->setChecked( false );
+                                        leftThickSpin->clear();
+                                        rightThickSpin->clear();
+
+                                        contourHilly->setChecked( true );
+                                        contourGroups->setExclusive( false );
+                                        contourHilly->setChecked( false );
+                                        contourGroups->setExclusive( true );
+
+                                        echoCheck->setChecked( false );
+
+                                        echogenDownRadio->setChecked( true );
+                                        echogenGroup->setExclusive( false );
+                                        echogenDownRadio->setChecked( false );
+                                        echogenGroup->setExclusive( true );
+
+                                        magCheck->setChecked( false );
+                                        magSpin->clear();
+
+                                        speedBloodMidRadio->setChecked( true );
+
+                                        hepaticCheck->setChecked( false );
+                                        downVenaCheck->setChecked( false );
+                                        downVenaSpin->clear();
+                                        inhepaticCheck->setChecked( false );
+                                        commonBileCheck->setChecked( false );
+                                        commonBileSpin->clear();
+                                        commonBileCheck2->setChecked( false );
+
+                                        liverConclusionText->clear();
+
+                                        gallbladerSizeLine->setText( " мм" );
+                                        gallbladerDeformationBodyCheck->setChecked( false );
+                                        gallbladerDeformationBottomCheck->setChecked( false );
+                                        gallbladerDeformationNeckCheck->setChecked( false );
+                                        gallbladerWallSpin->clear();
+                                        gallbladerContentCheck->setChecked( false );
+                                        gallbladerConcrementsCheck->setChecked( false );
+                                        gallbladerConclusionText->clear();
+
+                                        pancreasSizeBodySpin->clear();
+                                        pancreasSizeHeadSpin->clear();
+                                        pancreasSizeTailSpin->clear();
+
+                                        pancreasContourHilly->setChecked( true );
+                                        pancreasContourGroups->setExclusive( false );
+                                        pancreasContourHilly->setChecked( false );
+                                        pancreasContourGroups->setExclusive( true );
+
+                                        pancreasEchogenDownRadio->setChecked( true );
+                                        pancreasEchogenGroups->setExclusive( false );
+                                        pancreasEchogenDownRadio->setChecked( false );
+                                        pancreasEchogenGroups->setExclusive( true );
+
+                                        pancreasMainStreamCheck->setChecked( false );
+                                        pancreasConclusionText->clear();
+
+                                        spleenSizeLine->setText( " мм" );
+
+                                        spleenContourHilly->setChecked( true );
+                                        spleenContourGroups->setExclusive( false );
+                                        spleenContourHilly->setChecked( false );
+                                        spleenContourGroups->setExclusive( true );
+
+                                        spleenEchogenDownRadio->setChecked( true );
+                                        spleenEchogenGroups->setExclusive( false );
+                                        spleenEchogenDownRadio->setChecked( false );
+                                        spleenEchogenGroups->setExclusive( true );
+
+                                        spleenVenaCheck->setChecked( false );
+                                        bellyWaterCheck->setChecked( false );
+                                        spleenConclusionText->clear();
+
+                                        mainConclusionText->clear();
+
+                                        //ПОЧКИ KIDNEYS
+
+                                        kidneysClass.kidneysBladderSpin->clear();
+                                        kidneysClass.kidneysBladderContainsCheck->setChecked( false );
+                                        kidneysClass.kidneysBladderWallsContourCheck->setChecked( false );
+                                        kidneysClass.kidneysBladderWallsWideCheck->setChecked( false );
+                                        kidneysClass.kidneysBladderDropsCheck->setChecked( false );
+
+                                        kidneysClass.kidneysRightContourCheck1->setChecked( false );
+                                        kidneysClass.kidneysRightContourCheck2->setChecked( false );
+                                        kidneysClass.kidneysRightSizeCheck->setChecked( false );
+                                        kidneysClass.kidneysRightSizeLine->clear();
+                                        kidneysClass.kidneysRightParenchymaSpin->clear();
+                                        kidneysClass.kidneysRightEchoCheck->setChecked( false );
+                                        kidneysClass.kidneysRightCalyxCheck->setChecked( false );
+                                        kidneysClass.kidneysRightDiffCheck->setChecked( false );
+                                        kidneysClass.kidneysRightCalyxEdit->clear();
+
+                                        kidneysClass.kidneysLeftContourCheck1->setChecked( false );
+                                        kidneysClass.kidneysLeftContourCheck2->setChecked( false );
+                                        kidneysClass.kidneysLeftSizeCheck->setChecked( false );
+                                        kidneysClass.kidneysLeftSizeLine->clear();
+                                        kidneysClass.kidneysLeftParenchymaSpin->clear();
+                                        kidneysClass.kidneysLeftEchoCheck->setChecked( false );
+                                        kidneysClass.kidneysLeftCalyxCheck->setChecked( false );
+                                        kidneysClass.kidneysLeftDiffCheck->setChecked( false );
+                                        kidneysClass.kidneysLeftCalyxEdit->clear();
+
+                                        kidneysClass.kidneysCDKCheck->setChecked( false );
+                                        kidneysClass.kidneysProectionCheck->setChecked( false );
+                                        kidneysClass.kidneysProectionEdit->clear();
+                                        kidneysClass.kidneysConclusionText->clear();
+
+                                        //ЩИТОВИДНАЯ ЖЕЛЕЗА THYROID
+
+                                        thyroidClass.rightShareCheck->setChecked( false );
+                                        thyroidClass.rightShareLengthSpin->clear();
+                                        thyroidClass.rightShareWideSpin->clear();
+                                        thyroidClass.rightShareThicknessSpin->clear();
+                                        thyroidClass.rightShareVolumeSpin->clear();
+
+                                        thyroidClass.leftShareCheck->setChecked( false );
+                                        thyroidClass.leftShareLengthSpin->clear();
+                                        thyroidClass.leftShareWideSpin->clear();
+                                        thyroidClass.leftShareThicknessSpin->clear();
+                                        thyroidClass.leftShareVolumeSpin->clear();
+
+                                        thyroidClass.neckLymphoCheck->setChecked( false );
+                                        thyroidClass.neckThicknessSpin->clear();
+                                        thyroidClass.volumeSpin->clear();
+
+                                        thyroidClass.echogenDownRadio->setChecked( true );
+                                        thyroidClass.echogenGroup->setExclusive( false );
+                                        thyroidClass.echogenDownRadio->setChecked( false );
+                                        thyroidClass.echogenGroup->setExclusive( true );
+
+                                        thyroidClass.structureCheck->setChecked( false );
+                                        thyroidClass.contourCheck->setChecked( false );
+                                        thyroidClass.creaturesCheck->setChecked( false );
+                                        thyroidClass.creaturesEdit->clear();
+                                        thyroidClass.neckLymphoCheck->setChecked( false );
+                                        thyroidClass.neckLymphoEdit->clear();
+                                        thyroidClass.mainConclusionText->clear();
+
+                                        //Молочные железы MAMMARY
+                                        mammaryClass.rightShapeCheck->setChecked( false );
+                                        mammaryClass.rightClothCombo->setCurrentIndex( 0 );
+                                        mammaryClass.rightVisualCheck->setChecked( false );
+                                        mammaryClass.rightStreamCheck->setChecked( false );
+                                        mammaryClass.rightDiffCheck->setChecked( false );
+                                        mammaryClass.rightChangesCheck->setChecked( false );
+                                        mammaryClass.rightChangesEdit->clear();
+                                        mammaryClass.rightLymphoCheck->setChecked( false );
+                                        mammaryClass.rightLymphoEdit->clear();
+
+                                        mammaryClass.leftShapeCheck->setChecked( false );
+                                        mammaryClass.leftClothCombo->setCurrentIndex( 0 );
+                                        mammaryClass.leftVisualCheck->setChecked( false );
+                                        mammaryClass.leftStreamCheck->setChecked( false );
+                                        mammaryClass.leftDiffCheck->setChecked( false );
+                                        mammaryClass.leftChangesCheck->setChecked( false );
+                                        mammaryClass.leftChangesEdit->clear();
+                                        mammaryClass.leftLymphoCheck->setChecked( false );
+                                        mammaryClass.leftLymphoEdit->clear();
+
+                                        mammaryClass.mainConclusionText->clear();
+
+
+
+
+
+
+                                        mainTabWidget.setCurrentIndex( 0 );
+
+                                    } );
+
+              QWidget *passwordWidget = new QWidget();
+              QLineEdit *passwordEdit = new QLineEdit( passwordWidget );
+              passwordWidget->resize( 200, 200 );
+              passwordWidget->show();
+              QObject::connect( passwordEdit, &QLineEdit::textChanged, [&] {
+                 if ( passwordEdit->text() == "1956" )
+                 {
+                     mainTabWidget.show();
+                     passwordWidget->close();
+                 }
+
+              });
+              //LiverScrollArea.resize( 720, 700 );
+              //LiverScrollArea.show();
+
+
+
+
+
+              //Изменение имени и возраста пациента
+              //Изменение имени пациента
+
+              QObject::connect( newPatientFormClass.patientNameLine , &QLineEdit::textChanged,
+                                [&] {
+                                      patient->setName( newPatientFormClass.patientNameLine->text() );
+                                      patientName->setText( patient->getName() );
+                                      kidneysClass.kidneysNameLine->setText( patient->getName() );
+                                      thyroidClass.patientNameLine->setText( patient->getName() );
+                                      mammaryClass.patientNameLine->setText( patient->getName() );
+                                    }
+                                );
+
+              //Изменение возраста
+              QObject::connect( newPatientFormClass.patientAgeDate, &QDateEdit::dateChanged,
+                                [&] {
+                                      patientAge->setDate( newPatientFormClass.patientAgeDate->date() );
+                                      kidneysClass.kidneysAgeLine->setDate( newPatientFormClass.patientAgeDate->date() );
+                                      thyroidClass.patientAgeDate->setDate( newPatientFormClass.patientAgeDate->date() );
+                                      mammaryClass.patientAgeDate->setDate( newPatientFormClass.patientAgeDate->date() );
+                                    }
+                                );
+
+
+
+              return a.exec();
+
 
 }
 
-void replaceString( QAxObject* pActiveDoc, const QString& oldString, const QString& newString)
-{
-  QAxObject* WordSelection = pActiveDoc->querySubObject("Selection");
-
-  QAxObject* Find = WordSelection->querySubObject("Find");
-  if (!Find) return;
-  Find->dynamicCall("ClearFormatting()");
-
-  QList<QVariant> params;
-  params.operator << (QVariant(oldString));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant(true));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant(newString));
-  params.operator << (QVariant("2"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  params.operator << (QVariant("0"));
-  Find->dynamicCall("Execute(const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,"
-                    "const QVariant&,const QVariant&,const QVariant&)",
-                    params);
-
-}
 
 
 
