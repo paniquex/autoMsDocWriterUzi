@@ -77,7 +77,7 @@ public:
     QDoubleSpinBox *leftShareVolumeSpin;
     QHBoxLayout *neckThicknessLayout;
     QLabel *neckThicknessLabel;
-    QSpinBox *neckThicknessSpin;
+    QDoubleSpinBox *neckThicknessSpin;
     QHBoxLayout *volumeLayout;
     QLabel *volumeLabel;
     QDoubleSpinBox *volumeSpin;
@@ -92,7 +92,9 @@ public:
     QCheckBox *contourCheck;
     QHBoxLayout *creaturesLayout;
     QCheckBox *creaturesCheck;
+    QTextEdit *creaturesEdit;
     QCheckBox *neckLymphoCheck;
+    QTextEdit *neckLymphoEdit;
     QLabel *mainConclusionLabel;
     QTextEdit *mainConclusionText;
     QButtonGroup *echogenGroup;
@@ -132,7 +134,7 @@ public:
 
         frame4 = new QFrame;
         frame4->setFrameShape( QFrame::Box );
-        gridLayout->addWidget( frame4, 8, 0, 5, 1 );
+        gridLayout->addWidget( frame4, 8, 0, 8, 1 );
 
         patientNameLayout = new QHBoxLayout();
         patientNameLayout->setObjectName(QStringLiteral("patientNameLayout"));
@@ -245,18 +247,21 @@ public:
         rightShareLengthSpin = new QSpinBox(thyroid);
         rightShareLengthSpin->setObjectName(QStringLiteral("rightShareLengthSpin"));
         rightShareLengthSpin->setMaximum(1000);
+        rightShareLengthSpin->clear();
 
         rightShareSpinLayout->addWidget(rightShareLengthSpin);
 
         rightShareWideSpin = new QSpinBox(thyroid);
         rightShareWideSpin->setObjectName(QStringLiteral("rightShareWideSpin"));
         rightShareWideSpin->setMaximum(1000);
+        rightShareWideSpin->clear();
 
         rightShareSpinLayout->addWidget(rightShareWideSpin);
 
         rightShareThicknessSpin = new QSpinBox(thyroid);
         rightShareThicknessSpin->setObjectName(QStringLiteral("rightShareThicknessSpin"));
         rightShareThicknessSpin->setMaximum(1000);
+        rightShareThicknessSpin->clear();
 
         rightShareSpinLayout->addWidget(rightShareThicknessSpin);
 
@@ -265,6 +270,7 @@ public:
         rightShareVolumeSpin->setDecimals(1);
         rightShareVolumeSpin->setSingleStep( 0.1 );
         rightShareVolumeSpin->setMaximum(1000);
+        rightShareVolumeSpin->clear();
 
         rightShareSpinLayout->addWidget(rightShareVolumeSpin);
 
@@ -327,18 +333,21 @@ public:
         leftShareLengthSpin = new QSpinBox(thyroid);
         leftShareLengthSpin->setObjectName(QStringLiteral("leftShareLengthSpin"));
         leftShareLengthSpin->setMaximum(1000);
+        leftShareLengthSpin->clear();
 
         leftShareSpinLayout->addWidget(leftShareLengthSpin);
 
         leftShareWideSpin = new QSpinBox(thyroid);
         leftShareWideSpin->setObjectName(QStringLiteral("leftShareWideSpin"));
         leftShareWideSpin->setMaximum(1000);
+        leftShareWideSpin->clear();
 
         leftShareSpinLayout->addWidget(leftShareWideSpin);
 
         leftShareThicknessSpin = new QSpinBox(thyroid);
         leftShareThicknessSpin->setObjectName(QStringLiteral("leftShareThicknessSpin"));
         leftShareThicknessSpin->setMaximum(1000);
+        leftShareThicknessSpin->clear();
 
         leftShareSpinLayout->addWidget(leftShareThicknessSpin);
 
@@ -347,6 +356,7 @@ public:
         leftShareVolumeSpin->setDecimals(1);
         leftShareVolumeSpin->setSingleStep( 0.1 );
         leftShareVolumeSpin->setMaximum(1000);
+        leftShareVolumeSpin->clear();
 
         leftShareSpinLayout->addWidget(leftShareVolumeSpin);
 
@@ -367,10 +377,13 @@ public:
 
         neckThicknessLayout->addWidget(neckThicknessLabel);
 
-        neckThicknessSpin = new QSpinBox(thyroid);
+        neckThicknessSpin = new QDoubleSpinBox(thyroid);
         neckThicknessSpin->setMaximumHeight( 15 );
+        neckThicknessSpin->setSingleStep( 0.1 );
+        neckThicknessSpin->setDecimals( 1 );
         neckThicknessSpin->setObjectName(QStringLiteral("neckThicknessSpin"));
         neckThicknessSpin->setMaximum(1000);
+        neckThicknessSpin->clear();
 
         neckThicknessLayout->addWidget(neckThicknessSpin);
         gridLayout->addLayout(neckThicknessLayout, 8, 0, Qt::AlignTop | Qt::AlignLeft );
@@ -389,6 +402,7 @@ public:
         volumeSpin->setMaximum(1000);
         volumeSpin->setSingleStep(0.1);
         volumeSpin->setDecimals( 1 );
+        volumeSpin->clear();
 
         volumeLayout->addWidget( volumeSpin );
 
@@ -476,25 +490,37 @@ public:
                                             if ( ( neckLymphoCheck->isChecked() ) ) neckLymphoCheck->setText("Шейные лимфоузлы: изменены");
                                });
 
-        creaturesLayout->addWidget(neckLymphoCheck);
+        creaturesEdit = new QTextEdit();
+        neckLymphoEdit = new QTextEdit();
+
+        creaturesEdit->setMinimumSize(QSize(650, 20));
+        creaturesEdit->setMaximumSize(QSize(700, 30));
+        neckLymphoEdit->setMinimumSize(QSize(650, 20));
+        neckLymphoEdit->setMaximumSize(QSize(700, 30));
+
+        gridLayout->addLayout( creaturesLayout, 12, 0, Qt::AlignLeft);
+        gridLayout->addWidget( creaturesEdit, 13, 0, Qt::AlignLeft );
+        gridLayout->addWidget( neckLymphoCheck, 14, 0, Qt::AlignLeft );
+        gridLayout->addWidget( neckLymphoEdit, 15, 0, Qt::AlignLeft );
 
 
-        gridLayout->addLayout(creaturesLayout, 12, 0, Qt::AlignLeft);
+
+
 
         mainConclusionLabel = new QLabel(thyroid);
         mainConclusionLabel->setObjectName(QStringLiteral("mainConclusionLabel"));
 
-        gridLayout->addWidget(mainConclusionLabel, 13, 0, Qt::AlignLeft);
+        gridLayout->addWidget(mainConclusionLabel, 16, 0, Qt::AlignLeft);
 
         mainConclusionText = new QTextEdit(thyroid);
         mainConclusionText->setObjectName(QStringLiteral("mainConclusionText"));
         mainConclusionText->setMinimumSize(QSize(650, 35));
         mainConclusionText->setMaximumSize(QSize(700, 50));
 
-        gridLayout->addWidget(mainConclusionText, 14, 0, Qt::AlignLeft );
+        gridLayout->addWidget(mainConclusionText, 17, 0, Qt::AlignLeft );
 
         saveAllButton = new QPushButton( "Сохранить документ" );
-        gridLayout->addWidget( saveAllButton, 15, 0, Qt::AlignCenter );
+        gridLayout->addWidget( saveAllButton, 18, 0, Qt::AlignCenter );
         gridLayout->setSpacing( 4 );
 
 
@@ -527,6 +553,7 @@ public:
 
                                                      replaceString( pWord, "neckThicknessSpin", neckThicknessSpin->text() );
                                                      replaceString( pWord, "volumeSpin", volumeSpin->text() );
+                                                     replaceString( pWord, "volumeNormalLabel", volumeNormalLabel->text() );
 
                                                      if ( echogenMidRadio->isChecked() )
                                                      {
@@ -544,7 +571,9 @@ public:
                                                      replaceString( pWord, "structureCheck", structureCheck->text() );
                                                      replaceString( pWord, "contourCheck", contourCheck->text() );
                                                      replaceString( pWord, "creaturesCheck", creaturesCheck->text() );
+                                                     replaceString( pWord, "creaturesEdit", creaturesEdit->toPlainText() );
                                                      replaceString( pWord, "neckLymphoCheck", neckLymphoCheck->text() );
+                                                     replaceString( pWord, "neckLymphoEdit", neckLymphoEdit->toPlainText() );
 
                                                      replaceString( pWord, "mainConclusionText", mainConclusionText->toPlainText() );
 
@@ -578,7 +607,7 @@ public:
         rightShareWideSpin->setSuffix(QApplication::translate("thyroid", " (\320\274\320\274)", nullptr));
         rightShareThicknessSpin->setSuffix(QApplication::translate("thyroid", " (\320\274\320\274)", nullptr));
         rightShareVolumeSpin->setSuffix(QApplication::translate("thyroid", " \321\201\320\274.\320\272\321\203\320\261", nullptr));
-        leftShareCheck->setText(QApplication::translate("thyroid", "\320\237\321\200\320\260\320\262\320\260\321\217 \320\264\320\276\320\273\321\217 \320\275\320\265 \321\203\320\262\320\265\320\273\320\270\321\207\320\265\320\275\320\260", nullptr));
+        leftShareCheck->setText( "Левая доля не увеличена" );
         leftShareSizeLabel->setText(QApplication::translate("thyroid", "\320\240\320\260\320\267\320\274\320\265\321\200\321\213:", nullptr));
         leftShareLengthLabel->setText(QApplication::translate("thyroid", "\320\224\320\273\320\270\320\275\320\260:", nullptr));
         leftShareWideLabel->setText(QApplication::translate("thyroid", "\320\250\320\270\321\200\320\270\320\275\320\260:", nullptr));
