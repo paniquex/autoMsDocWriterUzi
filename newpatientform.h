@@ -4,6 +4,8 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QDateEdit>
+#include <QRadioButton>
+#include <QButtonGroup>
 #include <QFormLayout>
 
 class newPatientForm : public QWidget
@@ -17,6 +19,11 @@ public:
     QDateEdit* patientAgeDate;
     QLabel* patientAgeLabel;
     QFormLayout* patientFormLayout;
+    QButtonGroup* patientGroup;
+    QRadioButton* patientMaleRadio;
+    QRadioButton* patientFemaleRadio;
+    QLabel* patientSexLabel;
+    QHBoxLayout* patientSexLayout;
 
     newPatientForm( QWidget *wgt );
     ~newPatientForm();
