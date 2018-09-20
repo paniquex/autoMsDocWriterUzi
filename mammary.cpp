@@ -44,7 +44,9 @@ public:
     QCheckBox *rightDiffCheck;
     QHBoxLayout *rightChangesLayout;
     QCheckBox *rightChangesCheck;
+    QTextEdit *rightChangesEdit;
     QCheckBox *rightLymphoCheck;
+    QTextEdit *rightLymphoEdit;
     QLabel *leftMainLabel;
     QLabel *leftSizeLabel;
     QCheckBox *leftShapeCheck;
@@ -57,7 +59,9 @@ public:
     QCheckBox *leftDiffCheck;
     QHBoxLayout *leftChangesLayout;
     QCheckBox *leftChangesCheck;
+    QTextEdit *leftChangesEdit;
     QCheckBox *leftLymphoCheck;
+    QTextEdit *leftLymphoEdit;
     QLabel *mainConclusionLabel;
     QTextEdit *mainConclusionText;
     QPushButton *saveAllButton;
@@ -67,26 +71,13 @@ public:
     QFrame *frame1;
     QFrame *frame2;
     QFrame *frame3;
+    qint16 gridIndex = 0;
 
     void setupUi(QWidget *mammary)
     {
         if (mammary->objectName().isEmpty())
             mammary->setObjectName(QStringLiteral("mammary"));
-        mammary->resize(598, 513);
-        gridLayout = new QGridLayout(mammary);
-        gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        patientNameLayout = new QHBoxLayout();
-        patientNameLayout->setObjectName(QStringLiteral("patientNameLayout"));
-        patientNameLabel = new QLabel(mammary);
-        patientNameLabel->setObjectName(QStringLiteral("patientNameLabel"));
-
-        patientNameLayout->addWidget(patientNameLabel);
-
-        patientNameLine = new QLineEdit(mammary);
-        patientNameLine->setObjectName(QStringLiteral("patientNameLine"));
-
-        patientNameLayout->addWidget(patientNameLine);
-
+        mammary->resize(650, 513);
 
         frame1 = new QFrame;
         frame1->setFrameShape( QFrame::Box );
@@ -97,10 +88,34 @@ public:
         frame3 = new QFrame;
         frame3->setFrameShape( QFrame::Box );
 
+        gridLayout = new QGridLayout(mammary);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+
         gridLayout->addWidget( frame1, 0, 0, 3, 1 );
-        gridLayout->addWidget( frame2, 5, 0, 6, 1 );
-        gridLayout->addWidget( frame3, 12, 0, 6, 1 );
-        gridLayout->addLayout(patientNameLayout, 0, 0, Qt::AlignLeft);
+        gridLayout->addWidget( frame2, 5, 0, 9, 1 );
+        gridLayout->addWidget( frame3, 15, 0, 9, 1 );
+
+        patientNameLayout = new QHBoxLayout();
+        patientNameLayout->setObjectName(QStringLiteral("patientNameLayout"));
+        patientNameLabel = new QLabel(mammary);
+        patientNameLabel->setObjectName(QStringLiteral("patientNameLabel"));
+
+        patientNameLayout->addWidget(patientNameLabel);
+
+
+        patientNameLine = new QLineEdit(mammary);
+        patientNameLine->setObjectName(QStringLiteral("patientNameLine"));
+        patientNameLine->setMouseTracking(true);
+        patientNameLine->setMinimumSize( 651, 15 );
+        patientNameLine->setFixedHeight( 15 );
+        patientNameLine->setMouseTracking(true);
+
+        patientNameLayout->addWidget(patientNameLine, 0, Qt::AlignLeft );
+
+
+        gridLayout->addLayout(patientNameLayout, gridIndex++, 0, Qt::AlignLeft);
+
+
 
         patientAgeLayout = new QHBoxLayout();
         patientAgeLayout->setObjectName(QStringLiteral("patientAgeLayout"));
@@ -115,7 +130,7 @@ public:
         patientAgeLayout->addWidget(patientAgeDate);
 
 
-        gridLayout->addLayout(patientAgeLayout, 1, 0, 1, 1);
+        gridLayout->addLayout(patientAgeLayout, gridIndex++, 0, 1, 1);
 
         researchDateLayout = new QHBoxLayout();
         researchDateLayout->setObjectName(QStringLiteral("researchDateLayout"));
@@ -126,11 +141,12 @@ public:
 
         researchDateDate = new QDateEdit(mammary);
         researchDateDate->setObjectName(QStringLiteral("researchDateDate"));
+        researchDateDate->setDate( QDate::currentDate() );
 
         researchDateLayout->addWidget(researchDateDate);
 
 
-        gridLayout->addLayout(researchDateLayout, 2, 0, 1, 1);
+        gridLayout->addLayout(researchDateLayout, gridIndex++, 0, 1, 1);
 
         protocallLabel = new QLabel(mammary);
         protocallLabel->setObjectName(QStringLiteral("protocallLabel"));
@@ -141,18 +157,18 @@ public:
         font.setWeight(75);
         protocallLabel->setFont(font);
 
-        gridLayout->addWidget(protocallLabel, 3, 0, Qt::AlignLeft);
+        gridLayout->addWidget(protocallLabel, gridIndex++, 0, Qt::AlignLeft);
 
         rightMainLabel = new QLabel(mammary);
         rightMainLabel->setObjectName(QStringLiteral("rightMainLabel"));
         rightMainLabel->setFont(font);
 
-        gridLayout->addWidget(rightMainLabel, 4, 0, Qt::AlignLeft);
+        gridLayout->addWidget(rightMainLabel, gridIndex++, 0, Qt::AlignLeft);
 
         rightSizeLabel = new QLabel(mammary);
         rightSizeLabel->setObjectName(QStringLiteral("rightSizeLabel"));
 
-        gridLayout->addWidget(rightSizeLabel, 5, 0, Qt::AlignLeft);
+        gridLayout->addWidget(rightSizeLabel, gridIndex++, 0, Qt::AlignLeft);
 
         rightShapeCheck = new QCheckBox( "Форма: обычная" );
         rightShapeCheck->setObjectName(QStringLiteral( "rightShapeCheck" ));
@@ -163,7 +179,7 @@ public:
                                             if ( ( rightShapeCheck->isChecked() ) ) rightShapeCheck->setText("Форма: изменена");
                                });
 
-        gridLayout->addWidget(rightShapeCheck, 6, 0, Qt::AlignLeft);
+        gridLayout->addWidget(rightShapeCheck, gridIndex++, 0, Qt::AlignLeft);
 
         rightClothLayout = new QHBoxLayout();
         rightClothLayout->setObjectName(QStringLiteral("rightClothLayout"));
@@ -184,7 +200,7 @@ public:
         rightClothLayout->addWidget(rightClothCombo);
 
 
-        gridLayout->addLayout(rightClothLayout, 7, 0, Qt::AlignLeft);
+        gridLayout->addLayout(rightClothLayout, gridIndex++, 0, Qt::AlignLeft);
 
         rightVisualCheck = new QCheckBox(mammary);
         rightVisualCheck->setObjectName(QStringLiteral("rightVisualCheck"));
@@ -194,7 +210,7 @@ public:
                                             if ( ( rightVisualCheck->isChecked() ) ) rightVisualCheck->setText("Визуализация протоков: хорошая");
                                });
 
-        gridLayout->addWidget(rightVisualCheck, 8, 0, Qt::AlignLeft);
+        gridLayout->addWidget(rightVisualCheck, gridIndex++, 0, Qt::AlignLeft);
 
         rightStreamLayout = new QHBoxLayout();
         rightStreamLayout->setObjectName(QStringLiteral("rightStreamLayout"));
@@ -220,7 +236,7 @@ public:
         rightStreamLayout->addWidget(rightDiffCheck);
 
 
-        gridLayout->addLayout(rightStreamLayout, 9, 0, Qt::AlignLeft);
+        gridLayout->addLayout(rightStreamLayout, gridIndex++, 0, Qt::AlignLeft);
 
         rightChangesLayout = new QHBoxLayout();
         rightChangesLayout->setObjectName(QStringLiteral("rightChangesLayout"));
@@ -232,7 +248,8 @@ public:
                                             if ( ( rightChangesCheck->isChecked() ) ) rightChangesCheck->setText("Очаговые изменения: есть");
                                });
 
-        rightChangesLayout->addWidget(rightChangesCheck);
+
+        rightChangesLayout->addWidget( rightChangesCheck );
 
         rightLymphoCheck = new QCheckBox(mammary);
         rightLymphoCheck->setObjectName(QStringLiteral("rightLymphoCheck"));
@@ -242,21 +259,30 @@ public:
                                             if ( ( rightLymphoCheck->isChecked() ) ) rightLymphoCheck->setText( "Состояние региональных зон лимфооттока:    изменены" );
                                });
 
-        rightChangesLayout->addWidget(rightLymphoCheck);
 
+        rightChangesEdit = new QTextEdit();
+        rightLymphoEdit = new QTextEdit();
 
-        gridLayout->addLayout(rightChangesLayout, 10, 0, Qt::AlignLeft);
+        rightChangesEdit->setMinimumSize(QSize(650, 20));
+        rightChangesEdit->setMaximumSize(QSize(700, 30));
+        rightLymphoEdit->setMinimumSize(QSize(650, 20));
+        rightLymphoEdit->setMaximumSize(QSize(700, 30));
+
+        gridLayout->addLayout( rightChangesLayout, gridIndex++, 0, Qt::AlignLeft);
+        gridLayout->addWidget( rightChangesEdit, gridIndex++, 0, Qt::AlignLeft );
+        gridLayout->addWidget( rightLymphoCheck, gridIndex++, 0, Qt::AlignLeft );
+        gridLayout->addWidget( rightLymphoEdit, gridIndex++, 0, Qt::AlignLeft );
 
         leftMainLabel = new QLabel(mammary);
         leftMainLabel->setObjectName(QStringLiteral("leftMainLabel"));
         leftMainLabel->setFont(font);
 
-        gridLayout->addWidget(leftMainLabel, 11, 0, Qt::AlignLeft);
+        gridLayout->addWidget(leftMainLabel, gridIndex++, 0, Qt::AlignLeft);
 
         leftSizeLabel = new QLabel(mammary);
         leftSizeLabel->setObjectName(QStringLiteral("leftSizeLabel"));
 
-        gridLayout->addWidget(leftSizeLabel, 12, 0, Qt::AlignLeft);
+        gridLayout->addWidget(leftSizeLabel, gridIndex++, 0, Qt::AlignLeft);
 
         leftShapeCheck = new QCheckBox( "Форма: обычная" );
         leftShapeCheck->setObjectName(QStringLiteral( "leftShapeCheck" ));
@@ -267,7 +293,7 @@ public:
                                             if ( ( leftShapeCheck->isChecked() ) ) leftShapeCheck->setText("Форма: изменена");
                                });
 
-        gridLayout->addWidget(leftShapeCheck, 13, 0, Qt::AlignLeft);
+        gridLayout->addWidget(leftShapeCheck, gridIndex++, 0, Qt::AlignLeft);
 
         leftClothLayout = new QHBoxLayout();
         leftClothLayout->setObjectName(QStringLiteral("leftClothLayout"));
@@ -288,7 +314,7 @@ public:
         leftClothLayout->addWidget(leftClothCombo);
 
 
-        gridLayout->addLayout(leftClothLayout, 14, 0, Qt::AlignLeft);
+        gridLayout->addLayout(leftClothLayout, gridIndex++, 0, Qt::AlignLeft);
 
         leftVisualCheck = new QCheckBox(mammary);
         leftVisualCheck->setObjectName(QStringLiteral("leftVisualCheck"));
@@ -298,7 +324,7 @@ public:
                                             if ( ( leftVisualCheck->isChecked() ) ) leftVisualCheck->setText("Визуализация протоков: хорошая");
                                });
 
-        gridLayout->addWidget(leftVisualCheck, 15, 0, Qt::AlignLeft);
+        gridLayout->addWidget(leftVisualCheck, gridIndex++, 0, Qt::AlignLeft);
 
         leftStreamLayout = new QHBoxLayout();
         leftStreamLayout->setObjectName(QStringLiteral("leftStreamLayout"));
@@ -324,7 +350,7 @@ public:
         leftStreamLayout->addWidget(leftDiffCheck);
 
 
-        gridLayout->addLayout(leftStreamLayout, 16, 0, Qt::AlignLeft);
+        gridLayout->addLayout(leftStreamLayout, gridIndex++, 0, Qt::AlignLeft);
 
         leftChangesLayout = new QHBoxLayout();
         leftChangesLayout->setObjectName(QStringLiteral("leftChangesLayout"));
@@ -346,26 +372,37 @@ public:
                                             if ( ( leftLymphoCheck->isChecked() ) ) leftLymphoCheck->setText( "Состояние региональных зон лимфооттока:    изменены" );
                                });
 
-        leftChangesLayout->addWidget(leftLymphoCheck);
+        leftChangesEdit = new QTextEdit();
+        leftLymphoEdit = new QTextEdit();
+
+        leftChangesEdit->setMinimumSize(QSize(650, 20));
+        leftChangesEdit->setMaximumSize(QSize(700, 30));
+        leftLymphoEdit->setMinimumSize(QSize(650, 20));
+        leftLymphoEdit->setMaximumSize(QSize(700, 30));
+
+        gridLayout->addLayout( leftChangesLayout, gridIndex++, 0, Qt::AlignLeft);
+        gridLayout->addWidget( leftChangesEdit, gridIndex++, 0, Qt::AlignLeft );
+        gridLayout->addWidget( leftLymphoCheck, gridIndex++, 0, Qt::AlignLeft );
+        gridLayout->addWidget( leftLymphoEdit, gridIndex++, 0, Qt::AlignLeft );
 
 
-        gridLayout->addLayout(leftChangesLayout, 17, 0, Qt::AlignLeft);
+        gridLayout->addLayout(leftChangesLayout, gridIndex++, 0, Qt::AlignLeft);
 
         mainConclusionLabel = new QLabel(mammary);
         mainConclusionLabel->setObjectName(QStringLiteral("mainConclusionLabel"));
 
-        gridLayout->addWidget(mainConclusionLabel, 18, 0, Qt::AlignLeft);
+        gridLayout->addWidget(mainConclusionLabel, gridIndex++, 0, Qt::AlignLeft);
 
         mainConclusionText = new QTextEdit(mammary);
         mainConclusionText->setObjectName(QStringLiteral("mainConclusionText"));
         mainConclusionText->setMinimumSize(QSize(650, 35));
         mainConclusionText->setMaximumSize(QSize(700, 50));
 
-        gridLayout->addWidget(mainConclusionText, 19, 0, Qt::AlignLeft);
+        gridLayout->addWidget(mainConclusionText, gridIndex++, 0, Qt::AlignLeft);
 
         saveAllButton = new QPushButton( "Сохранить документ" );
         saveAllButton->setFixedHeight( 20 );
-        gridLayout->addWidget( saveAllButton, 20, 0, Qt::AlignRight );
+        gridLayout->addWidget( saveAllButton, gridIndex++, 0, Qt::AlignRight );
 
         QObject::connect( saveAllButton, &QPushButton::clicked,
                           [&] {
@@ -389,7 +426,9 @@ public:
                                                      replaceString( pWord, "rightStreamCheck", rightStreamCheck->text() );
                                                      replaceString( pWord, "rightDiffCheck", rightDiffCheck->text() );
                                                      replaceString( pWord, "rightChangesCheck", rightChangesCheck->text() );
+                                                     replaceString( pWord, "rightChangesEdit", rightChangesEdit->toPlainText() );
                                                      replaceString( pWord, "rightLymphoCheck", rightLymphoCheck->text() );
+                                                     replaceString( pWord, "rightLymphoEdit", rightLymphoEdit->toPlainText() );
 
                                                      replaceString( pWord, "leftShapeCheck", leftShapeCheck->text() );
                                                      replaceString( pWord, "leftClothCombo", leftClothCombo->currentText() );
@@ -398,7 +437,9 @@ public:
                                                      replaceString( pWord, "leftStreamCheck", leftStreamCheck->text() );
                                                      replaceString( pWord, "leftDiffCheck", leftDiffCheck->text() );
                                                      replaceString( pWord, "leftChangesCheck", leftChangesCheck->text() );
+                                                     replaceString( pWord, "leftChangesEdit", leftChangesEdit->toPlainText() );
                                                      replaceString( pWord, "leftLymphoCheck", leftLymphoCheck->text() );
+                                                     replaceString( pWord, "leftLymphoEdit", leftLymphoEdit->toPlainText() );
 
                                                      replaceString( pWord, "mainConclusionText", mainConclusionText->toPlainText() );
 
@@ -420,7 +461,7 @@ public:
     void retranslateUi(QWidget *mammary)
     {
         mammary->setWindowTitle(QApplication::translate("mammary", "Form", nullptr));
-        patientNameLabel->setText(QApplication::translate("mammary", "\320\244\320\230\320\236", nullptr));
+        patientNameLabel->setText( "ФИО:" );
         patientAgeLabel->setText(QApplication::translate("mammary", "\320\223\320\276\320\264 \321\200\320\276\320\266\320\264\320\265\320\275\320\270\321\217:", nullptr));
         researchDateLabel->setText(QApplication::translate("mammary", "\320\224\320\260\321\202\320\260 \320\270\321\201\321\201\320\273\320\265\320\264\320\276\320\262\320\260\320\275\320\270\321\217:", nullptr));
         protocallLabel->setText(QApplication::translate("mammary", "\320\237\320\240\320\236\320\242\320\236\320\232\320\236\320\233 \320\243\320\233\320\254\320\242\320\240\320\220\320\227\320\222\320\243\320\232\320\236\320\222\320\236\320\223\320\236 \320\230\320\241\320\241\320\233\320\225\320\224\320\236\320\222\320\220\320\235\320\230\320\257 \320\234\320\236\320\233\320\236\320\247\320\235\320\253\320\245 \320\226\320\225\320\233\320\225\320\227", nullptr));
